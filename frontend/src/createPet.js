@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Navbar from "./components/Navbar";
+
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
 const breeds = {
@@ -78,54 +80,57 @@ const CreatePetFormPage = () => {
     // const formData = new FormData();
     
     return (
-        <form id='petForm' name='petForm' onSubmit={submitProfile}>
-            <label>Pet's Name: </label>
-                <input required type='text' name='name' onChange={e => setName(e.target.value)}/> 
-            <br/>
-            <label>Pet Type: </label>
-                <select onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}} name='type'>
-                    <option value='dog'>Dog</option>
-                    <option value='cat'>Cat</option>
-                    <option value='other'>Other</option>
-                </select>
-            <label>Breed: </label>
-                <select name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
-            <br />
-            <label>Availability: </label>
-                <select name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
-            <label>Sex: </label>
-                <select name='sex' onChange={e => setSex(e.target.value)}>
-                    <option value={false}>Male</option>
-                    <option value={true}>Female</option>
-                </select>
-            <label>Age:</label> 
-                <label>Years: </label>
-                    <input required type='number' name='years' onChange={yearChange} />
-                <label>Months:</label>
-                    <input required type='number' name='months' onChange={monthChange} />
-            <label>Weight: </label> 
-                <input required type='number' name='weight' onChange={e => setWeight(e.target.value)} /> 
-            <label></label>
-            <br />
-            <label>Disposition: </label>
-            <br/>
-                <label>Good with other animals</label>
-                    <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} />
-                <label>Good with children </label>
-                    <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} />
-                <label>Animal must be leashed at all times </label>
-                    <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} />
-                <label>Very Active </label>
-                    <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
-            <br/>
-            <label>Description: </label>
-                <input required type='text' maxLength={280} name='description' onChange={e => setDescript(e.target.value)} /> 
-            <br />
-            {/* <label>Upload Pet Photo: </label>
-                <input required type='file' name='petPhoto' onChange={e => setPhoto(e.target.value)}/> */}
-            <br />
-            <input type='submit' value='Save Profile' />
-        </form>
+        <div>
+            <Navbar />
+            <form id='petForm' name='petForm' onSubmit={submitProfile}>
+                <label>Pet's Name: </label>
+                    <input required type='text' name='name' onChange={e => setName(e.target.value)}/> 
+                <br/>
+                <label>Pet Type: </label>
+                    <select onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}} name='type'>
+                        <option value='dog'>Dog</option>
+                        <option value='cat'>Cat</option>
+                        <option value='other'>Other</option>
+                    </select>
+                <label>Breed: </label>
+                    <select name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+                <br />
+                <label>Availability: </label>
+                    <select name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+                <label>Sex: </label>
+                    <select name='sex' onChange={e => setSex(e.target.value)}>
+                        <option value={false}>Male</option>
+                        <option value={true}>Female</option>
+                    </select>
+                <label>Age:</label> 
+                    <label>Years: </label>
+                        <input required type='number' name='years' onChange={yearChange} />
+                    <label>Months:</label>
+                        <input required type='number' name='months' onChange={monthChange} />
+                <label>Weight: </label> 
+                    <input required type='number' name='weight' onChange={e => setWeight(e.target.value)} /> 
+                <label></label>
+                <br />
+                <label>Disposition: </label>
+                <br/>
+                    <label>Good with other animals</label>
+                        <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} />
+                    <label>Good with children </label>
+                        <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} />
+                    <label>Animal must be leashed at all times </label>
+                        <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} />
+                    <label>Very Active </label>
+                        <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
+                <br/>
+                <label>Description: </label>
+                    <input required type='text' maxLength={280} name='description' onChange={e => setDescript(e.target.value)} /> 
+                <br />
+                {/* <label>Upload Pet Photo: </label>
+                    <input required type='file' name='petPhoto' onChange={e => setPhoto(e.target.value)}/> */}
+                <br />
+                <input type='submit' value='Save Profile' />
+            </form>
+        </div>
     )
 }
 

@@ -1,5 +1,5 @@
 {
-  "name": "cs467_capstone",
+  "name": "animal-adoption-site",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8080",

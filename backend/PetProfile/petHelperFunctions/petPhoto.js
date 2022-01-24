@@ -1,0 +1,14 @@
+const {Storage} = require('@google-cloud/storage');
+
+const storage = new Storage();
+const bucketName = 'pet_profile_photo';
+
+async function uploadPhoto(destFileName) {
+    await storage.bucket(bucketName).upload(filePath, {
+      destination: destFileName,
+    });
+  
+    console.log(`${filePath} uploaded to ${bucketName}`);
+  }
+  
+  uploadPhoto().catch(console.error);
