@@ -1,0 +1,44 @@
+* {
+    font-family: 'Courier';
+}
+
+form {
+    padding-left: 30px;
+    padding-top: 30px;
+}
+
+.form-group {
+    padding-bottom: 30px;
+}
+
+.form-section-header {
+    font-size: large;
+    font-weight: bold;
+}
+
+.form-field-group {
+    padding: 10px 15px;
+}
+
+.form-field-group label{
+    padding-right: 150px;
+}
+
+.submit-btn {
+    border-radius: 5px;
+    padding: 10px 30px;
+    font-family: 'Courier';
+    font-weight: bold;
+    background-color: #3C64B1;
+    color: white;
+    border: none;
+}
+
+.submit-btn:hover {
+    background-color: #144cb4;
+    color: white;
+}
+
+.submit-btn-block {
+    text-align: center;
+}
