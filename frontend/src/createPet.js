@@ -22,7 +22,7 @@ const CreatePetFormPage = () => {
     const [petWeight, setWeight] = React.useState(0);
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState();
-    const date_created = new Date();
+    const [isFilePicked, setIsFilePicked] = React.useState(false);
   
     const monthChange = (event) => {
         var tempAge = petAge;
@@ -47,6 +47,11 @@ const CreatePetFormPage = () => {
         return setDisp(tempDisp);
     }
 
+    const addPhoto = (e) => {
+        setPhoto(e.target.files);
+        return setIsFilePicked(true);
+    }
+
     const formData = {
         name: petName,
         type: petType,
@@ -57,8 +62,8 @@ const CreatePetFormPage = () => {
         weight: petWeight,
         disposition: petDisp,
         description: petDescript,
-        // date_created: date_created,
-        shelter_id: 52
+        shelter_id: 52,
+        petPhoto: petPhoto
     }
 
     const submitProfile = async (e) => {
@@ -73,11 +78,7 @@ const CreatePetFormPage = () => {
                 const data = await response.json()
                 console.log(data)})
             .catch(error => {console.error('There was an error!', error)});
-        
-        
     }
-
-    // const formData = new FormData();
     
     return (
         <div>
@@ -125,8 +126,8 @@ const CreatePetFormPage = () => {
                 <label>Description: </label>
                     <input required type='text' maxLength={280} name='description' onChange={e => setDescript(e.target.value)} /> 
                 <br />
-                {/* <label>Upload Pet Photo: </label>
-                    <input required type='file' name='petPhoto' onChange={e => setPhoto(e.target.value)}/> */}
+                <label>Upload Pet Photo: </label>
+                    <input required type='file' name='petPhoto'  onChange={addPhoto} multiple/>
                 <br />
                 <input type='submit' value='Save Profile' />
             </form>

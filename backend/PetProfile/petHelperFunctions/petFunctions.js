@@ -1,9 +1,10 @@
 const helper = require('../API/datastoreHelper');
 const PET = "Pet";
+const photoFunction = require('../petHelperFunctions/petPhoto');
 
-async function post_pet(name, type, breed, availability, sex, age, weight, disposition, description, shelter_id) {
+
+async function post_pet(name, type, breed, availability, sex, age, weight, disposition, description, shelter_id, petPhoto) {
     var key = helper.datastore.key(PET);
-    console.log(key);
     const new_pet = { 
         'name': name, 
         'type': type, 
@@ -18,6 +19,7 @@ async function post_pet(name, type, breed, availability, sex, age, weight, dispo
         'shelter_id': shelter_id 
     };
     return helper.datastore.save({ 'key': key, 'data': new_pet}).then(() => { 
+        photoFunction.uploadPhoto(petPhoto, key.id)
         var new_entry = new_pet; new_entry['id'] = key.id;
         return new_entry });
 }
