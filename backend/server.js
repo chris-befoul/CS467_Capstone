@@ -2,11 +2,12 @@
 
 const express = require('express');
 const app = express();
-
+var cors = require('cors');
 app.enable('trust proxy');
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json())
+app.use(cors());
 
 const userRoute = require('./user');
 const shelterRoute = require('./shelter');

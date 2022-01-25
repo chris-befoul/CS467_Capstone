@@ -39,7 +39,8 @@ router.post('/', async(req, res) => {
             city: req.body.city,
             state: req.body.state,
             zip_code: req.body.zip_code,
-            email_preference: req.body.email_preference
+            email_preference: req.body.email_preference,
+            phone: req.body.phone
         };
         insertUser(new_user).then(key => { res.status(201).send({"id": key.id, ...new_user}) });
     } catch {
