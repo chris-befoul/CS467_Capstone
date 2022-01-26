@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Signup from './Signup';
 import UserSignup from './UserSignup';
+import Login from './Login';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -12,6 +13,7 @@ ReactDOM.render(
     <Routes>
       <Route exact path="/signup" element={<Signup />} />
       <Route exact path="/usersignup" element={<UserSignup />} />
+      <Route exact path="/login" element={<Login />}/>
     </Routes>
   </BrowserRouter>,
   document.getElementById('root')
