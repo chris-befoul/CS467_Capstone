@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from "./components/Navbar";
+import axios from 'axios';
 
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
@@ -21,7 +22,7 @@ const CreatePetFormPage = () => {
     const [petDescript, setDescript] = React.useState('');
     const [petWeight, setWeight] = React.useState(0);
     const [petDisp, setDisp] = React.useState([]);
-    const [petPhoto, setPhoto] = React.useState();
+    const [petPhoto, setPhoto] = React.useState(null);
     const [isFilePicked, setIsFilePicked] = React.useState(false);
   
     const monthChange = (event) => {
@@ -48,7 +49,8 @@ const CreatePetFormPage = () => {
     }
 
     const addPhoto = (e) => {
-        setPhoto(e.target.files);
+        setPhoto(e.target.files[0]);
+        // console.log(e.target.files);
         return setIsFilePicked(true);
     }
 
@@ -68,16 +70,29 @@ const CreatePetFormPage = () => {
 
     const submitProfile = async (e) => {
         e.preventDefault();
-        const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(formData)
-        };
-        await fetch('http://localhost:8080/pets/createPetProfile', requestOptions)
-            .then(async response => {
-                const data = await response.json()
-                console.log(data)})
-            .catch(error => {console.error('There was an error!', error)});
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify(formData)
+        // };
+        const petServer = {petProfile: formData}
+
+        const formPhoto = new FormData();
+        formPhoto.append('file', petPhoto);
+        formPhoto.append('data', JSON.stringify(formData));
+
+        await axios.post('http://localhost:8080/pets/createPetProfile', formPhoto);
+
+        // await axios.post('http://localhost:8080/pets/createPetProfile', formData).then(async response => {
+        //     const data = await response.json();
+        //     console.log(data)})
+        //     .catch(error => { console.error('There was an error!', error)});
+
+        // await fetch('http://localhost:8080/pets/createPetProfile', requestOptions)
+        //     .then(async response => {
+        //         const data = await response.json()
+        //         console.log(data)})
+        //     .catch(error => {console.error('There was an error!', error)});
     }
     
     return (
@@ -127,7 +142,7 @@ const CreatePetFormPage = () => {
                     <input required type='text' maxLength={280} name='description' onChange={e => setDescript(e.target.value)} /> 
                 <br />
                 <label>Upload Pet Photo: </label>
-                    <input required type='file' name='petPhoto'  onChange={addPhoto} multiple/>
+                    <input required type='file' name='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png'/>
                 <br />
                 <input type='submit' value='Save Profile' />
             </form>
