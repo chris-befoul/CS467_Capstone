@@ -42,3 +42,7 @@ form {
 .submit-btn-block {
     text-align: center;
 }
+
+.form-error-msg {
+    color: red;
+}
