@@ -7,10 +7,10 @@ const Navbar = () => {
     return (
         <div className='navbar'>
             <h1 style={{display:"block", paddingLeft: 30, paddingTop:10}}>Logo</h1>
-            <ul className='navitems'>
-                <li>Login</li>
-                <li>Signup</li>
-            </ul>
+            <div className="links">
+                <Link to="/Login" className='nav-link'>Login</Link>
+                <Link to="/Signup" className='nav-link'>Sign Up</Link>
+            </div>
         </div>
     )
 }

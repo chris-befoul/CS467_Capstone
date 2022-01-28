@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 function Signup() {
   return (
     <div className="App">
-      <Navbar />
       <div className="Welcome-msg">
         <p>Welcome!</p>
         <div style={{ height: 50 }}></div>

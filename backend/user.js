@@ -16,16 +16,16 @@ function insertUser(new_user){
     return datastore.save({ "key": key, "data": new_user }).then(() => { return key });
 } 
 
-function getUsers () {
-    const q = datastore.createQuery(USER);
-    return datastore.runQuery(q).then((entities) => {
-        return entities[0].map(fromDatastore);
-    });
-}
+// function getUsers () {
+//     const q = datastore.createQuery(USER);
+//     return datastore.runQuery(q).then((entities) => {
+//         return entities[0].map(fromDatastore);
+//     });
+// }
 
-router.get('/', async(req, res) => {
-    getUsers().then((users) => {res.status(200).json(users);});
-});
+// router.get('/', async(req, res) => {
+//     getUsers().then((users) => {res.status(200).json(users);});
+// });
 
 router.post('/', async(req, res) => {
     try{
@@ -35,6 +35,7 @@ router.post('/', async(req, res) => {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
+            phone: req.body.phone,
             password: hashedPassword,
             city: req.body.city,
             state: req.body.state,

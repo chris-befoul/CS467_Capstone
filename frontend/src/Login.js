@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 const Login = () => {
   return (
     <div className="App">
-      <Navbar />
       <form className='form'>
         <div className='user'>
             <label>User: <input className='user-label' type='text'></input></label>

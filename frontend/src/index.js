@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Navbar from './components/Navbar';
 import Signup from './Signup';
 import UserSignup from './UserSignup';
 import Login from './Login';
@@ -10,6 +11,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 ReactDOM.render(
   <BrowserRouter>
+    <Navbar />
     <Routes>
       <Route exact path="/signup" element={<Signup />} />
       <Route exact path="/usersignup" element={<UserSignup />} />
