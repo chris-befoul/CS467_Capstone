@@ -46,3 +46,23 @@ form {
 .form-error-msg {
     color: red;
 }
+
+.delete-btn-block {
+    padding-top: 10px;
+    text-align: center;
+}
+
+.delete-btn {
+    border-radius: 5px;
+    padding: 10px 30px;
+    font-family: 'Courier';
+    font-weight: bold;
+    background-color:rgb(189, 0, 0);
+    color: white;
+    border: none;
+}
+
+.delete-btn:hover {
+    background-color: rgb(218, 2, 2);
+    color: white;
+}

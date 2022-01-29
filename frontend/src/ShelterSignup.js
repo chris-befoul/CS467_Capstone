@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from './components/Navbar'
-import "./ShelterSignup.css";
+import "./UserSignup.css";
 import { useState } from 'react';
 
 const ShelterSignup = () => {
