@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const {Datastore} = require('@google-cloud/datastore');
 
 const datastore = new Datastore();
@@ -20,7 +21,6 @@ function getUsers () {
     const q = datastore.createQuery(USER);
     return datastore.runQuery(q).then((entities) => {
         return entities[0].map(fromDatastore);
-        // return entities[0].filter(fromDatastore);
     });
 }
 
@@ -64,6 +64,9 @@ router.post('/login', async(req, res) => {
     const [items] = await datastore.runQuery(userItem);
     let user = items[0];
 
+    // console.log(user);
+    // console.log(user[Datastore.KEY].id);
+
     if (!user) {
         return res.status(404).send({
             message: 'User not found!'
@@ -75,7 +78,65 @@ router.post('/login', async(req, res) => {
         });
     }
 
-    res.send(user);
+    const token = jwt.sign({_id: user[Datastore.KEY].id}, "secret");
+
+    res.cookie('jwt', token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    });
+
+    res.send({
+        message: "success"
+    });
+});
+
+router.get('/user', async (req, res) => {
+    try {
+        const cookie = req.cookies['jwt'];
+
+        const claims = jwt.verify(cookie, 'secret');
+
+        if (!claims) {
+            return res.status(401).send({
+                message: 'Unauthenticated!'
+            });
+        }
+
+        const userItem = datastore.createQuery(USER);
+        const [items] = await datastore.runQuery(userItem);
+        let _user; 
+        items.forEach(item => {
+            if (item[Datastore.KEY].id == claims._id){
+                _user = item;
+            }
+        })
+        // console.log(_user);
+
+        // const userItem = datastore.createQuery(USER).;
+        // const userItem = datastore.createQuery(USER).filter('__key__', '=', datastore.key([USER, '5701666712059904']));
+        // const [items] = await datastore.runQuery(userItem);
+        // let _user = items.filter(item[Datastore.KEY].id === claims._id);
+        // let _user = items[0];
+
+        // const user = _user;
+        const {password, ...data} = _user;
+
+        // res.send(claims);
+        res.send(data);
+    } catch {
+        return res.status(401).send({
+            message: 'Unauthenticated!'
+        });
+    }
+});
+
+router.post('/logout', (req, res) => {
+    // removing cookie
+    res.cookie('jwt', '', {maxAge: 0});
+
+    res.send({
+        message: "Log out complete!"
+    });
 });
 
 module.exports = router;
