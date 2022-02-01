@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import "./UserSignup.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const ShelterSignup = () => {
     const [formData, setFormData] = useState({
@@ -16,6 +16,7 @@ const ShelterSignup = () => {
     }); 
 
     const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
 
     const handleChange = (e) => {
         const newdata = {...formData};
@@ -25,22 +26,25 @@ const ShelterSignup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormErrors(validate(formData));
-        console.log(formErrors);
-        if (Object.keys(formErrors).length === 0) {
-            const res = await fetch('http://localhost:8080/shelters', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(formData)
-            });
-
-            const data = await res.json();
-            console.log(data);
-        }
-
+        setFormErrors(await validate(formData));
+        setIsSubmit(true);
     };
 
-    const validate = (values) => {
+    useEffect(() => {
+        // console.log(formErrors);
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+        //   console.log(formData);
+            fetch('http://localhost:8080/shelters', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            }).then(res => res.json()).then(data => {console.log(data)});
+            
+            //redirect to sign in page
+        }
+      }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const validate = async (values) => {
         const errors = {};
         const name_regex = /^[a-zA-Z\s]{3,30}$/;
         const email_regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
@@ -80,6 +84,15 @@ const ShelterSignup = () => {
         if (values.confirm_password !== values.password) {
             errors.confirm_password = "Passwords do not match!";
         }
+
+        const res = await fetch('http://localhost:8080/shelters', { method: 'GET'});
+        const shelters = await res.json();
+        shelters.forEach(shelter => {
+            if (shelter.email === values.email){
+                errors.duplicate_email = "This email already exists!";
+            }
+        });
+
         return errors;
     };
 
@@ -111,6 +124,7 @@ const ShelterSignup = () => {
                     <div className='form-field-group'>
                         <label>Email: <input required type="text" name="email" value={formData.email} onChange={ (e) => handleChange(e)}></input></label>
                         <p className='form-error-msg'>{formErrors.email}</p>
+                        <p className='form-error-msg'>{formErrors.duplicate_email}</p>
                     </div>
                     <div className='form-field-group'>
                         <label>Password:<input required type="password" name="password" value={formData.password} onChange={ (e) => handleChange(e)}></input></label>
