@@ -50,7 +50,6 @@ const CreatePetFormPage = () => {
 
     const addPhoto = (e) => {
         setPhoto(e.target.files[0]);
-        // console.log(e.target.files);
         return setIsFilePicked(true);
     }
 
