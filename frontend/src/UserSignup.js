@@ -47,7 +47,7 @@ const UserSignup = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
             }).then(res => res.json()).then(data => {console.log(data)});
-            
+            alert("user created!");
             //redirect to sign in page
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
