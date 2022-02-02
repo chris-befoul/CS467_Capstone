@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: (req, file, callBack) => {
@@ -9,7 +11,8 @@ const storage = multer.diskStorage({
         callBack(null, `${file.originalname}`)
     }
 })
-let upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'uploads/' });
+const directory = 'uploads';
 const router = express.Router();
 router.use(bodyParser.json());
 
@@ -35,15 +38,27 @@ router.patch('/:petID', function(req,res) {
     return;
 })
 
-router.post('/createPetProfile', upload.single('file'), (req, res) => {
-    const file = req.file;
-    if (!file) {
+router.post('/createPetProfile', upload.array('file'), (req, res) => {
+    const data = JSON.parse(req.body.data);
+    if (!req.files) {
         const error = new Error('No File')
         error.httpStatusCode = 400
         return next(error)
     }
-    petFunctions.post_pet(req.body.data.name, req.body.data.type, req.body.data.breed, req.body.data.availability, req.body.data.sex, req.body.data.age, req.body.data.weight, req.body.data.disposition, req.body.data.description, req.body.data.shelter_id).then(key => {
-                petPhotoFunction.uploadPhoto(file.path, key.id);
+    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
+                for (var x = 0; x < req.files.length; x++) {
+                    const fileName = key.id + '/' + (x + 1);
+                    petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
+                }
+                fs.readdir(directory, (err, files) => {
+                    if (err) throw err;
+                  
+                    for (const file of files) {
+                      fs.unlink(path.join(directory, file), err => {
+                        if (err) throw err;
+                      });
+                    }
+                  });
                 res.status(201).send(key);
                 return;
     })
