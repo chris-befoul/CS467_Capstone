@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "./components/Navbar";
+import { Navigate } from 'react-router-dom';
 import "./UserSignup.css";
 
 const UserSignup = () => {
@@ -12,6 +12,7 @@ const UserSignup = () => {
   const [state, setState] = useState("");
   const [zip_code, setZip_code] = useState("");
   const [email_preference, setEmail_preference] = useState(false);
+  const [navigate, setNavigate] = useState(false);
 
   const handleSubmit = async (e) => {
       e.preventDefault();
@@ -20,7 +21,7 @@ const UserSignup = () => {
           headers: {'Content-Type': 'application/json',
           'Access-Control-Allow-Origin':'*',
           'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'},
-          body: JSON.stringify({
+          body: JSON.stringify({ 
             first_name,
             last_name,
             email,
@@ -32,9 +33,12 @@ const UserSignup = () => {
             email_preference
           })
       });
-      console.log(response.body);
       const content = await response.json();
       console.log(content);
+      setNavigate(true);
+  }
+  if (navigate) {
+    return <Navigate to="/login"/>
   }
 
   return (
