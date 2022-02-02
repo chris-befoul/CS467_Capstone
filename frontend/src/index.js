@@ -5,12 +5,14 @@ import './index.css';
 import Signup from './Signup';
 import UserSignup from './UserSignup';
 import reportWebVitals from './reportWebVitals';
+import Navbar from './components/Navbar';
 
 import CreatePetFormPage from "./createPet";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <BrowserRouter>
+    <Navbar />
     <Routes>
       <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
       <Route exact path="/signup" element={<Signup />} />
