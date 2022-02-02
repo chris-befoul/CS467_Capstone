@@ -8,8 +8,6 @@ async function uploadPhoto(filePath, destFileName) {
   await storage.bucket(bucketName).upload(filePath, {
     destination: destFileName,
   });
-
-  console.log(`${filePath} uploaded to ${bucketName}`);
 }
   
 module.exports = {

@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import Navbar from './components/Navbar';
 
 import CreatePetFormPage from "./createPet";
+import EditPetProfile from "./editPet";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
@@ -15,6 +16,7 @@ ReactDOM.render(
     <Navbar />
     <Routes>
       <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
+      <Route exact path="/pets/editProfile" element={<EditPetProfile />} />
       <Route exact path="/signup" element={<Signup />} />
       <Route exact path="/usersignup" element={<UserSignup />} />
     </Routes>

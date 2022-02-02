@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from "./components/Navbar";
 import axios from 'axios';
 
 
@@ -10,49 +9,37 @@ const breeds = {
     cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
     other: ['Other']
 }
+const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
-const CreatePetFormPage = () => {
+const EditPetProfile = () => {
     const [petData, setData] = React.useState({});
-    const [petType, setType] = React.useState("dog");
-    const [petName, setName] = React.useState('');
-    const [petBreed, setBreed] = React.useState('Golden Retriever');
-    const [petAvail, setAvail] = React.useState('Available');
-    const [petSex, setSex] = React.useState(false);
-    const [petAge, setAge] = React.useState([0,0]);
-    const [petDescript, setDescript] = React.useState('');
-    const [petWeight, setWeight] = React.useState(0);
-    const [petDisp, setDisp] = React.useState([]);
+    const [petType, setType] = React.useState(null);
+    const [petName, setName] = React.useState(null);
+    const [petBreed, setBreed] = React.useState(null);
+    const [petAvail, setAvail] = React.useState(null);
+    const [petSex, setSex] = React.useState(null);
+    const [petAge, setAge] = React.useState(null);
+    const [petDescript, setDescript] = React.useState(null);
+    const [petWeight, setWeight] = React.useState(null);
+    const [petDisp, setDisp] = React.useState(null);
     const [petPhoto, setPhoto] = React.useState(null);
-    const [isFilePicked, setIsFilePicked] = React.useState(false);
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/' + petID).then(data => {
-            setData(data);
-            setName(data.name);
-            setSex(data.sex);
-            setType(data.type);
-            setWeight(data.weight);
-            setDescript(data.description);
-            setDisp(data.disposition);
-            setBreed(data.breed);
-            setAvail(data.available);
-            setAge(data.age);
+        axios.get('http://localhost:8080/pets/5726966351134720').then(res => {
+            setData(res.data);
+            setName(res.name);
+            setSex(res.sex);
+            setType(res.type);
+            setWeight(res.weight);
+            setDescript(res.description);
+            setDisp(res.disposition);
+            setBreed(res.breed);
+            setAvail(res.available);
+            setAge(res.age);
             return;
         })
     });
-  
-    const monthChange = (event) => {
-        var tempAge = petAge;
-        tempAge[1] = JSON.parse(event.target.value);
-        return setAge(tempAge);
-    }
-
-    const yearChange = (event) => {
-        var tempAge = petAge;
-        tempAge[0] = JSON.parse(event.target.value);
-        return setAge(tempAge);
-    }
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -66,8 +53,7 @@ const CreatePetFormPage = () => {
     }
 
     const addPhoto = (e) => {
-        setPhoto(e.target.files[0]);
-        return setIsFilePicked(true);
+        return setPhoto(e.target.files);
     }
 
     const formData = {
@@ -80,8 +66,7 @@ const CreatePetFormPage = () => {
         weight: petWeight,
         disposition: petDisp,
         description: petDescript,
-        shelter_id: 52,
-        petPhoto: petPhoto
+        shelter_id: 52
     }
 
     const checkGoodWithChildren = () => {
@@ -122,18 +107,23 @@ const CreatePetFormPage = () => {
 
     const submitProfile = async (e) => {
         e.preventDefault();
-        const petServer = {petProfile: formData}
+
+        const types = ['image/png', 'image/jpeg'];
 
         const formPhoto = new FormData();
-        formPhoto.append('file', petPhoto);
+        for(var x = 0; x<petPhoto.length; x++) {
+            if (!types.every(value => petPhoto[x].type !== value)) {
+                formPhoto.append('file', petPhoto[x]);
+            }
+        }
+        console.log(formData);
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.patch('http://localhost:8080/' + formData.id, formPhoto);
+        await axios.post('http://localhost:8080/pets/createPetProfile', formPhoto);
     }
     
     return (
         <div>
-            <Navbar />
             <form id='petForm' name='petForm' onSubmit={submitProfile}>
                 <label>Pet's Name: </label>
                     <input required type='text' name='name' value={petData.name} onChange={e => setName(e.target.value)}/> 
@@ -144,8 +134,8 @@ const CreatePetFormPage = () => {
                         <option value='cat'>Cat</option>
                         <option value='other'>Other</option>
                     </select>
-                <label>Breed: </label>
-                    <select name='breed' value={petData.breed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+                {/* <label>Breed: </label>
+                    <select name='breed' value={petData.breed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select>  */}
                 <br />
                 <label>Availability: </label>
                     <select name='availability' value={petData.availability} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
@@ -154,15 +144,27 @@ const CreatePetFormPage = () => {
                         <option value={false}>Male</option>
                         <option value={true}>Female</option>
                     </select>
-                <label>Age:</label> 
-                    <label>Years: </label>
-                        <input required type='number' name='years' value={petData.age[0]} onChange={yearChange} />
-                    <label>Months:</label>
-                        <input required type='number' name='months' value={petData.age[1]} onChange={monthChange} />
-                <label>Weight: </label> 
-                    <input required type='number' name='weight' value={petData.weight} onChange={e => setWeight(e.target.value)} /> 
-                <label></label>
+                <div id='age-weight'>
+                    <label>Age: </label>
+                        <select name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+                    <label>Weight: </label> 
+                        <input required type='number' name='weight' placeholder={0} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
+                </div>
                 <br />
+                {/* <div id='dispositionBox'>
+                    <label>Disposition: </label>
+                        <div id='disposition'>
+                            <label id='dispositionLabel'>Good with other animals</label>
+                                <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} />
+                            <label id='dispositionLabel'>Good with children</label>
+                                <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} />
+                            <br/>
+                            <label id='dispositionLabel'>Animal must be leashed at all times</label>
+                                <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} />
+                            <label id='dispositionLabel'>Very Active</label>
+                                <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
+                        </div>
+                </div> */}
                 <label>Disposition: </label>
                 <br/>
                     <label>Good with other animals</label>
@@ -176,13 +178,18 @@ const CreatePetFormPage = () => {
                         {/* <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} /> */}
                     <label>Very Active </label>
                         {checkVeryActive}
-                        {/* <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/> */}
+                        <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
                 <br/>
+                <div id='descriptionBox'>
                 <label>Description: </label>
-                    <input required type='text' maxLength={280} name='description' value={petData.description} onChange={e => setDescript(e.target.value)} /> 
+                    <br />
+                    <textarea required type='text' maxLength={280} name='description' id='description' placeholder='(280 Character Limit)' onChange={e => setDescript(e.target.value)}></textarea>
+                </div>
                 <br />
-                <label>Upload Pet Photo: </label>
-                    <input required type='file' name='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png'/>
+                <div id='photoBox'>
+                    <label>Upload Pet Photo: </label>
+                        <input required type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
+                </div>
                 <br />
                 <input type='submit' value='Save Profile' />
             </form>
@@ -190,6 +197,6 @@ const CreatePetFormPage = () => {
     )
 }
 
-ReactDOM.render(<CreatePetFormPage />, document.getElementById("root"));
+ReactDOM.render(<EditPetProfile />, document.getElementById("root"));
 
-export default CreatePetFormPage;
+export default EditPetProfile;
