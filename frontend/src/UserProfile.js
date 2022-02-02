@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import "./UserSignup.css";
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
     const [formData, setFormData] = useState({
@@ -20,6 +21,7 @@ const UserProfile = () => {
     });
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const newdata = { ...formData };
@@ -40,6 +42,15 @@ const UserProfile = () => {
     };
 
     useEffect(() => {
+        // fetch('http://localhost:8080/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+        //     const userInfo= data;
+        //     // console.log(userInfo);
+        //     userInfo.password = "";
+        //     userInfo.new_password = "";
+        //     userInfo.confirm_new_password = "";
+        //     setFormData(userInfo);
+        // });
+
         fetch('http://localhost:8080/users/5659886813708288', { method: 'GET'}).then( res => res.json()).then( data => {
             const {password, ...userInfo} = data;
             // console.log(userInfo);
@@ -59,9 +70,14 @@ const UserProfile = () => {
 
     const deleteAccount = () => {
         // console.log('Delete account!')
-        fetch('http://localhost:8080/users/5659886813708288', {method: 'DELETE'}).then(() => {console.log('Deleted!')});
-        alert("user deleted!");
-        //redirect to landing page
+        // fetch('http://localhost:8080/api/user', {method: 'DELETE', credentials: 'include'}).then(() => {console.log('Deleted!')});
+        fetch('http://localhost:8080/users/5659886813708288', {method: 'DELETE'}).then(() => {
+            console.log('Deleted!');
+            alert("user deleted!");
+
+            // redirect to landing page
+            // navigate("/");
+        });
     };
 
     const validate = async (values) => {

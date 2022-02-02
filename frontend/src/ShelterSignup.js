@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import "./UserSignup.css";
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ShelterSignup = () => {
     const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const ShelterSignup = () => {
 
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const newdata = {...formData};
@@ -38,9 +40,13 @@ const ShelterSignup = () => {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
-            }).then(res => res.json()).then(data => {console.log(data)});
-            
-            //redirect to sign in page
+            }).then(res => res.json()).then(data => {
+                console.log(data);
+                alert("Shelter created!");
+
+                //redirect to sign in page
+                // navigate("/login");
+            });
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
 

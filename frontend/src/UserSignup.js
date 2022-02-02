@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import "./UserSignup.css";
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserSignup = () => {
     const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const UserSignup = () => {
 
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const newdata = { ...formData };
@@ -46,9 +48,13 @@ const UserSignup = () => {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
-            }).then(res => res.json()).then(data => {console.log(data)});
-            alert("user created!");
-            //redirect to sign in page
+            }).then(res => res.json()).then(data => {
+                console.log(data);
+                alert("User created!");
+
+                //redirect to sign in page
+                // navigate("/login");
+            });
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
 
