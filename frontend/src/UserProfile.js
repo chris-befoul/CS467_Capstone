@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Navigate } from 'react-router-dom';
+import React from 'react'
+import Navbar from './components/Navbar'
 import "./UserSignup.css";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const UserSignup = () => {
+const UserProfile = () => {
     const [formData, setFormData] = useState({
+        id: "",
         first_name: "",
         last_name: "",
         city: "",
@@ -14,10 +15,10 @@ const UserSignup = () => {
         state: "",
         email: "",
         password: "",
-        confirm_password: "",
+        new_password: "",
+        confirm_new_password: "",
         email_preference: false
     });
-
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
     const navigate = useNavigate();
@@ -41,22 +42,43 @@ const UserSignup = () => {
     };
 
     useEffect(() => {
+        // fetch('http://localhost:8080/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+        //     const userInfo= data;
+        //     // console.log(userInfo);
+        //     userInfo.password = "";
+        //     userInfo.new_password = "";
+        //     userInfo.confirm_new_password = "";
+        //     setFormData(userInfo);
+        // });
+
+        fetch('http://localhost:8080/users/5659886813708288', { method: 'GET'}).then( res => res.json()).then( data => {
+            const {password, ...userInfo} = data;
+            // console.log(userInfo);
+            userInfo.password = "";
+            userInfo.new_password = "";
+            userInfo.confirm_new_password = "";
+            setFormData(userInfo);
+        });
+      }, []);
+
+      useEffect(() => {
         // console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-        //   console.log(formData);
-            fetch('http://localhost:8080/users', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(formData)
-            }).then(res => res.json()).then(data => {
-                console.log(data);
-                alert("User created!");
-
-                //redirect to sign in page
-                // navigate("/login");
-            });
+          console.log(formData);
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const deleteAccount = () => {
+        // console.log('Delete account!')
+        // fetch('http://localhost:8080/api/user', {method: 'DELETE', credentials: 'include'}).then(() => {console.log('Deleted!')});
+        fetch('http://localhost:8080/users/5659886813708288', {method: 'DELETE'}).then(() => {
+            console.log('Deleted!');
+            alert("user deleted!");
+
+            // redirect to landing page
+            // navigate("/");
+        });
+    };
 
     const validate = async (values) => {
         const errors = {};
@@ -95,17 +117,17 @@ const UserSignup = () => {
         if (!email_regex.test(values.email)) {
             errors.email = "Invalid email!";
         }
-        if (!password_regex.test(values.password)) {
-            errors.password = "Invalid password! Passwords should be 8-25 characters long and contain at least 1 lowercase, 1 uppercase, and 1 digit.";
+        if (!password_regex.test(values.new_password)) {
+            errors.new_password = "Invalid password! Passwords should be 8-25 characters long and contain at least 1 lowercase, 1 uppercase, and 1 digit.";
         }
-        if (values.confirm_password !== values.password) {
-            errors.confirm_password = "Passwords do not match!";
+        if (values.confirm_new_password !== values.new_password) {
+            errors.confirm_new_password = "Passwords do not match!";
         }
         
         const res = await fetch('http://localhost:8080/users', { method: 'GET'});
         const users = await res.json();
         users.forEach(user => {
-            if (user.email === values.email){
+            if (user.email === values.email && user.id!==values.id){
                 errors.duplicate_email = "This email already exists!";
             }
         });
@@ -118,17 +140,17 @@ const UserSignup = () => {
             <Navbar />
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <div className='form-section-header'><label>User Information</label></div>
+                    <div><label className='form-section-header'>About Me</label></div>
                     <div className='form-field-group'>
                         <div className='input-pair'>
                             <div className='form-input-field'>
                                 <label>First Name: </label>
-                                <input required type="text" name='first_name' value={formData.first_name} onChange={(e) => handleChange(e)}></input>
+                                <input required type="text" name='first_name' defaultValue={formData.first_name} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.first_name}</p>
                             </div>
                             <div className='form-input-field'>
                                 <label>Last Name:</label>
-                                <input required type="text" name='last_name' value={formData.last_name} onChange={(e) => handleChange(e)}></input>
+                                <input required type="text" name='last_name' defaultValue={formData.last_name} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.last_name}</p>
                             </div>
                         </div>
@@ -137,12 +159,12 @@ const UserSignup = () => {
                         <div className='input-pair'>
                             <div className='form-input-field'>
                                 <label>City/Town:</label>
-                                <input required type="text" name="city" value={formData.city} onChange={(e) => handleChange(e)}></input>
+                                <input required type="text" name="city" defaultValue={formData.city} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.city}</p>
                             </div>
                             <div className='form-input-field'>
                                 <label>Phone Number:</label>
-                                <input required type="tel" name="phone" placeholder='123-456-7890' value={formData.phone} onChange={(e) => handleChange(e)}></input>
+                                <input required type="tel" name="phone" placeholder='123-456-7890' defaultValue={formData.phone} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.phone}</p>
                             </div>
                         </div>
@@ -151,12 +173,12 @@ const UserSignup = () => {
                         <div className='input-pair'>
                             <div className='form-input-field'>
                                 <label>Zip Code:</label>
-                                <input required type="text" name="zip_code" value={formData.zip_code} onChange={(e) => handleChange(e)}></input>
+                                <input required type="text" name="zip_code" defaultValue={formData.zip_code} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.zip}</p>
                             </div>
                             <div className='form-input-field'>
                                 <label>State:</label>
-                                <input required type="text" name="state" placeholder='CA' value={formData.state} onChange={(e) => handleChange(e)}></input>
+                                <input required type="text" name="state" placeholder='CA' defaultValue={formData.state} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.state}</p>
                             </div>
                         </div>
@@ -168,7 +190,7 @@ const UserSignup = () => {
                         <div className='input-pair'>
                             <div className='form-input-field'>
                                 <label>Email:</label>
-                                <input required type="text" name="email" value={formData.email} onChange={(e) => handleChange(e)}></input>
+                                <input required type="text" name="email" defaultValue={formData.email} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.email}</p>
                                 <p className='form-error-msg'>{formErrors.duplicate_email}</p>
                             </div>
@@ -177,14 +199,23 @@ const UserSignup = () => {
                     <div className='form-field-group'>
                         <div className='input-pair'>
                             <div className='form-input-field'>
-                                <label>Password:</label>
+                                <label>Current Password:</label>
                                 <input required type="password" name="password" value={formData.password} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.password}</p>
                             </div>
+                        </div>
+                    </div>
+                    <div className='form-field-group'>
+                        <div className='input-pair'>
                             <div className='form-input-field'>
-                                <label>Confirm Password:</label>
-                                <input required type="password" name="confirm_password" value={formData.confirm_password} onChange={(e) => handleChange(e)}></input>
-                                <p className='form-error-msg'>{formErrors.confirm_password}</p>
+                                <label>New Password:</label>
+                                <input required type="password" name="new_password" value={formData.new_password} onChange={(e) => handleChange(e)}></input>
+                                <p className='form-error-msg'>{formErrors.new_password}</p>
+                            </div>
+                            <div className='form-input-field'>
+                                <label>Confirm New Password:</label>
+                                <input required type="password" name="confirm_new_password" value={formData.confirm_new_password} onChange={(e) => handleChange(e)}></input>
+                                <p className='form-error-msg'>{formErrors.confirm_new_password}</p>
                             </div>
                         </div>
                     </div>
@@ -194,14 +225,15 @@ const UserSignup = () => {
                     <div className='form-field-group'>
                         <div>
                             <label>Enable email notifications for newly added profiles: </label>
-                            <input type="checkbox" name="email_preference" value={formData.email_preference} onChange={(e) => handleChange(e)}></input>
+                            <input type="checkbox" name="email_preference" defaultChecked={formData.email_preference} onChange={(e) => handleChange(e)}></input>
                         </div>
                     </div>
                 </div>
-                <div className='submit-btn-block'><input className="submit-btn" type="submit" value="Create Account" /></div>
+                <div className='submit-btn-block'><input className="submit-btn" type="submit" value="Update Account" /></div>
+                <div className='delete-btn-block'><button className="delete-btn" type='button'onClick={deleteAccount}>Delete Account</button></div>
             </form>
         </div>
     )
 }
 
-export default UserSignup;
+export default UserProfile;

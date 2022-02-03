@@ -14,19 +14,24 @@ app.use(cors({
 }));
 app.options('*', cors());
 
+const cors = require('cors');
+
 app.enable('trust proxy');
 
 app.use(express.urlencoded({extended: true}));
-app.use(express.json());
 
 app.use(cookieParser());
 
-// const userRoute = require('./user');
-// const shelterRoute = require('./shelter');
-// app.use('/user', userRoute);
-// app.use('/shelter', shelterRoute);
 
 app.use('/api', routes);
+app.use(express.json())
+app.use(cors());
+
+const userRoute = require('./user');
+const shelterRoute = require('./shelter');
+app.use('/users', userRoute);
+app.use('/shelters', shelterRoute);
+app.use('/pets', require('./PetProfile/API/petAPI'));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
