@@ -2,12 +2,28 @@
 
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const path = require('path');
+const routes = require('./routes/routes');
+const cookieParser = require('cookie-parser');
+
+const cors = require('cors');
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:3000']
+}));
+app.options('*', cors());
 
 const cors = require('cors');
 
 app.enable('trust proxy');
 
 app.use(express.urlencoded({extended: true}));
+
+app.use(cookieParser());
+
+
+app.use('/api', routes);
 app.use(express.json())
 app.use(cors());
 
