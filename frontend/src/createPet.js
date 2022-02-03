@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 import "./createPet.css";
 
 
@@ -25,6 +26,7 @@ const CreatePetFormPage = () => {
     const [petWeight, setWeight] = React.useState(0);
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
+    const [petID, setID] = React.useState('');
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -65,10 +67,10 @@ const CreatePetFormPage = () => {
                 formPhoto.append('file', petPhoto[x]);
             }
         }
-        console.log(formData);
         formPhoto.append('data', JSON.stringify(formData));
 
         await axios.post('http://localhost:8080/pets/createPetProfile', formPhoto);
+        alert('Your new pet profile has been created!');
     }
     
     return (
@@ -129,6 +131,7 @@ const CreatePetFormPage = () => {
             <br />
             <input type='submit' value='Save Profile' id='save'/>
         </form>
+        {/* <div><Link to='/pets/editProfile'></Link></div> */}
         </div>
     )
 }

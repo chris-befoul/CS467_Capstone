@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import "./editPet.css";
 
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
@@ -13,8 +14,9 @@ const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
 const EditPetProfile = () => {
+    const [petID, setID] = React.useState('5726966351134720');
     const [petData, setData] = React.useState({});
-    const [petType, setType] = React.useState(null);
+    const [petType, setType] = React.useState('other');
     const [petName, setName] = React.useState(null);
     const [petBreed, setBreed] = React.useState(null);
     const [petAvail, setAvail] = React.useState(null);
@@ -22,24 +24,30 @@ const EditPetProfile = () => {
     const [petAge, setAge] = React.useState(null);
     const [petDescript, setDescript] = React.useState(null);
     const [petWeight, setWeight] = React.useState(null);
-    const [petDisp, setDisp] = React.useState(null);
+    const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/pets/5726966351134720').then(res => {
+        getPetData(petID);
+    }, [petID]);
+
+    const getPetData = async (petID) => {
+        const petURL = 'http://localhost:8080/pets/' + petID;
+        await axios.get(petURL).then(res => {
+            console.log(res.data);
             setData(res.data);
-            setName(res.name);
-            setSex(res.sex);
-            setType(res.type);
-            setWeight(res.weight);
-            setDescript(res.description);
-            setDisp(res.disposition);
-            setBreed(res.breed);
-            setAvail(res.available);
-            setAge(res.age);
+            setName(res.data.name);
+            setSex(res.data.sex);
+            setType(res.data.type);
+            setWeight(res.data.weight);
+            setDescript(res.data.description);
+            setDisp(res.data.disposition);
+            setBreed(res.data.breed);
+            setAvail(res.data.available);
+            setAge(res.data.age);
             return;
         })
-    });
+    }
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -49,6 +57,7 @@ const EditPetProfile = () => {
         }
         var index = tempDisp.indexOf(event.target.value);
         tempDisp.splice(index, 1);
+        console.log(tempDisp);
         return setDisp(tempDisp);
     }
 
@@ -61,7 +70,7 @@ const EditPetProfile = () => {
         type: petType,
         breed: petBreed,
         availability: petAvail,
-        sex: JSON.parse(petSex),
+        sex: petSex,
         age: petAge,
         weight: petWeight,
         disposition: petDisp,
@@ -107,6 +116,7 @@ const EditPetProfile = () => {
 
     const submitProfile = async (e) => {
         e.preventDefault();
+        const petURL = 'http://localhost:8080/pets/' + petID;
 
         const types = ['image/png', 'image/jpeg'];
 
@@ -116,74 +126,63 @@ const EditPetProfile = () => {
                 formPhoto.append('file', petPhoto[x]);
             }
         }
-        console.log(formData);
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.post('http://localhost:8080/pets/createPetProfile', formPhoto);
+        await axios.patch(petURL, formPhoto);
+        alert('Your pet profile has been updated!');
     }
     
     return (
         <div>
             <form id='petForm' name='petForm' onSubmit={submitProfile}>
                 <label>Pet's Name: </label>
-                    <input required type='text' name='name' value={petData.name} onChange={e => setName(e.target.value)}/> 
+                    <input required type='text' name='name' defaultValue={petName} onChange={e => setName(e.target.value)}/> 
                 <br/>
                 <label>Pet Type: </label>
-                    <select value={petData.type} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}} name='type'>
+                    <select name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                         <option value='other'>Other</option>
                     </select>
-                {/* <label>Breed: </label>
-                    <select name='breed' value={petData.breed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select>  */}
+                <label>Breed: </label>
+                    <select name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
                 <br />
                 <label>Availability: </label>
-                    <select name='availability' value={petData.availability} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+                    <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
                 <label>Sex: </label>
-                    <select name='sex' value={petData.sex} onChange={e => setSex(e.target.value)}>
+                    <select name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
                         <option value={false}>Male</option>
                         <option value={true}>Female</option>
                     </select>
                 <div id='age-weight'>
                     <label>Age: </label>
-                        <select name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+                        <select name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
                     <label>Weight: </label> 
-                        <input required type='number' name='weight' placeholder={0} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
+                        <input required type='number' name='weight' defaultValue={petWeight} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
                 </div>
                 <br />
-                {/* <div id='dispositionBox'>
-                    <label>Disposition: </label>
-                        <div id='disposition'>
-                            <label id='dispositionLabel'>Good with other animals</label>
-                                <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} />
-                            <label id='dispositionLabel'>Good with children</label>
-                                <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} />
-                            <br/>
-                            <label id='dispositionLabel'>Animal must be leashed at all times</label>
-                                <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} />
-                            <label id='dispositionLabel'>Very Active</label>
-                                <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
-                        </div>
-                </div> */}
+                <div id='dispositionBox'>
                 <label>Disposition: </label>
-                <br/>
-                    <label>Good with other animals</label>
-                        {checkGoodWithAnimals}
-                        {/* <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} /> */}
-                    <label>Good with children </label>
-                        {checkGoodWithChildren}
-                        {/* <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} /> */}
-                    <label>Animal must be leashed at all times </label>
-                        {checkNeedsLeash}
-                        {/* <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} /> */}
-                    <label>Very Active </label>
-                        {checkVeryActive}
-                        <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
+                    <div id='disposition'>
+                        <label>Good with other animals</label>
+                            {/* {checkGoodWithAnimals} */}
+                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with other animals')}/>
+                        <label>Good with children </label>
+                            {/* {checkGoodWithChildren} */}
+                            <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
+                        <label>Animal must be leashed at all times </label>
+                            {/* {checkNeedsLeash} */}
+                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
+                        <label>Very Active </label>
+                            {/* {checkVeryActive} */}
+                            <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
+                    </div>
+                </div>
                 <br/>
                 <div id='descriptionBox'>
                 <label>Description: </label>
                     <br />
-                    <textarea required type='text' maxLength={280} name='description' id='description' placeholder='(280 Character Limit)' onChange={e => setDescript(e.target.value)}></textarea>
+                    <textarea required type='text' maxLength={280} name='description' id='description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>
                 </div>
                 <br />
                 <div id='photoBox'>

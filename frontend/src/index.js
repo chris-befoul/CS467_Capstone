@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 
 import CreatePetFormPage from "./createPet";
 import EditPetProfile from "./editPet";
+import ViewPetProfile from "./petProfile";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
@@ -17,6 +18,7 @@ ReactDOM.render(
     <Routes>
       <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
       <Route exact path="/pets/editProfile" element={<EditPetProfile />} />
+      <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
       <Route exact path="/signup" element={<Signup />} />
       <Route exact path="/usersignup" element={<UserSignup />} />
     </Routes>

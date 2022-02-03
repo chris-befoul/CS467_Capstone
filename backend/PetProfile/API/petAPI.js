@@ -33,9 +33,11 @@ router.get('/:petID', function(req, res) {
 })
 
 router.patch('/:petID', function(req,res) {
-    petFunctions.edit_pet(req.params.petID, req.body.data.name, req.body.data.type, req.body.data.breed, req.body.data.availability, req.body.data.sex, req.body.data.age, req.body.data.weight, req.body.data.disposition, req.body.data.description, req.body.data.shelter_id)
-        .then( key => { res.status(200).send(key) });
-    return;
+    console.log(req.body);
+    // const data = JSON.parse(req.body.data);
+    // petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id)
+    //     .then( key => { res.status(200).send(key) });
+    // return;
 })
 
 router.post('/createPetProfile', upload.array('file'), (req, res) => {
