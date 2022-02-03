@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Navigate } from 'react-router-dom';
-import "./UserSignup.css";
+import "./ShelterSignup.css";
 
-const UserSignup = () => {
+const ShelterSignup = () => {
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
   const [email, setEmail] = useState("");
@@ -47,7 +47,7 @@ const UserSignup = () => {
     <form>
     <div className="form-group">
         <div>
-        <label className="form-section-header">User Information</label>
+        <label className="form-section-header">Shelter Information</label>
         </div>
         <div className="form-field-group">
         <label>
@@ -97,8 +97,8 @@ const UserSignup = () => {
         </label>
         </div>
         <div className="form-field-group">
-        <label>Account Type: User</label>
-            <input type="radio" value={'User'} onChange={e => setType(e.target.value)} required></input>
+        <label>Account Type: Shelter</label>
+            <input type="radio" value={'Shelter'} onChange={e => setType(e.target.value)} required></input>
         </div>
     </div>
     <div className="form-group">
@@ -115,4 +115,4 @@ const UserSignup = () => {
   );
 };
 
-export default UserSignup;
+export default ShelterSignup;

@@ -6,15 +6,16 @@ const datastore = new Datastore();
 
 const taskKey = datastore.key('User');
 const data = {
-  first_name: 'Bobby',
-  last_name: 'Smith',
-  email: 'bs@gmail.com',
+  first_name: 'Admin',
+  last_name: 'Admin',
+  email: 'admin',
   password: 'qwerty',
   phone: 6171234567,
   city: 'Boston',
   state: 'MA',
   zip_code: 02215,
   email_preference: false,
+  type: 'Admin'
 };
 
 const entity = {

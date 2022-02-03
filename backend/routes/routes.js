@@ -41,7 +41,8 @@ router.post('/register', async(req, res) => {
             city: req.body.city,
             state: req.body.state,
             zip_code: req.body.zip_code,
-            email_preference: req.body.email_preference
+            email_preference: req.body.email_preference,
+            type: req.body.type
         };
         insertUser(new_user).then(key => { res.status(201).send({"id": key.id, ...new_user}) });
     } catch {
@@ -52,9 +53,6 @@ router.post('/register', async(req, res) => {
 getQuery = async (email) => {
     const q = datastore.createQuery(USER).filter('email', '=', email);
     const [items] = await datastore.runQuery(q);
-    // items.forEach(item => {
-    //     console.log(item);
-    // })
     item = items[0];
 }
 console.log(getQuery('betsmi@gmail.com'));

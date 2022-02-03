@@ -4,7 +4,7 @@ import "./Login.css";
 import Button from "./components/Button";
 import { Link } from "react-router-dom";
 
-const Login = (props) => {
+const Admin = (props) => {
 
   const setName = props.setName;
 
@@ -41,7 +41,7 @@ const Login = (props) => {
     <div className="App">
       <form className='form'>
         <div className='user'>
-            <label>Email: 
+            <label>Admin: 
             <input className='user-label' type='text' required onChange={e => setEmail(e.target.value)}></input></label>
         </div>
         <div className='password'>
@@ -54,4 +54,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default Admin;
