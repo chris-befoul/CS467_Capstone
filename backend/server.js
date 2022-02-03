@@ -2,7 +2,9 @@
 
 const express = require('express');
 const app = express();
-var cors = require('cors');
+
+const cors = require('cors');
+
 app.enable('trust proxy');
 
 app.use(express.urlencoded({extended: true}));
@@ -13,6 +15,7 @@ const userRoute = require('./user');
 const shelterRoute = require('./shelter');
 app.use('/users', userRoute);
 app.use('/shelters', shelterRoute);
+app.use('/pets', require('./PetProfile/API/petAPI'));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
