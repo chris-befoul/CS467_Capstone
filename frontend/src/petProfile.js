@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 import axios from 'axios';
 
 
 const ViewPetProfile = () => {
-    const params = useParams()
+    // const params = useParams()
     const [petData, setData] = React.useState({});
 
-    React.useEffect(() => {
-        getPetData(params.petID);
-    }, [params.petID]);
+    // React.useEffect(() => {
+    //     getPetData(params.petID);
+    // }, [params.petID]);
 
     const getPetData = async (petID) => {
         const petURL = 'http://localhost:8080/pets/' + petID;
