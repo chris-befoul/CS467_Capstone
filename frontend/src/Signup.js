@@ -14,7 +14,7 @@ function Signup() {
       </div>
       <div className="signup-btn">
         <div><Link to="/usersignup"><Button text={"User"}/></Link></div>
-        <div><Button text={"Shelter"}/></div>
+        <div><Link to="/sheltersignup"><Button text={"Shelter"}/></Link></div>
       </div>
     </div>
   );

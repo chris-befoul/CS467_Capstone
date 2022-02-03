@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './index.css';
 import Signup from './Signup';
 import UserSignup from './UserSignup';
+import ShelterSignup from './ShelterSignup';
+import UserProfile from './UserProfile';
 import reportWebVitals from './reportWebVitals';
 import Navbar from './components/Navbar';
 
@@ -21,6 +23,8 @@ ReactDOM.render(
       <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
       <Route exact path="/signup" element={<Signup />} />
       <Route exact path="/usersignup" element={<UserSignup />} />
+      <Route exact path="/sheltersignup" element={<ShelterSignup />} />
+      <Route exact path="/userprofile" element={<UserProfile />} />
     </Routes>
   </BrowserRouter>,
   rootElement
