@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from './components/Navbar'
 import "./UserSignup.css";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -45,7 +44,7 @@ const ShelterSignup = () => {
                 alert("Shelter created!");
 
                 //redirect to sign in page
-                // navigate("/login");
+                navigate("/login");
             });
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -104,7 +103,6 @@ const ShelterSignup = () => {
 
     return (
         <div>
-            <Navbar />
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <div><label className='form-section-header'>Shelter Information</label></div>

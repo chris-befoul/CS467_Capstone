@@ -23,7 +23,7 @@ const Login = (props) => {
       credentials: 'include',
       body: JSON.stringify({ 
         email,
-        password,
+        password
       })
     });
 
@@ -46,7 +46,7 @@ const Login = (props) => {
         </div>
         <div className='password'>
             <label>Password: 
-            <input className='password-label' type='text' required onChange={e => setPassword(e.target.value)}></input></label>
+            <input className='password-label' type='password' required onChange={e => setPassword(e.target.value)}></input></label>
         </div>
       <button onClick={handleSubmit}>Submit</button>
     </form>

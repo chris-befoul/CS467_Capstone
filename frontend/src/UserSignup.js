@@ -29,7 +29,6 @@ const UserSignup = () => {
         else {
             newdata[e.target.name] = e.target.value;
         }
-
         setFormData(newdata);
     };
 
@@ -52,7 +51,7 @@ const UserSignup = () => {
                 alert("User created!");
 
                 //redirect to sign in page
-                // navigate("/login");
+                navigate("/login");
             });
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
