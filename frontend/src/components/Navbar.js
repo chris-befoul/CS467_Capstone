@@ -8,8 +8,7 @@ const Navbar = (props) => {
     let name = props.name;
     let setName = props.setName;
 
-    // let type = props.type;
-    let type = "User"; // temporary, only support user login
+    let type = props.type;
     let setType = props.setType;
 
     let menu;

@@ -24,6 +24,18 @@ function getUsers () {
     });
 }
 
+async function checkDuplicateEmail (email) {
+    const q = datastore.createQuery(USER).filter('email', '=', email);
+    const [users] = await datastore.runQuery(q);
+    let user = users[0];
+
+    if(!user){
+        return false;
+    } else {
+        return true;
+    }
+}
+
 router.get('/', async(req, res) => {
     getUsers().then((users) => {res.status(200).json(users);});
 });
@@ -42,9 +54,15 @@ router.post('/register', async(req, res) => {
             state: req.body.state,
             zip_code: req.body.zip_code,
             email_preference: req.body.email_preference,
-            type: req.body.type
+            type: req.body.type,
+            shelter_name: req.body.shelter_name
         };
-        insertUser(new_user).then(key => { res.status(201).send({"id": key.id, ...new_user}) });
+        const isDuplicate = await checkDuplicateEmail(new_user.email);
+        if (isDuplicate){
+            res.status(400).send({'Error': 'Email already exists!'});
+        } else{
+            insertUser(new_user).then(key => { res.status(201).send({"id": key.id, ...new_user}) });
+        }
     } catch {
         res.status(500).send();
     }

@@ -16,6 +16,7 @@ const UserProfile = () => {
         password: "",
         new_password: "",
         confirm_new_password: "",
+        type: "",
         email_preference: false
     });
     const [formErrors, setFormErrors] = useState({});
@@ -226,7 +227,7 @@ const UserProfile = () => {
                         </div>
                     </div>
                 </div>
-                <div className='submit-btn-block'><input className="submit-btn" type="submit" value="Update Account" /></div>
+                <div className='submit-btn-block1'><input className="submit-btn" type="submit" value="Update Account" /></div>
                 <div className='delete-btn-block'><button className="delete-btn" type='button'onClick={deleteAccount}>Delete Account</button></div>
             </form>
         </div>
