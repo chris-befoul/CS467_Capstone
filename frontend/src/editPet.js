@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import "./editPet.css";
 
 
@@ -14,7 +14,7 @@ const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
 const EditPetProfile = () => {
-    const [petID, setID] = React.useState('5726966351134720');
+    const [petID, setID] = React.useState('5671636300726272');
     const [petData, setData] = React.useState({});
     const [petType, setType] = React.useState('other');
     const [petName, setName] = React.useState(null);
@@ -26,6 +26,11 @@ const EditPetProfile = () => {
     const [petWeight, setWeight] = React.useState(null);
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
+    const [petDate, setDate] = React.useState();
+    const [petUrl, setUrl] = React.useState();
+    const [navigate, setNavigate] = React.useState(false);
+
+    const travel = useNavigate();
 
     React.useEffect(() => {
         getPetData(petID);
@@ -45,6 +50,7 @@ const EditPetProfile = () => {
             setBreed(res.data.breed);
             setAvail(res.data.available);
             setAge(res.data.age);
+            setDate(res.data.date_created);
             return;
         })
     }
@@ -57,7 +63,6 @@ const EditPetProfile = () => {
         }
         var index = tempDisp.indexOf(event.target.value);
         tempDisp.splice(index, 1);
-        console.log(tempDisp);
         return setDisp(tempDisp);
     }
 
@@ -75,43 +80,18 @@ const EditPetProfile = () => {
         weight: petWeight,
         disposition: petDisp,
         description: petDescript,
+        date_created: petDate,
         shelter_id: 52
     }
 
-    const checkGoodWithChildren = () => {
-        if (petData.includes('Good with Children')) {
-            return <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} checked/>
+    const needCheck = (label) => {
+        for (var x = 0; x < petDisp; x++) {
+            console.log(petDisp[x]);
+            if(petDisp[x] === label) {
+                return true;
+            }
         }
-        else {
-            return <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} />
-        }
-    }
-
-    const checkGoodWithAnimals = () => {
-        if (petData.includes('Good with other animals')) {
-            return <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} checked/>
-        }
-        else {
-            return <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} />
-        }
-    }
-
-    const checkNeedsLeash = () => {
-        if (petData.includes('Animal must be leashed at all times')) {
-            return <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} checked/>
-        }
-        else {
-            return <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} />
-        }
-    }
-
-    const checkVeryActive = () => {
-        if (petData.includes('Very Active')) {
-            return <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange} checked/>
-        }
-        else {
-            return <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
-        }
+        return false;
     }
 
     const submitProfile = async (e) => {
@@ -121,22 +101,34 @@ const EditPetProfile = () => {
         const types = ['image/png', 'image/jpeg'];
 
         const formPhoto = new FormData();
-        for(var x = 0; x<petPhoto.length; x++) {
-            if (!types.every(value => petPhoto[x].type !== value)) {
-                formPhoto.append('file', petPhoto[x]);
+        if(petPhoto) {
+            for(var x = 0; x <petPhoto.length; x++) {
+                if (!types.every(value => petPhoto[x].type !== value)) {
+                    formPhoto.append('file', petPhoto[x]);
+                }
             }
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.patch(petURL, formPhoto);
-        alert('Your pet profile has been updated!');
+        await axios.patch(petURL, formPhoto).then( data => {
+            const id = data.data.id;
+            alert('Your pet profile has been updated!');
+            setUrl('/pets/viewProfile/' + id);
+            setNavigate(true);
+        });
+        return;;
+    }
+
+    if(navigate) {
+        travel(petUrl);
+        window.location.reload();
     }
     
     return (
-        <div>
+        <div id='petBox'>
             <form id='petForm' name='petForm' onSubmit={submitProfile}>
                 <label>Pet's Name: </label>
-                    <input required type='text' name='name' defaultValue={petName} onChange={e => setName(e.target.value)}/> 
+                    <input required type='text' name='name' id='name' defaultValue={petName} onChange={e => setName(e.target.value)}/> 
                 <br/>
                 <label>Pet Type: </label>
                     <select name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
@@ -164,17 +156,13 @@ const EditPetProfile = () => {
                 <div id='dispositionBox'>
                 <label>Disposition: </label>
                     <div id='disposition'>
-                        <label>Good with other animals</label>
-                            {/* {checkGoodWithAnimals} */}
-                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with other animals')}/>
-                        <label>Good with children </label>
-                            {/* {checkGoodWithChildren} */}
+                        <label id='dispositionLabel'>Good with other animals</label>
+                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} defaultChecked={needCheck('Good with other animals')}/>
+                        <label id='dispositionLabel'>Good with children </label>
                             <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
-                        <label>Animal must be leashed at all times </label>
-                            {/* {checkNeedsLeash} */}
+                        <label id='dispositionLabel'>Animal must be leashed at all times </label>
                             <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
-                        <label>Very Active </label>
-                            {/* {checkVeryActive} */}
+                        <label id='dispositionLabel'>Very Active </label>
                             <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
                     </div>
                 </div>
@@ -187,15 +175,13 @@ const EditPetProfile = () => {
                 <br />
                 <div id='photoBox'>
                     <label>Upload Pet Photo: </label>
-                        <input required type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
+                        <input type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
                 </div>
                 <br />
-                <input type='submit' value='Save Profile' />
+                <input type='submit' value='Save Profile' id='save'/>
             </form>
         </div>
     )
 }
-
-ReactDOM.render(<EditPetProfile />, document.getElementById("root"));
 
 export default EditPetProfile;

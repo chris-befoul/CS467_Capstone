@@ -17,7 +17,7 @@ async function get_pet(petID) {
     })
 }
 
-async function edit_pet(petID, name, type, breed, availability, sex, age, weight, disposition, description, shelter_id) {
+async function edit_pet(petID, name, type, breed, availability, sex, age, weight, disposition, description, date, shelter_id) {
     const key = helper.datastore.key([PET, parseInt(petID, 10)]);
     const updated_pet = { 
         'name': name, 
@@ -29,7 +29,7 @@ async function edit_pet(petID, name, type, breed, availability, sex, age, weight
         'weight': weight, 
         'disposition': disposition, 
         'description': description, 
-        'date_created': new Date(), 
+        'date_created': date, 
         'shelter_id': shelter_id 
     };
     return helper.datastore.save({ 'key': key, 'data': updated_pet}).then(() => { 
