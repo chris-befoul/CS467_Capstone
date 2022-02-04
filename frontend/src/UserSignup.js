@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate } from 'react-router-dom';
 import "./UserSignup.css";
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const UserSignup = () => {
@@ -115,7 +114,6 @@ const UserSignup = () => {
 
     return (
         <div>
-            <Navbar />
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <div className='form-section-header'><label>User Information</label></div>
