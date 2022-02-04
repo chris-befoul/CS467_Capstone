@@ -14,12 +14,8 @@ app.use(cors({
   origin: ['http://localhost:3000']
 }));
 app.options('*', cors());
-
-
 app.enable('trust proxy');
-
 app.use(express.urlencoded({extended: true}));
-
 app.use(cookieParser());
 app.use(express.json());
 
@@ -27,6 +23,7 @@ app.use('/api', routes);
 
 const userRoute = require('./user');
 const shelterRoute = require('./shelter');
+app.use('/api', routes);
 app.use('/users', userRoute);
 app.use('/shelters', shelterRoute);
 app.use('/pets', require('./PetProfile/API/petAPI'));
