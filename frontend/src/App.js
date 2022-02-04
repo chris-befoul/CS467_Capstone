@@ -6,6 +6,10 @@ import UserSignup from './UserSignup';
 import ShelterSignup from './ShelterSignup';
 import Login from './Login';
 import Admin from './Admin';
+import CreatePetFormPage from "./createPet";
+import EditPetProfile from "./editPet";
+import ViewPetProfile from "./petProfile";
+import UserProfile from './UserProfile';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -41,6 +45,10 @@ function App() {
                 <Route exact path="/sheltersignup" element={<ShelterSignup />} />
                 <Route exact path="/admin" element={<Admin setName={setName}/>} />
                 <Route exact path="/login" element={<Login setName={setName}/>}/>
+                <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
+                <Route exact path="/pets/editProfile" element={<EditPetProfile />} />
+                <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
+                <Route exact path="/userprofile" element={<UserProfile />} />
             </Routes>
         </BrowserRouter>
     )

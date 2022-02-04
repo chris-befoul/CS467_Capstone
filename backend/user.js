@@ -16,12 +16,12 @@ function insertUser(new_user){
     return datastore.save({ "key": key, "data": new_user }).then(() => { return key });
 } 
 
-// function getUsers () {
-//     const q = datastore.createQuery(USER);
-//     return datastore.runQuery(q).then((entities) => {
-//         return entities[0].map(fromDatastore);
-//     });
-// }
+function getUsers () {
+    const q = datastore.createQuery(USER);
+    return datastore.runQuery(q).then((entities) => {
+        return entities[0].map(fromDatastore);
+    });
+}
 
 async function checkDuplicateEmail (email) {
     const q = datastore.createQuery(USER).filter('email', '=', email);

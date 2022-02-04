@@ -6,15 +6,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const routes = require('./routes/routes');
 const cookieParser = require('cookie-parser');
-
 const cors = require('cors');
+
+
 app.use(cors({
   credentials: true,
   origin: ['http://localhost:3000']
 }));
 app.options('*', cors());
 
-const cors = require('cors');
 
 app.enable('trust proxy');
 
