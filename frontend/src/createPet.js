@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "./createPet.css";
 
 
@@ -26,7 +25,10 @@ const CreatePetFormPage = () => {
     const [petWeight, setWeight] = React.useState(0);
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
-    const [petID, setID] = React.useState('');
+    const [petUrl, setUrl] = React.useState();
+    const [navigate, setNavigate] = React.useState(false);
+
+    const travel = useNavigate();
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -69,8 +71,18 @@ const CreatePetFormPage = () => {
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.post('http://localhost:8080/pets/createPetProfile', formPhoto);
-        alert('Your new pet profile has been created!');
+        await axios.post('http://localhost:8080/pets/createPetProfile', formPhoto).then( data => {
+            const id = data.data.id;
+            alert('Your new pet profile has been created!');
+            setUrl('/pets/viewProfile/' + id);
+            setNavigate(true);
+        });
+        return;
+    }
+
+    if(navigate) {
+        travel(petUrl);
+        window.location.reload();
     }
     
     return (
@@ -131,11 +143,8 @@ const CreatePetFormPage = () => {
             <br />
             <input type='submit' value='Save Profile' id='save'/>
         </form>
-        {/* <div><Link to='/pets/editProfile'></Link></div> */}
         </div>
     )
 }
-
-ReactDOM.render(<CreatePetFormPage />, document.getElementById("root"));
 
 export default CreatePetFormPage;

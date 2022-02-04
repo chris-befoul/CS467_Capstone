@@ -32,12 +32,28 @@ router.get('/:petID', function(req, res) {
     })
 })
 
-router.patch('/:petID', function(req,res) {
-    console.log(req.body);
-    // const data = JSON.parse(req.body.data);
-    // petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id)
-    //     .then( key => { res.status(200).send(key) });
-    // return;
+router.patch('/:petID', upload.array('file'), (req,res) => {
+    const data = JSON.parse(req.body.data);
+    petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id)
+        .then( key => { 
+            if(req.files) {
+                for (var x = 0; x < req.files.length; x++) {
+                    const fileName = key.id + '/' + (x + 1);
+                    petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
+                }
+                fs.readdir(directory, (err, files) => {
+                    if (err) throw err;
+                
+                    for (const file of files) {
+                    fs.unlink(path.join(directory, file), err => {
+                        if (err) throw err;
+                    });
+                    }
+                });   
+            }
+            res.status(201).send(key);
+            return; });
+        return;
 })
 
 router.post('/createPetProfile', upload.array('file'), (req, res) => {
@@ -47,7 +63,7 @@ router.post('/createPetProfile', upload.array('file'), (req, res) => {
         error.httpStatusCode = 400
         return next(error)
     }
-    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
+    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date, data.shelter_id).then(key => {
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + (x + 1);
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
