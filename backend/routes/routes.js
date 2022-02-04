@@ -24,6 +24,18 @@ function getUsers () {
     });
 }
 
+async function checkDuplicateEmail (email) {
+    const q = datastore.createQuery(USER).filter('email', '=', email);
+    const [users] = await datastore.runQuery(q);
+    let user = users[0];
+
+    if(!user){
+        return false;
+    } else {
+        return true;
+    }
+}
+
 router.get('/', async(req, res) => {
     getUsers().then((users) => {res.status(200).json(users);});
 });
@@ -42,9 +54,15 @@ router.post('/register', async(req, res) => {
             state: req.body.state,
             zip_code: req.body.zip_code,
             email_preference: req.body.email_preference,
-            type: req.body.type
+            type: req.body.type,
+            shelter_name: req.body.shelter_name
         };
-        insertUser(new_user).then(key => { res.status(201).send({"id": key.id, ...new_user}) });
+        const isDuplicate = await checkDuplicateEmail(new_user.email);
+        if (isDuplicate){
+            res.status(400).send({'Error': 'Email already exists!'});
+        } else{
+            insertUser(new_user).then(key => { res.status(201).send({"id": key.id, ...new_user}) });
+        }
     } catch {
         res.status(500).send();
     }
@@ -61,7 +79,7 @@ router.post('/login', async(req, res) => {
     const userItem = datastore.createQuery(USER).filter('email', '=', req.body.email);
     const [items] = await datastore.runQuery(userItem);
     let user = items[0];
-
+  
     // console.log(user);
     // console.log(user[Datastore.KEY].id);
 
@@ -100,31 +118,40 @@ router.get('/user', async (req, res) => {
             });
         }
 
-        const userItem = datastore.createQuery(USER);
-        const [items] = await datastore.runQuery(userItem);
-        let _user; 
-        items.forEach(item => {
-            if (item[Datastore.KEY].id == claims._id){
-                _user = item;
+        const userKey = datastore.key([USER, parseInt(claims._id)]);
+        datastore.get(userKey).then((user) => {
+            if (user[0]){
+                const {password, ...data} = user[0];
+                res.status(200).send({...data, 'id': user[0][Datastore.KEY].id});
+            } else{
+                res.status(404).send({'Error': 'No user with this id is found!'});
             }
-        })
-        // console.log(_user);
-
-        // const userItem = datastore.createQuery(USER).;
-        // const userItem = datastore.createQuery(USER).filter('__key__', '=', datastore.key([USER, '5701666712059904']));
-        // const [items] = await datastore.runQuery(userItem);
-        // let _user = items.filter(item[Datastore.KEY].id === claims._id);
-        // let _user = items[0];
-
-        // const user = _user;
-        const {password, ...data} = _user;
-
-        // res.send(claims);
-        res.send(data);
+        });
     } catch {
         return res.status(401).send({
             message: 'Unauthenticated!'
         });
+    }
+});
+
+router.delete('/user', (req, res) => {
+    try {
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, 'secret');
+
+        if (!claims) {
+            return res.status(401).send({
+                message: 'Unauthenticated!'
+            });
+        }
+        const userKey = datastore.key([USER, parseInt(claims._id)]);
+        datastore.delete(userKey).then(() => {
+            res.cookie('jwt', '', {maxAge: 0}); // remove cookie when the user is deleted
+            res.status(204).send();
+        });
+        
+    } catch {
+        res.status(500).send();
     }
 });
 

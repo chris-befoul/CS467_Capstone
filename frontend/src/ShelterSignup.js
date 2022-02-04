@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from './components/Navbar'
 import "./UserSignup.css";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +13,7 @@ const ShelterSignup = () => {
         email: "",
         password: "",
         confirm_password: "",
+        type: "Shelter"
     }); 
 
     const [formErrors, setFormErrors] = useState({});
@@ -36,7 +36,7 @@ const ShelterSignup = () => {
         // console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
         //   console.log(formData);
-            fetch('http://localhost:8080/shelters', {
+            fetch('http://localhost:8080/api/register', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
@@ -45,7 +45,7 @@ const ShelterSignup = () => {
                 alert("Shelter created!");
 
                 //redirect to sign in page
-                // navigate("/login");
+                navigate("/login");
             });
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -91,7 +91,7 @@ const ShelterSignup = () => {
             errors.confirm_password = "Passwords do not match!";
         }
 
-        const res = await fetch('http://localhost:8080/shelters', { method: 'GET'});
+        const res = await fetch('http://localhost:8080/api', { method: 'GET'});
         const shelters = await res.json();
         shelters.forEach(shelter => {
             if (shelter.email === values.email){
@@ -104,7 +104,6 @@ const ShelterSignup = () => {
 
     return (
         <div>
-            <Navbar />
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <div><label className='form-section-header'>Shelter Information</label></div>
@@ -173,7 +172,7 @@ const ShelterSignup = () => {
                         </div>
                     </div>
                 </div>
-                <div className='submit-btn-block'><input className="submit-btn" type="submit" value="Create Account" /></div>
+                <div className='submit-btn-block1'><input className="submit-btn" type="submit" value="Create Account" /></div>
             </form>
         </div>
     )

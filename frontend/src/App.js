@@ -30,9 +30,14 @@ function App() {
             })
             .then(data => {
                 console.log(data);
-                const fullName = (data.first_name + ' ' + data.last_name);
-                setName(fullName);
-                setType(data.type);
+                if (data.type === "User"){
+                    const fullName = (data.first_name + ' ' + data.last_name);
+                    setName(fullName);
+                    setType(data.type);
+                } else if (data.type === "Shelter"){
+                    setName(data.shelter_name);
+                    setType(data.type);
+                }
             })
     }, []);
     return (

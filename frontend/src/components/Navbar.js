@@ -46,7 +46,7 @@ const Navbar = (props) => {
     } else if (type === 'User') {    // logged in - user
         menu = (
             <div className="links">
-            <Link to="/" className='nav-link'>User Profile</Link>
+            <Link to="/userprofile" className='nav-link'>User Profile</Link>
             <Link to="/Login" className='nav-link' onClick={logout}>Logout</Link>
             </div>
         );
@@ -61,7 +61,7 @@ const Navbar = (props) => {
 
     return (
         <div className='navbar'>
-            <h1 style={{display:"block", paddingLeft: 30, paddingTop:10}}>Logo</h1>
+            <Link to=''><h1 style={{display:"block", paddingLeft: 30, paddingTop:10}}>Logo</h1></Link>
             {menu}
         </div>
     )

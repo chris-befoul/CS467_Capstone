@@ -14,7 +14,8 @@ const UserSignup = () => {
         email: "",
         password: "",
         confirm_password: "",
-        email_preference: false
+        email_preference: false,
+        type: "User"
     });
 
     const [formErrors, setFormErrors] = useState({});
@@ -29,7 +30,6 @@ const UserSignup = () => {
         else {
             newdata[e.target.name] = e.target.value;
         }
-
         setFormData(newdata);
     };
 
@@ -43,7 +43,7 @@ const UserSignup = () => {
         // console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
         //   console.log(formData);
-            fetch('http://localhost:8080/users', {
+            fetch('http://localhost:8080/api/register', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
@@ -52,7 +52,7 @@ const UserSignup = () => {
                 alert("User created!");
 
                 //redirect to sign in page
-                // navigate("/login");
+                navigate("/login");
             });
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -101,7 +101,7 @@ const UserSignup = () => {
             errors.confirm_password = "Passwords do not match!";
         }
         
-        const res = await fetch('http://localhost:8080/users', { method: 'GET'});
+        const res = await fetch('http://localhost:8080/api', { method: 'GET'});
         const users = await res.json();
         users.forEach(user => {
             if (user.email === values.email){
@@ -196,7 +196,7 @@ const UserSignup = () => {
                         </div>
                     </div>
                 </div>
-                <div className='submit-btn-block'><input className="submit-btn" type="submit" value="Create Account" /></div>
+                <div className='submit-btn-block1'><input className="submit-btn" type="submit" value="Create Account" /></div>
             </form>
         </div>
     )
