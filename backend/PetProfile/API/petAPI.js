@@ -34,7 +34,7 @@ router.get('/:petID', function(req, res) {
 
 router.patch('/:petID', upload.array('file'), (req,res) => {
     const data = JSON.parse(req.body.data);
-    petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id)
+    petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date_created, data.shelter_id)
         .then( key => { 
             if(req.files) {
                 for (var x = 0; x < req.files.length; x++) {
