@@ -12,9 +12,10 @@ const Navbar = (props) => {
     let setType = props.setType;
 
     let menu;
+    const fetchURL = 'http://localhost:8080';
 
     const logout = async() => {
-        await fetch('http://localhost:8080/api/logout', {
+        await fetch(fetchURL + '/api/logout', {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
             'Access-Control-Allow-Origin':'*',
@@ -37,7 +38,7 @@ const Navbar = (props) => {
     } else if (type === 'Shelter') {    // logged in - shelter
         menu = (
             <div className="links">
-            <Link to='/' className='nav-link'>Create</Link>
+            <Link to='/pets/createPetProfile' className='nav-link'>Create</Link>
             <Link to='/' className='nav-link'>Manage</Link>
             <Link to='/' className='nav-link'>Shelter Profile</Link>
             <Link to="/Login" className='nav-link' onClick={logout}>Logout</Link>
