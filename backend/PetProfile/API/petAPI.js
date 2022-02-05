@@ -4,16 +4,16 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const os = require('os');
-const storage = multer.diskStorage({
-    destination: (req, file, callBack) => {
-        callBack(null, 'uploads')
-    },
-    filename: (req, file, callBack) => {
-        callBack(null, `${file.originalname}`)
-    }
-})
+// const storage = multer.diskStorage({
+//     destination: (req, file, callBack) => {
+//         callBack(null, 'uploads')
+//     },
+//     filename: (req, file, callBack) => {
+//         callBack(null, `${file.originalname}`)
+//     }
+// })
 const upload = multer({ dest: os.tmpdir() });
-const directory = 'uploads';
+// const directory = 'uploads';
 const router = express.Router();
 router.use(bodyParser.json());
 
@@ -42,15 +42,15 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
                     const fileName = key.id + '/' + (x + 1);
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
                 }
-                fs.readdir(directory, (err, files) => {
-                    if (err) throw err;
+                // fs.readdir(directory, (err, files) => {
+                //     if (err) throw err;
                 
-                    for (const file of files) {
-                    fs.unlink(path.join(directory, file), err => {
-                        if (err) throw err;
-                    });
-                    }
-                });   
+                //     for (const file of files) {
+                //     fs.unlink(path.join(directory, file), err => {
+                //         if (err) throw err;
+                //     });
+                //     }
+                // });   
             }
             res.status(201).send(key);
             return; });
@@ -69,15 +69,15 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
                     const fileName = key.id + '/' + (x + 1);
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
                 }
-                fs.readdir(directory, (err, files) => {
-                    if (err) throw err;
+                // fs.readdir(directory, (err, files) => {
+                //     if (err) throw err;
                   
-                    for (const file of files) {
-                      fs.unlink(path.join(directory, file), err => {
-                        if (err) throw err;
-                      });
-                    }
-                  });
+                //     for (const file of files) {
+                //       fs.unlink(path.join(directory, file), err => {
+                //         if (err) throw err;
+                //       });
+                //     }
+                //   });
                 res.status(201).send(key);
                 return;
     })

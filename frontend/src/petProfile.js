@@ -8,8 +8,10 @@ import "./petProfile.css";
 const ViewPetProfile = () => {
     const params = useParams()
     const [petData, setData] = React.useState({});
+    const navigate = useNavigate();
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
 
     React.useEffect(() => {
