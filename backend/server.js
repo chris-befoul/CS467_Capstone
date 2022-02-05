@@ -18,6 +18,7 @@ app.enable('trust proxy');
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.static(__dirname + '/public'));
 
 const userRoute = require('./user');
 const shelterRoute = require('./shelter');
