@@ -57,7 +57,7 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
         return;
 })
 
-router.post('/createPetProfile', upload.array('file'), (req, res) => {
+router.post('/createProfile', upload.array('file'), (req, res) => {
     const data = JSON.parse(req.body.data);
     if (!req.files) {
         const error = new Error('No File')
