@@ -4,7 +4,7 @@
     padding: 20px;
 }
 
-p {
+.pet-profile-field {
     margin: 4%;
     font-size: larger;
 }
