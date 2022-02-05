@@ -11,11 +11,12 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [navigate, setNavigate] = useState(false);
+  const fetchURL = "http://localhost:8080";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('http://localhost:8080/api/login', {
+    const response = await fetch(fetchURL + '/api/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json',
       'Access-Control-Allow-Origin':'*',

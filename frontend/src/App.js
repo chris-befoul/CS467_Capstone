@@ -15,11 +15,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 function App() {
     const [name, setName] = useState('');
     const [type, setType] = useState('');
+    const fetchURL = 'http://localhost:8080';
     if (name === 'undefined undefined') {
         setName('');
     }
     useEffect(() => {
-        fetch('http://localhost:8080/api/user', {
+        fetch(fetchURL + '/api/user', {
             headers: {'Content-Type': 'application/json',
             'Access-Control-Allow-Origin':'*',
             'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'},
@@ -36,6 +37,10 @@ function App() {
                     setType(data.type);
                 } else if (data.type === "Shelter"){
                     setName(data.shelter_name);
+                    setType(data.type);
+                } else if (data.type === "Admin"){
+                    const fullName = (data.first_name + ' ' + data.last_name);
+                    setName(fullName);
                     setType(data.type);
                 }
             })

@@ -29,6 +29,7 @@ const CreatePetFormPage = () => {
     const [navigate, setNavigate] = React.useState(false);
 
     const travel = useNavigate();
+    const fetchURL = 'http://localhost:8080';
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -71,7 +72,7 @@ const CreatePetFormPage = () => {
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.post('http://localhost:8080/pets/createPetProfile', formPhoto).then( data => {
+        await axios.post(fetchURL + '/pets/createPetProfile', formPhoto).then( data => {
             const id = data.data.id;
             alert('Your new pet profile has been created!');
             setUrl('/pets/viewProfile/' + id);

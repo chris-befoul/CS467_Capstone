@@ -22,6 +22,8 @@ const UserProfile = () => {
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
     const navigate = useNavigate();
+    const fetchURL = "http://localhost:8080";
+
 
     const handleChange = (e) => {
         const newdata = { ...formData };
@@ -42,7 +44,7 @@ const UserProfile = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+        fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
             const userInfo= data;
             // console.log(userInfo);
             userInfo.password = "";
@@ -50,15 +52,6 @@ const UserProfile = () => {
             userInfo.confirm_new_password = "";
             setFormData(userInfo);
         });
-
-        // fetch('http://localhost:8080/users/5659886813708288', { method: 'GET'}).then( res => res.json()).then( data => {
-        //     const {password, ...userInfo} = data;
-        //     // console.log(userInfo);
-        //     userInfo.password = "";
-        //     userInfo.new_password = "";
-        //     userInfo.confirm_new_password = "";
-        //     setFormData(userInfo);
-        // });
       }, []);
 
       useEffect(() => {
@@ -70,7 +63,7 @@ const UserProfile = () => {
 
     const deleteAccount = () => {
         // console.log('Delete account!')
-        fetch('http://localhost:8080/api/user', {method: 'DELETE', credentials: 'include'}).then(() => {
+        fetch(fetchURL + '/api/user', {method: 'DELETE', credentials: 'include'}).then(() => {
             console.log('Deleted!');
             alert("user deleted!");
 
@@ -123,7 +116,7 @@ const UserProfile = () => {
             errors.confirm_new_password = "Passwords do not match!";
         }
         
-        const res = await fetch('http://localhost:8080/users', { method: 'GET'});
+        const res = await fetch(fetchURL + '/users', { method: 'GET'});
         const users = await res.json();
         users.forEach(user => {
             if (user.email === values.email && user.id!==values.id){

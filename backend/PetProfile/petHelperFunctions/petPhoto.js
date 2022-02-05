@@ -1,7 +1,7 @@
 const {Storage} = require('@google-cloud/storage');
-const storage = new Storage({projectId: 'cs467-sandbox'});
+const storage = new Storage();
 
-const bucketName = 'pet_profile_photo';
+const bucketName = 'pet_profile_photos';
 
 async function uploadPhoto(filePath, destFileName) {
 
