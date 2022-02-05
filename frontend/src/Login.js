@@ -29,9 +29,13 @@ const Login = (props) => {
     });
 
     const content = await response.json();
-    console.log(content);
+    console.log(content.message);
+    if (content.message === 'User not found!') {
+      alert('User not found!');
+    } else {
     setNavigate(true);
     setName(content.name);
+    }
   }
 
   if (navigate) {

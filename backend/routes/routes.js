@@ -73,7 +73,6 @@ getQuery = async (email) => {
     const [items] = await datastore.runQuery(q);
     item = items[0];
 }
-console.log(getQuery('betsmi@gmail.com'));
 
 router.post('/login', async(req, res) => {
     const userItem = datastore.createQuery(USER).filter('email', '=', req.body.email);
