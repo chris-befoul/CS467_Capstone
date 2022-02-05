@@ -64,7 +64,7 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
         error.httpStatusCode = 400
         return next(error)
     }
-    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date, data.shelter_id).then(key => {
+    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + (x + 1);
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);

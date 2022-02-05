@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import "./editPet.css";
 
 
@@ -14,7 +14,8 @@ const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
 const EditPetProfile = () => {
-    const [petID, setID] = React.useState('5158257651875840');
+    const params = useParams();
+    // const [petID, setID] = React.useState('5158257651875840');
     const [petData, setData] = React.useState({});
     const [petType, setType] = React.useState('other');
     const [petName, setName] = React.useState(null);
@@ -35,8 +36,9 @@ const EditPetProfile = () => {
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
 
     React.useEffect(() => {
-        getPetData(petID);
-    }, [petID]);
+        getPetData(params.petID);
+        console.log(petData);
+    }, [params.petID]);
 
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
@@ -51,7 +53,7 @@ const EditPetProfile = () => {
             setDescript(res.data.description);
             setDisp(res.data.disposition);
             setBreed(res.data.breed);
-            setAvail(res.data.available);
+            setAvail(res.data.availability);
             setAge(res.data.age);
             setDate(res.data.date_created);
             return;
@@ -99,7 +101,7 @@ const EditPetProfile = () => {
 
     const submitProfile = async (e) => {
         e.preventDefault();
-        const petURL = fetchURL + '/pets/' + petID;
+        const petURL = fetchURL + '/pets/' + params.petID;
 
         const types = ['image/png', 'image/jpeg'];
 
@@ -146,8 +148,8 @@ const EditPetProfile = () => {
                     <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
                 <label>Sex: </label>
                     <select name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
-                        <option value={false}>Male</option>
-                        <option value={true}>Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                     </select>
                 <div id='age-weight'>
                     <label>Age: </label>

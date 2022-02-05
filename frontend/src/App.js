@@ -57,7 +57,7 @@ function App() {
                 <Route exact path="/admin" element={<Admin setName={setName}/>} />
                 <Route exact path="/login" element={<Login setName={setName}/>}/>
                 <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
-                <Route exact path="/pets/editProfile" element={<EditPetProfile />} />
+                <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
                 <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
                 <Route exact path="/userprofile" element={<UserProfile />} />
             </Routes>

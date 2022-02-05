@@ -1,0 +1,26 @@
+#pet-profile {
+    margin: auto;
+    width: 50%;
+    padding: 20px;
+}
+
+p {
+    margin: 4%;
+    font-size: larger;
+}
+
+#edit-pet {
+    border-radius: 5px;
+    padding: 10px 30px;
+    font-family: 'Courier';
+    font-weight: bold;
+    background-color: #3C64B1;
+    color: white;
+    border: none;
+    float: right;
+}
+
+#edit-pet:hover {
+    background-color: #144cb4;
+    color: white;
+}

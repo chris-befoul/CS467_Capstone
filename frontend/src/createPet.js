@@ -19,7 +19,7 @@ const CreatePetFormPage = () => {
     const [petName, setName] = React.useState('');
     const [petBreed, setBreed] = React.useState('Golden Retriever');
     const [petAvail, setAvail] = React.useState('Available');
-    const [petSex, setSex] = React.useState(false);
+    const [petSex, setSex] = React.useState("Male");
     const [petAge, setAge] = React.useState('Puppy/Kitten/Baby');
     const [petDescript, setDescript] = React.useState('');
     const [petWeight, setWeight] = React.useState(0);
@@ -52,7 +52,7 @@ const CreatePetFormPage = () => {
         type: petType,
         breed: petBreed,
         availability: petAvail,
-        sex: JSON.parse(petSex),
+        sex: petSex,
         age: petAge,
         weight: petWeight,
         disposition: petDisp,
@@ -106,8 +106,8 @@ const CreatePetFormPage = () => {
                 <select name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
             <label>Sex: </label>
                 <select name='sex' onChange={e => setSex(e.target.value)}>
-                    <option value={false}>Male</option>
-                    <option value={true}>Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
             <br />
             <div id='age-weight'>
