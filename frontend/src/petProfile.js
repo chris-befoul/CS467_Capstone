@@ -7,6 +7,7 @@ const ViewPetProfile = () => {
     const params = useParams()
     const [petData, setData] = React.useState({});
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
     React.useEffect(() => {
         getPetData(params.petID);

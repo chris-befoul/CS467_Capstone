@@ -1,4 +1,3 @@
-const { entity } = require('@google-cloud/datastore/build/src/entity');
 const helper = require('../API/datastoreHelper');
 const PET = "Pet";
 const photoFunction = require('../petHelperFunctions/petPhoto');

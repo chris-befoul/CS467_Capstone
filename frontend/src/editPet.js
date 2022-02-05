@@ -32,6 +32,7 @@ const EditPetProfile = () => {
 
     const travel = useNavigate();
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
     React.useEffect(() => {
         getPetData(petID);
@@ -39,6 +40,7 @@ const EditPetProfile = () => {
 
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
+        console.log(petURL);
         await axios.get(petURL).then(res => {
             console.log(res.data);
             setData(res.data);

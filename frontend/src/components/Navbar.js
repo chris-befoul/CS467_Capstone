@@ -13,6 +13,7 @@ const Navbar = (props) => {
 
     let menu;
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
     const logout = async() => {
         await fetch(fetchURL + '/api/logout', {

@@ -11,7 +11,7 @@ const cors = require('cors');
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000']
+  origin: ['http://localhost:3000', 'http://localhost:8080', 'https://capstone-animal-adoption-app.wl.r.appspot.com','http://capstone-animal-adoption-app.wl.r.appspot.com']
 }));
 app.options('*', cors());
 app.enable('trust proxy');
@@ -22,10 +22,12 @@ app.use(express.json());
 const userRoute = require('./user');
 const shelterRoute = require('./shelter');
 app.use('/api', routes);
-app.use('/api', routes);
 app.use('/users', userRoute);
 app.use('/shelters', shelterRoute);
 app.use('/pets', require('./PetProfile/API/petAPI'));
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
