@@ -19,7 +19,7 @@ const CreatePetFormPage = () => {
     const [petName, setName] = React.useState('');
     const [petBreed, setBreed] = React.useState('Golden Retriever');
     const [petAvail, setAvail] = React.useState('Available');
-    const [petSex, setSex] = React.useState(false);
+    const [petSex, setSex] = React.useState("Male");
     const [petAge, setAge] = React.useState('Puppy/Kitten/Baby');
     const [petDescript, setDescript] = React.useState('');
     const [petWeight, setWeight] = React.useState(0);
@@ -30,6 +30,8 @@ const CreatePetFormPage = () => {
 
     const travel = useNavigate();
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -51,7 +53,7 @@ const CreatePetFormPage = () => {
         type: petType,
         breed: petBreed,
         availability: petAvail,
-        sex: JSON.parse(petSex),
+        sex: petSex,
         age: petAge,
         weight: petWeight,
         disposition: petDisp,
@@ -72,7 +74,7 @@ const CreatePetFormPage = () => {
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.post(fetchURL + '/pets/createPetProfile', formPhoto).then( data => {
+        await axios.post(fetchURL + '/pets/createProfile', formPhoto).then( data => {
             const id = data.data.id;
             alert('Your new pet profile has been created!');
             setUrl('/pets/viewProfile/' + id);
@@ -105,8 +107,8 @@ const CreatePetFormPage = () => {
                 <select name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
             <label>Sex: </label>
                 <select name='sex' onChange={e => setSex(e.target.value)}>
-                    <option value={false}>Male</option>
-                    <option value={true}>Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
             <br />
             <div id='age-weight'>
