@@ -6,13 +6,14 @@ import axios from 'axios';
 const ViewPetProfile = () => {
     const params = useParams()
     const [petData, setData] = React.useState({});
+    const fetchURL = 'http://localhost:8080';
 
     React.useEffect(() => {
         getPetData(params.petID);
     }, [params.petID]);
 
     const getPetData = async (petID) => {
-        const petURL = 'http://localhost:8080/pets/' + petID;
+        const petURL =  fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
             setData(res.data);
             return;

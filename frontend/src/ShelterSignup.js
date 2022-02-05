@@ -19,6 +19,7 @@ const ShelterSignup = () => {
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
     const navigate = useNavigate();
+    const fetchURL = "http://localhost:8080";
 
     const handleChange = (e) => {
         const newdata = {...formData};
@@ -36,7 +37,7 @@ const ShelterSignup = () => {
         // console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
         //   console.log(formData);
-            fetch('http://localhost:8080/api/register', {
+            fetch(fetchURL + '/api/register', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
@@ -91,7 +92,7 @@ const ShelterSignup = () => {
             errors.confirm_password = "Passwords do not match!";
         }
 
-        const res = await fetch('http://localhost:8080/api', { method: 'GET'});
+        const res = await fetch(fetchURL + '/api', { method: 'GET'});
         const shelters = await res.json();
         shelters.forEach(shelter => {
             if (shelter.email === values.email){

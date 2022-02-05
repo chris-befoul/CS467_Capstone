@@ -14,7 +14,7 @@ const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
 const EditPetProfile = () => {
-    const [petID, setID] = React.useState('5671636300726272');
+    const [petID, setID] = React.useState('5713686849126400');
     const [petData, setData] = React.useState({});
     const [petType, setType] = React.useState('other');
     const [petName, setName] = React.useState(null);
@@ -31,13 +31,14 @@ const EditPetProfile = () => {
     const [navigate, setNavigate] = React.useState(false);
 
     const travel = useNavigate();
+    const fetchURL = 'http://localhost:8080';
 
     React.useEffect(() => {
         getPetData(petID);
     }, [petID]);
 
     const getPetData = async (petID) => {
-        const petURL = 'http://localhost:8080/pets/' + petID;
+        const petURL = fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
             console.log(res.data);
             setData(res.data);
@@ -96,7 +97,7 @@ const EditPetProfile = () => {
 
     const submitProfile = async (e) => {
         e.preventDefault();
-        const petURL = 'http://localhost:8080/pets/' + petID;
+        const petURL = fetchURL + '/pets/' + petID;
 
         const types = ['image/png', 'image/jpeg'];
 

@@ -1,6 +1,6 @@
 const {Datastore} = require('@google-cloud/datastore');
 
-const datastore = new Datastore({});
+const datastore = new Datastore();
 
 function fromDatastore(item) {
     item.id = item[Datastore.KEY].id;
