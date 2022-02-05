@@ -1,11 +1,13 @@
 import React from 'react';
 import { useParams } from 'react-router-dom'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const ViewPetProfile = () => {
     const params = useParams()
     const [petData, setData] = React.useState({});
+    const navigate = useNavigate();
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
@@ -33,6 +35,7 @@ const ViewPetProfile = () => {
             <p>{petData.disposition}</p>
             <p>{petData.description}</p>
             <p>{petData.date_created}</p>
+            <button onClick={() => navigate('/pets/editProfile')}>Edit Profile</button>
         </div>
     )
 }
