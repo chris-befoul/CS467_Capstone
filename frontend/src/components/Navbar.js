@@ -50,7 +50,7 @@ const Navbar = (props) => {
             <Link to="/Login" className='nav-link' onClick={logout}>Logout</Link>
             </div>
         );
-    } else if (type === 'Admin') {    // logged in - user
+    } else if (type === 'Admin') {    // logged in - admin
         menu = (
             <div className="links">
             <Link to="/" className='nav-link'>Manage Profiles</Link>
