@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const os = require('os');
 const storage = multer.diskStorage({
     destination: (req, file, callBack) => {
         callBack(null, 'uploads')
@@ -11,7 +12,7 @@ const storage = multer.diskStorage({
         callBack(null, `${file.originalname}`)
     }
 })
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: os.tmpdir() });
 const directory = 'uploads';
 const router = express.Router();
 router.use(bodyParser.json());
@@ -56,7 +57,7 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
         return;
 })
 
-router.post('/createPetProfile', upload.array('file'), (req, res) => {
+router.post('/createProfile', upload.array('file'), (req, res) => {
     const data = JSON.parse(req.body.data);
     if (!req.files) {
         const error = new Error('No File')

@@ -14,7 +14,7 @@ const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
 const EditPetProfile = () => {
-    const [petID, setID] = React.useState('5713686849126400');
+    const [petID, setID] = React.useState('5158257651875840');
     const [petData, setData] = React.useState({});
     const [petType, setType] = React.useState('other');
     const [petName, setName] = React.useState(null);
@@ -32,6 +32,7 @@ const EditPetProfile = () => {
 
     const travel = useNavigate();
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
 
     React.useEffect(() => {
         getPetData(petID);
@@ -39,6 +40,7 @@ const EditPetProfile = () => {
 
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
+        console.log(petURL);
         await axios.get(petURL).then(res => {
             console.log(res.data);
             setData(res.data);

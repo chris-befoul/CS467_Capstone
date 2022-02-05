@@ -11,7 +11,10 @@ const cors = require('cors');
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000']
+  origin: [
+    'http://localhost:3000'
+    // 'https://cs467-sandbox.ue.r.appspot.com'
+ ]
 }));
 app.options('*', cors());
 app.enable('trust proxy');

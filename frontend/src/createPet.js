@@ -30,6 +30,7 @@ const CreatePetFormPage = () => {
 
     const travel = useNavigate();
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -72,7 +73,7 @@ const CreatePetFormPage = () => {
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.post(fetchURL + '/pets/createPetProfile', formPhoto).then( data => {
+        await axios.post(fetchURL + '/pets/createProfile', formPhoto).then( data => {
             const id = data.data.id;
             alert('Your new pet profile has been created!');
             setUrl('/pets/viewProfile/' + id);

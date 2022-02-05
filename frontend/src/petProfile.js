@@ -7,6 +7,7 @@ const ViewPetProfile = () => {
     const params = useParams()
     const [petData, setData] = React.useState({});
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
 
     React.useEffect(() => {
         getPetData(params.petID);

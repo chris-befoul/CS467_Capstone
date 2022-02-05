@@ -13,6 +13,7 @@ const Navbar = (props) => {
 
     let menu;
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
 
     const logout = async() => {
         await fetch(fetchURL + '/api/logout', {

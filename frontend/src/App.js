@@ -16,6 +16,7 @@ function App() {
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     if (name === 'undefined undefined') {
         setName('');
     }
