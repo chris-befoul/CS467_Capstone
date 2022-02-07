@@ -34,6 +34,9 @@ const ViewPetProfile = () => {
 
     return (
         <div id='pet-profile'>
+            {/* <div id='pet-image'> */}
+                <img id='pet-image' src='https://storage.googleapis.com/pet_profile_photo/5741938607128576/1'/>
+            {/* </div> */}
             <p>Pet Name:            {petData.name}</p>
             <p>Pet Type:            {petData.type}</p>
             <p>Pet Breed:           {petData.breed}</p>

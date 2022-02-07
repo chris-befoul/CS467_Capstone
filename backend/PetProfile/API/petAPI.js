@@ -13,7 +13,7 @@ const os = require('os');
 //     }
 // })
 const upload = multer({ dest: os.tmpdir() });
-// const directory = 'uploads';
+const directory = os.tmpdir();
 const router = express.Router();
 router.use(bodyParser.json());
 
@@ -42,15 +42,15 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
                     const fileName = key.id + '/' + (x + 1);
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
                 }
-                // fs.readdir(directory, (err, files) => {
-                //     if (err) throw err;
+                fs.readdir(directory, (err, files) => {
+                    if (err) throw err;
                 
-                //     for (const file of files) {
-                //     fs.unlink(path.join(directory, file), err => {
-                //         if (err) throw err;
-                //     });
-                //     }
-                // });   
+                    for (const file of files) {
+                    fs.unlink(path.join(directory, file), err => {
+                        if (err) throw err;
+                    });
+                    }
+                });   
             }
             res.status(201).send(key);
             return; });
