@@ -19,7 +19,7 @@ app.enable('trust proxy');
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
 
 const userRoute = require('./user');
 const shelterRoute = require('./shelter');
@@ -27,9 +27,9 @@ app.use('/api', routes);
 app.use('/users', userRoute);
 app.use('/shelters', shelterRoute);
 app.use('/pets', require('./PetProfile/API/petAPI'));
-app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// app.use('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

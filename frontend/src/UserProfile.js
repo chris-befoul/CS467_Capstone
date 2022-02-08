@@ -46,8 +46,8 @@ const UserProfile = () => {
 
     useEffect(() => {
         fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
-            const userInfo= data;
-            // console.log(userInfo);
+            const userInfo = data;
+            console.log(userInfo);
             userInfo.password = "";
             userInfo.new_password = "";
             userInfo.confirm_new_password = "";
@@ -58,7 +58,23 @@ const UserProfile = () => {
       useEffect(() => {
         // console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-          console.log(formData);
+        //   console.log(formData);
+            fetch(fetchURL + '/api/user', {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            }).then(res => {
+                if (!res.ok){
+                    throw 'invalid password!';
+                }else{
+                    return res.text();
+                }
+            }).then(data => {
+                console.log(data);
+                alert("User Updated!");
+                window.location.reload();
+            }).catch(e => alert("Invalid current password!"));
         }
       }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
 
