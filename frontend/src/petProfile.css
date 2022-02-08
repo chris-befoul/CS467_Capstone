@@ -9,7 +9,7 @@
     font-size: larger;
 } */
 
-#edit-pet {
+#edit-pet, #leave-profile {
     border-radius: 5px;
     padding: 10px 30px;
     font-family: 'Courier';
@@ -18,9 +18,10 @@
     color: white;
     border: none;
     float: right;
+    margin: 4%;
 }
 
-#edit-pet:hover {
+#edit-pet:hover, #leave-profile:hover {
     background-color: #144cb4;
     color: white;
 }

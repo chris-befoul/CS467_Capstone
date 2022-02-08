@@ -27,9 +27,9 @@ app.use('/api', routes);
 app.use('/users', userRoute);
 app.use('/shelters', shelterRoute);
 app.use('/pets', require('./PetProfile/API/petAPI'));
-app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// app.use('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

@@ -9,7 +9,21 @@ async function uploadPhoto(filePath, destFileName) {
     destination: destFileName,
   });
 }
+
+async function petsPhotos(petID) {
+  const prefix = petID + '/';
+  
+  const options = {
+    prefix: prefix,
+    delimiter: '/'
+  }
+
+  const [files] = await storage.bucket(bucketName).getFiles(options);
+
+  return files;
+}
   
 module.exports = {
-  uploadPhoto
+  uploadPhoto,
+  petsPhotos
 }
