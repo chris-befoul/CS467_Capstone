@@ -40,8 +40,8 @@ const UserProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormErrors(await validate(formData));
         setIsSubmit(true);
+        setFormErrors(await validate(formData));
     };
 
     useEffect(() => {
@@ -66,7 +66,7 @@ const UserProfile = () => {
                 body: JSON.stringify(formData)
             }).then(res => {
                 if (!res.ok){
-                    throw 'invalid password!';
+                    throw new Error('invalid password!');
                 }else{
                     return res.text();
                 }
@@ -86,6 +86,7 @@ const UserProfile = () => {
 
             // redirect to landing page
             navigate("/");
+            window.location.reload();
         });
     };
 
