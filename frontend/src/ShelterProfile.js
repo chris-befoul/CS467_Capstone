@@ -122,11 +122,13 @@ const ShelterProfile = () => {
         if (!email_regex.test(values.email)) {
             errors.email = "Invalid email!";
         }
-        if (!password_regex.test(values.new_password)) {
-            errors.new_password = "Invalid password! Passwords should be 8-25 characters long and contain at least 1 lowercase, 1 uppercase, and 1 digit.";
-        }
-        if (values.confirm_new_password !== values.new_password) {
-            errors.confirm_new_password = "Passwords do not match!";
+        if (values.new_password !== ''){
+            if (!password_regex.test(values.new_password)) {
+                errors.new_password = "Invalid password! Passwords should be 8-25 characters long and contain at least 1 lowercase, 1 uppercase, and 1 digit.";
+            }
+            if (values.confirm_new_password !== values.new_password) {
+                errors.confirm_new_password = "Passwords do not match!";
+            }
         }
         
         const res = await fetch(fetchURL + '/users', { method: 'GET'});
@@ -199,7 +201,7 @@ const ShelterProfile = () => {
                         <div className='input-pair'>
                             <div className='form-input-field'>
                                 <label>Current Password:</label>
-                                <input required type="password" name="password" value={formData.password} onChange={(e) => handleChange(e)}></input>
+                                <input type="password" name="password" value={formData.password} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.password}</p>
                             </div>
                         </div>
@@ -208,12 +210,12 @@ const ShelterProfile = () => {
                         <div className='input-pair'>
                             <div className='form-input-field'>
                                 <label>New Password:</label>
-                                <input required type="password" name="new_password" value={formData.new_password} onChange={(e) => handleChange(e)}></input>
+                                <input type="password" name="new_password" value={formData.new_password} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.new_password}</p>
                             </div>
                             <div className='form-input-field'>
                                 <label>Confirm New Password:</label>
-                                <input required type="password" name="confirm_new_password" value={formData.confirm_new_password} onChange={(e) => handleChange(e)}></input>
+                                <input type="password" name="confirm_new_password" value={formData.confirm_new_password} onChange={(e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.confirm_new_password}</p>
                             </div>
                         </div>

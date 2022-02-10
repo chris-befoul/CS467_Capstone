@@ -162,15 +162,22 @@ router.patch('/user', async(req, res) => {
         const user = await datastore.get(userKey);
         
         if (!user[0]){
-            return res.status(404).send({'Error': 'No user with this id is found!'});
+            return res.status(404).send('No user with this id is found!');
         }
 
-        if(!await bcrypt.compare(req.body.password, user[0].password)){
-            return res.status(400).send("invalid password!");
+        if (req.body.password || req.body.new_password !== ''){
+            if(!await bcrypt.compare(req.body.password, user[0].password)){
+                return res.status(400).send("invalid password!");
+            }
         }
 
         const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(req.body.new_password, salt);
+        var hashedPassword = '';
+        if(req.body.new_password === ''){
+            hashedPassword = user[0].password;
+        } else{
+            hashedPassword = await bcrypt.hash(req.body.new_password, salt);
+        }
         const updated_user = {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
