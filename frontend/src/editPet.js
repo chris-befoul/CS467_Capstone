@@ -17,7 +17,7 @@ const EditPetProfile = () => {
     const params = useParams();
     // const [petID, setID] = React.useState('5158257651875840');
     const [petData, setData] = React.useState({});
-    const [petType, setType] = React.useState('other');
+    const [petType, setType] = React.useState(null);
     const [petName, setName] = React.useState(null);
     const [petBreed, setBreed] = React.useState(null);
     const [petAvail, setAvail] = React.useState(null);
@@ -43,20 +43,20 @@ const EditPetProfile = () => {
 
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
-        console.log(petURL);
         await axios.get(petURL).then(res => {
             console.log(res.data);
-            setData(res.data);
-            setName(res.data.name);
-            setSex(res.data.sex);
-            setType(res.data.type);
-            setWeight(res.data.weight);
-            setDescript(res.data.description);
-            setDisp(res.data.disposition);
-            setBreed(res.data.breed);
-            setAvail(res.data.availability);
-            setAge(res.data.age);
-            setDate(res.data.date_created);
+            const edit = res.data.data;
+            setData(edit);
+            setName(edit.name);
+            setSex(edit.sex);
+            setType(edit.type);
+            setWeight(edit.weight);
+            setDescript(edit.description);
+            setDisp(edit.disposition);
+            setBreed(edit.breed);
+            setAvail(edit.availability);
+            setAge(edit.age);
+            setDate(edit.date_created);
             return;
         })
     }
@@ -129,6 +129,54 @@ const EditPetProfile = () => {
         travel(petUrl);
         window.location.reload();
     }
+
+    const TypeCreate = () => {
+        if (petType != null) {
+            return <select name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
+                        <option value='dog'>Dog</option>
+                        <option value='cat'>Cat</option>
+                        <option value='other'>Other</option>
+                    </select>
+        }
+        return <p>Loading...</p>
+    }
+
+    const BreedCreate = () => {
+        if (petType != null) {
+            return <select name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+        }
+        return <p>Loading...</p>
+    }
+
+    const AvailableCreate = () => {
+        if(petAvail != null) {
+            return <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+        }
+        return <p>Loading...</p>
+    }
+
+    const AgeCreate = () => {
+        if(petAge != null) {
+            return <select name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+        }
+        return <p>Loading...</p>
+    }
+
+    const DispCreate = () => {
+        if(petDisp != null) {
+            return <div id='disposition'>
+                        <label id='dispositionLabel'>Good with other animals</label>
+                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with other animals')}/>
+                        <label id='dispositionLabel'>Good with children </label>
+                            <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
+                        <label id='dispositionLabel'>Animal must be leashed at all times </label>
+                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
+                        <label id='dispositionLabel'>Very Active </label>
+                            <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
+                    </div>
+        }
+        return <p>Loading...</p>
+    }
     
     return (
         <div id='petBox'>
@@ -137,16 +185,12 @@ const EditPetProfile = () => {
                     <input required type='text' name='name' id='name' defaultValue={petName} onChange={e => setName(e.target.value)}/> 
                 <br/>
                 <label>Pet Type: </label>
-                    <select name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
-                        <option value='dog'>Dog</option>
-                        <option value='cat'>Cat</option>
-                        <option value='other'>Other</option>
-                    </select>
+                    <TypeCreate />
                 <label>Breed: </label>
-                    <select name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+                    <BreedCreate />
                 <br />
                 <label>Availability: </label>
-                    <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+                    <AvailableCreate />
                 <label>Sex: </label>
                     <select name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
                         <option value="Male">Male</option>
@@ -154,23 +198,14 @@ const EditPetProfile = () => {
                     </select>
                 <div id='age-weight'>
                     <label>Age: </label>
-                        <select name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+                        <AgeCreate />
                     <label>Weight: </label> 
                         <input required type='number' name='weight' defaultValue={petWeight} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
                 </div>
                 <br />
                 <div id='dispositionBox'>
                 <label>Disposition: </label>
-                    <div id='disposition'>
-                        <label id='dispositionLabel'>Good with other animals</label>
-                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} defaultChecked={needCheck('Good with other animals')}/>
-                        <label id='dispositionLabel'>Good with children </label>
-                            <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
-                        <label id='dispositionLabel'>Animal must be leashed at all times </label>
-                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
-                        <label id='dispositionLabel'>Very Active </label>
-                            <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
-                    </div>
+                    <DispCreate />
                 </div>
                 <br/>
                 <div id='descriptionBox'>

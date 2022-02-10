@@ -1,13 +1,14 @@
-/* #pet-profile {
-    margin: auto;
-    width: 50%;
-    padding: 20px;
-} */
+#pet-image {
+    width: 20%;
+    height: 25%;
+    margin-left: 15%;
+    margin-right: 5%;
+    float: left;
+}
 
-/* p {
-    margin: 4%;
-    font-size: larger;
-} */
+#main-pet-data {
+    padding-top: 5%;
+}
 
 #edit-pet, #leave-profile {
     border-radius: 5px;
@@ -26,6 +27,3 @@
     color: white;
 }
 
-#pet-image {
-    width: 30%;
-}
