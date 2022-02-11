@@ -25,6 +25,7 @@ const CreatePetFormPage = () => {
     const [petWeight, setWeight] = React.useState(0);
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
+    const [shelterID, setID] = React.useState(null);
     const [petUrl, setUrl] = React.useState();
     const [navigate, setNavigate] = React.useState(false);
 
@@ -32,6 +33,13 @@ const CreatePetFormPage = () => {
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+
+    React.useEffect(() => {
+        fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+            const userInfo= data;
+            setID(userInfo.id);
+        });
+      }, []);
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -58,7 +66,7 @@ const CreatePetFormPage = () => {
         weight: petWeight,
         disposition: petDisp,
         description: petDescript,
-        shelter_id: 52
+        shelter_id: shelterID
     }
 
     const submitProfile = async (e) => {

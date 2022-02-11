@@ -13,7 +13,7 @@ const os = require('os');
 //     }
 // })
 const upload = multer({ dest: os.tmpdir() });
-// const directory = 'uploads';
+const directory = os.tmpdir();
 const router = express.Router();
 router.use(bodyParser.json());
 
@@ -21,13 +21,18 @@ const petFunctions = require('../petHelperFunctions/petFunctions');
 const petPhotoFunction = require('../petHelperFunctions/petPhoto');
 
 router.get('/:petID', function(req, res) {
-    petFunctions.get_pet(req.params.petID).then(pet => {
+    petFunctions.get_pet(req.params.petID).then( async(pet) => {
         if (pet[0] === undefined || pet[0] === null) {
             res.status(404).json({ 'Error': 'No pet with this petID exists' });
             return;
         }
         else {
-            res.status(200).json(pet[0]);
+            const petFiles = await petPhotoFunction.petsPhotos(req.params.petID);
+            const petData = {
+                data: pet[0],
+                photos: petFiles
+            };
+            res.status(200).json(petData);
             return;
         }
     })

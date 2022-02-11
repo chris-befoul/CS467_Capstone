@@ -1,15 +1,16 @@
-#pet-profile {
-    margin: auto;
-    width: 50%;
-    padding: 20px;
+#pet-image {
+    width: 20%;
+    height: 25%;
+    margin-left: 15%;
+    margin-right: 5%;
+    float: left;
 }
 
-.pet-profile-field {
-    margin: 4%;
-    font-size: larger;
+#main-pet-data {
+    padding-top: 5%;
 }
 
-#edit-pet {
+#edit-pet, #leave-profile {
     border-radius: 5px;
     padding: 10px 30px;
     font-family: 'Courier';
@@ -18,9 +19,11 @@
     color: white;
     border: none;
     float: right;
+    margin: 4%;
 }
 
-#edit-pet:hover {
+#edit-pet:hover, #leave-profile:hover {
     background-color: #144cb4;
     color: white;
 }
+
