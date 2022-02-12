@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ThemeProvider, Grid } from '@mui/material'
 import "./editPet.css";
 
 
@@ -122,7 +123,7 @@ const EditPetProfile = () => {
 
     const TypeCreate = () => {
         if (petType != null) {
-            return <select name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
+            return <select id='edit-select' name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                         <option value='other'>Other</option>
@@ -133,36 +134,37 @@ const EditPetProfile = () => {
 
     const BreedCreate = () => {
         if (petType != null) {
-            return <select name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option key={x}>{x}</option>})}</select> 
+            return <select id='edit-select' name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option key={x}>{x}</option>})}</select> 
         }
         return <p>Loading...</p>
     }
 
     const AvailableCreate = () => {
         if(petAvail != null) {
-            return <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option key={x}>{x}</option>})}</select>
+            return <select id='edit-select' name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
         return <p>Loading...</p>
     }
 
     const AgeCreate = () => {
         if(petAge != null) {
-            return <select name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option key={x}>{x}</option>})}</select>
+            return <select id='edit-select' name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
         return <p>Loading...</p>
     }
 
     const DispCreate = () => {
         if(petDisp != null) {
-            return <div id='disposition'>
+            return <div id='edit-disposition'>
                         <label id='dispositionLabel'>Good with other animals</label>
-                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with other animals')}/>
-                        <label id='dispositionLabel'>Good with children </label>
-                            <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
+                            <input type='checkbox' value='Good with other animals' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with other animals')}/>
+                        <label id='dispositionLabel-right'>Good with children </label>
+                            <input type='checkbox' value='Good with children' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
+                            <br />
                         <label id='dispositionLabel'>Animal must be leashed at all times </label>
-                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
-                        <label id='dispositionLabel'>Very Active </label>
-                            <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
+                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
+                        <label id='dispositionLabel-right'>Very Active </label>
+                            <input type='checkbox' value='Very Active' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
                     </div>
         }
         return <p>Loading...</p>
@@ -171,27 +173,27 @@ const EditPetProfile = () => {
     const deletePhoto = async(e) => {
         e.preventDefault();
         console.log(e.target);
-        await axios({
-            method: 'delete',
-            url: fetchURL + '/pets/photo',
-            data: {
-              fileName: e.target.name
-            }
-        });
+        // await axios({
+        //     method: 'delete',
+        //     url: fetchURL + '/pets/photo',
+        //     data: {
+        //       fileName: e.target.name
+        //     }
+        // });
         alert("Photo has been removed from profile");
         window.location.reload();
         // await axios.delete(fetchURL + '/pets/photo');
     }
 
     const Photo = (props) => {
-        return <li>
-            <div id='edit-photo'> <img id='pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name}/> <button id='delete' name={props.picture.name} onClick={deletePhoto}>Delete Photo</button></div> 
+        return <li id='photo-list'>
+            <div id='edit-photo'> <img id='edit-pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name}/> <button id='delete' name={props.picture.name} onClick={deletePhoto}>Delete Photo</button></div> 
             </li>;
     }
 
     const EditPhotos = () => {
         if(currPhotos && currPhotos.length > 0) {
-            return <div>
+            return <div id='edit-photo-container'>
                 <ul id='edit-photos'>
                     {currPhotos.map((pic) => <Photo picture={pic} key={pic.name}/>)}
                 </ul>
@@ -202,48 +204,47 @@ const EditPetProfile = () => {
     
     return (
         <div id='petBox'>
-            <form id='petForm' name='petForm' onSubmit={submitProfile}>
-                <label>Pet's Name: </label>
+            <form id='edit-pet-form' name='edit-pet-form' onSubmit={submitProfile}>
+                <label id='edit-label'>Pet's Name: </label>
                     <input required type='text' name='name' id='name' defaultValue={petName} onChange={e => setName(e.target.value)}/> 
                 <br/>
-                <label>Pet Type: </label>
+                <label id='edit-label'>Pet Type: </label>
                     <TypeCreate />
-                <label>Breed: </label>
+                <label id='edit-label'>Breed: </label>
                     <BreedCreate />
                 <br />
-                <label>Availability: </label>
+                <label id='edit-label'>Availability: </label>
                     <AvailableCreate />
-                <label>Sex: </label>
-                    <select name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
+                <label id='edit-label'>Sex: </label>
+                    <select id='edit-select' name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 <div id='age-weight'>
-                    <label>Age: </label>
+                    <label id='edit-label'>Age: </label>
                         <AgeCreate />
-                    <label>Weight: </label> 
+                    <label id='edit-label'>Weight: </label> 
                         <input required type='number' name='weight' defaultValue={petWeight} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
                 </div>
                 <br />
                 <div id='dispositionBox'>
-                <label>Disposition: </label>
+                <label id='edit-label'>Disposition: </label>
                     <DispCreate />
                 </div>
                 <br/>
                 <div id='descriptionBox'>
-                <label>Description: </label>
+                <label id='edit-label'>Description: </label>
                     <br />
-                    <textarea required type='text' maxLength={280} name='description' id='description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>
+                    <textarea required type='text' maxLength={280} name='edit-description' id='edit-description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>
                 </div>
                 <br />
                 <EditPhotos />
-                <br />
                 <div id='photoBox'>
-                    <label>Upload Pet Photo: </label>
+                    <label id='edit-label'>Upload Pet Photo: </label>
                         <input type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
                 </div>
                 <br />
-                <input type='submit' value='Save Profile' id='save'/>
+                <input type='submit' value='Save Profile' id='edit-save'/>
             </form>
         </div>
     )

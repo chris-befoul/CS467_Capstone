@@ -3,10 +3,10 @@
     width: 60%;
 }
 
-input[type=checkbox] {
+#disp-check {
     transform: scale(1.5);
     margin-right: 4%;
-    margin-left: 1%;
+    margin-left: 2%;
     margin-bottom: 3%;
     margin-top: 2%;
 }
@@ -19,7 +19,7 @@ input[type=checkbox] {
     height: 200px;
 }
 
-select {
+#create-select {
     transform: scale(1.25);
     margin-right: 12%;
     margin-left: 5%;
@@ -27,7 +27,7 @@ select {
     margin-top: 2%;
 }
 
-label {
+#create-label {
     font-weight: bold;
     font-size: larger;
     margin-bottom: 1%;
@@ -36,10 +36,22 @@ label {
 #disposition {
     background-color: #C4C4C4;
     float: right;
-    padding-left: 3%;
-    padding-top: 2%;
-    width: 75%;
-    margin-right: 8%;
+    padding-left: 4%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 74%;
+    margin-right: 12%;
+}
+
+#dispositionLabel {
+    font-size: large;
+    font-weight: bold;
+}
+
+#dispositionLabel-right {
+    font-size: large;
+    font-weight: bold;
+    margin-left: 11%;
 }
 
 #name {
