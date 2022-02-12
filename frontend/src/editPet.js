@@ -168,20 +168,24 @@ const EditPetProfile = () => {
         return <p>Loading...</p>
     }
 
-    const deletePhoto = async(fileName) => {
+    const deletePhoto = async(e) => {
+        e.preventDefault();
+        console.log(e.target);
         await axios({
             method: 'delete',
             url: fetchURL + '/pets/photo',
             data: {
-              fileName: fileName
+              fileName: e.target.name
             }
-          });
-        await axios.delete(fetchURL + '/pets/photo');
+        });
+        alert("Photo has been removed from profile");
+        window.location.reload();
+        // await axios.delete(fetchURL + '/pets/photo');
     }
 
     const Photo = (props) => {
         return <li>
-            <div id='edit-photo'> <img id='pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name}/> <button id='delete' onClick={deletePhoto(props.picture.name)}>Delete Photo</button></div> 
+            <div id='edit-photo'> <img id='pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name}/> <button id='delete' name={props.picture.name} onClick={deletePhoto}>Delete Photo</button></div> 
             </li>;
     }
 
