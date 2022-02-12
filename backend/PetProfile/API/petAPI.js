@@ -44,7 +44,7 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
         .then( key => { 
             if(req.files) {
                 for (var x = 0; x < req.files.length; x++) {
-                    const fileName = key.id + '/' + (x + 1);
+                    const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
                 }
                 // fs.readdir(directory, (err, files) => {
@@ -71,7 +71,7 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
     }
     petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
                 for (var x = 0; x < req.files.length; x++) {
-                    const fileName = key.id + '/' + (x + 1);
+                    const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
                 }
                 // fs.readdir(directory, (err, files) => {
@@ -91,7 +91,7 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
 
 router.delete('/photo', (req, res) => {
     petPhotoFunction.deletePhoto(req.body.fileName).then(() => {
-        return res.status(201);
+        return res.status(201).send(true);
     })
 })
 

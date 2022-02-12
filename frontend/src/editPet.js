@@ -173,15 +173,27 @@ const EditPetProfile = () => {
     const deletePhoto = async(e) => {
         e.preventDefault();
         console.log(e.target);
-        // await axios({
-        //     method: 'delete',
-        //     url: fetchURL + '/pets/photo',
-        //     data: {
-        //       fileName: e.target.name
-        //     }
-        // });
-        alert("Photo has been removed from profile");
-        window.location.reload();
+        if(window.confirm("Are you sure you want to delete this photo from your pet profile?")) {
+            await axios({
+                method: 'delete',
+                url: fetchURL + '/pets/photo',
+                data: {
+                fileName: e.target.name
+                }
+            }).then((res) => {
+                if(res.status === 201) {
+                    alert("Pet photo has been removed from profile");
+                    window.location.reload();
+                }
+                else {
+                    alert("Something went wrong with photo deletion please try again and it it persists contact admin.")
+                }
+            });
+        }
+        else {
+            console.log("Photo not deleted");
+        }
+        
         // await axios.delete(fetchURL + '/pets/photo');
     }
 
