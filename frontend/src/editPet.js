@@ -15,8 +15,8 @@ const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 const EditPetProfile = () => {
     const params = useParams();
-    // const [petID, setID] = React.useState('5158257651875840');
     const [petData, setData] = React.useState({});
+    const [currPhotos, setCurr] = React.useState([])
     const [petType, setType] = React.useState(null);
     const [petName, setName] = React.useState(null);
     const [petBreed, setBreed] = React.useState(null);
@@ -38,13 +38,13 @@ const EditPetProfile = () => {
 
     React.useEffect(() => {
         getPetData(params.petID);
-        console.log(petData);
     }, [params.petID]);
 
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
             console.log(res.data);
+            setCurr(res.data.photos);
             const edit = res.data.data;
             setData(edit);
             setName(edit.name);
@@ -90,16 +90,6 @@ const EditPetProfile = () => {
         shelter_id: 52
     }
 
-    const needCheck = (label) => {
-        for (var x = 0; x < petDisp; x++) {
-            console.log(petDisp[x]);
-            if(petDisp[x] === label) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     const submitProfile = async (e) => {
         e.preventDefault();
         const petURL = fetchURL + '/pets/' + params.petID;
@@ -143,21 +133,21 @@ const EditPetProfile = () => {
 
     const BreedCreate = () => {
         if (petType != null) {
-            return <select name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+            return <select name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option key={x}>{x}</option>})}</select> 
         }
         return <p>Loading...</p>
     }
 
     const AvailableCreate = () => {
         if(petAvail != null) {
-            return <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+            return <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
         return <p>Loading...</p>
     }
 
     const AgeCreate = () => {
         if(petAge != null) {
-            return <select name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+            return <select name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
         return <p>Loading...</p>
     }
@@ -176,6 +166,34 @@ const EditPetProfile = () => {
                     </div>
         }
         return <p>Loading...</p>
+    }
+
+    const deletePhoto = async(fileName) => {
+        await axios({
+            method: 'delete',
+            url: fetchURL + '/pets/photo',
+            data: {
+              fileName: fileName
+            }
+          });
+        await axios.delete(fetchURL + '/pets/photo');
+    }
+
+    const Photo = (props) => {
+        return <li>
+            <div id='edit-photo'> <img id='pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name}/> <button id='delete' onClick={deletePhoto(props.picture.name)}>Delete Photo</button></div> 
+            </li>;
+    }
+
+    const EditPhotos = () => {
+        if(currPhotos && currPhotos.length > 0) {
+            return <div>
+                <ul id='edit-photos'>
+                    {currPhotos.map((pic) => <Photo picture={pic} key={pic.name}/>)}
+                </ul>
+            </div>
+        }
+        return <p></p>
     }
     
     return (
@@ -213,6 +231,8 @@ const EditPetProfile = () => {
                     <br />
                     <textarea required type='text' maxLength={280} name='description' id='description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>
                 </div>
+                <br />
+                <EditPhotos />
                 <br />
                 <div id='photoBox'>
                     <label>Upload Pet Photo: </label>

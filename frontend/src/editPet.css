@@ -71,3 +71,15 @@ label {
 #photoBox {
     margin-top: 25%;
 }
+
+#edit-photos {
+    list-style-type: none;
+}
+
+#pet-image {
+    display: flex;
+}
+
+#delete {
+    display: flex;
+}

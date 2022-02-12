@@ -89,4 +89,10 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
     return;
 })
 
+router.delete('/photo', (req, res) => {
+    petPhotoFunction.deletePhoto(req.data).then(() => {
+        return res.status(201);
+    })
+})
+
 module.exports = router;
