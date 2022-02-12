@@ -6,9 +6,9 @@ import "./editPet.css";
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
 const breeds = {
-    dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
-    cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
-    other: ['Other']
+    Dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
+    Cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
+    Other: ['Other']
 }
 const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
@@ -87,7 +87,7 @@ const EditPetProfile = () => {
         disposition: petDisp,
         description: petDescript,
         date_created: petDate,
-        shelter_id: 52
+        shelter_id: petData.shelter_id
     }
 
     const needCheck = (label) => {
@@ -133,9 +133,9 @@ const EditPetProfile = () => {
     const TypeCreate = () => {
         if (petType != null) {
             return <select name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
-                        <option value='dog'>Dog</option>
-                        <option value='cat'>Cat</option>
-                        <option value='other'>Other</option>
+                        <option value='Dog'>Dog</option>
+                        <option value='Cat'>Cat</option>
+                        <option value='Other'>Other</option>
                     </select>
         }
         return <p>Loading...</p>
