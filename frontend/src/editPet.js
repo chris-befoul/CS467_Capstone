@@ -44,7 +44,7 @@ const EditPetProfile = () => {
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             setCurr(res.data.photos);
             const edit = res.data.data;
             setData(edit);
@@ -172,7 +172,7 @@ const EditPetProfile = () => {
 
     const deletePhoto = async(e) => {
         e.preventDefault();
-        console.log(e.target);
+        // console.log(e.target);
         if(window.confirm("Are you sure you want to delete this photo from your pet profile?")) {
             await axios({
                 method: 'delete',
