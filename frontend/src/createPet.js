@@ -149,10 +149,10 @@ const CreatePetFormPage = () => {
             <br />
             <div id='photoBox'>
                 <label id='create-label'>Upload Pet Photo: </label>
-                    <input required type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
+                    <input required type='file' id='photo-upload'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
             </div>
             <br />
-            <input type='submit' value='Save Profile' id='save'/>
+            <input type='submit' value='Save Profile' id='create-save'/>
         </form>
         </div>
     )

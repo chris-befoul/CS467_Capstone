@@ -129,28 +129,28 @@ const EditPetProfile = () => {
                         <option value='other'>Other</option>
                     </select>
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const BreedCreate = () => {
         if (petType != null) {
             return <select id='edit-select' name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option key={x}>{x}</option>})}</select> 
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const AvailableCreate = () => {
         if(petAvail != null) {
             return <select id='edit-select' name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const AgeCreate = () => {
         if(petAge != null) {
             return <select id='edit-select' name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const DispCreate = () => {
@@ -167,7 +167,7 @@ const EditPetProfile = () => {
                             <input type='checkbox' value='Very Active' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
                     </div>
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const deletePhoto = async(e) => {
@@ -193,13 +193,26 @@ const EditPetProfile = () => {
         else {
             console.log("Photo not deleted");
         }
-        
-        // await axios.delete(fetchURL + '/pets/photo');
     }
 
+    
+
     const Photo = (props) => {
+        const [deletePic, setDelete] = React.useState(false);
+
+        const picEnter = () => {
+            setDelete(true);
+        }
+
+        const picLeave = () => {
+            setDelete(false);
+        }
+
         return <li id='photo-list'>
-            <div id='edit-photo'> <img id='edit-pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name}/> <button id='delete' name={props.picture.name} onClick={deletePhoto}>Delete Photo</button></div> 
+            <div id='edit-photo'> 
+            <img id='edit-pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
+            { deletePic ? <p id='delete-pic' onMouseEnter={picEnter} onMouseLeave={picLeave}>Delete Photo</p> : null}
+            </div> 
             </li>;
     }
 
@@ -253,7 +266,7 @@ const EditPetProfile = () => {
                 <EditPhotos />
                 <div id='photoBox'>
                     <label id='edit-label'>Upload Pet Photo: </label>
-                        <input type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
+                        <input type='file' id='photo-upload'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
                 </div>
                 <br />
                 <input type='submit' value='Save Profile' id='edit-save'/>
