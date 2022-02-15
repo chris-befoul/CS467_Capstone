@@ -1,8 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import Carousel from 'react-material-ui-carousel'
-import { ThemeProvider, Grid } from '@mui/material'
+import { ThemeProvider } from '@mui/material'
 import { createTheme } from '@mui/material/styles';
 import "./petProfile.css";
 
@@ -107,9 +106,6 @@ const ViewPetProfile = () => {
 
     const Photo = (props) => {
         return <img id='small-photo' name={props.picture} onClick={select} src={photoURL + props.picture} />
-        // <div id='select-photo'>
-            // <img id='small-photo' src={photoURL + props.picture} />
-        {/* </div> */}
     }
 
     const PhotoOptions = () => {
@@ -119,11 +115,6 @@ const ViewPetProfile = () => {
                     return <Photo picture={pic.name}/>
                 }
             })
-            // <div id='photos-available'>
-            // {
-                
-        // }
-        // </div>
         }
         return <br />
     }
