@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ThemeProvider, Grid } from '@mui/material'
 import "./editPet.css";
 
 
@@ -44,7 +43,6 @@ const EditPetProfile = () => {
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
-            // console.log(res.data);
             setCurr(res.data.photos);
             const edit = res.data.data;
             setData(edit);
