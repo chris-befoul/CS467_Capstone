@@ -172,7 +172,6 @@ const EditPetProfile = () => {
 
     const deletePhoto = async(e) => {
         e.preventDefault();
-        // console.log(e.target);
         if(window.confirm("Are you sure you want to delete this photo from your pet profile?")) {
             await axios({
                 method: 'delete',
@@ -210,7 +209,7 @@ const EditPetProfile = () => {
 
         return <li id='photo-list'>
             <div id='edit-photo'> 
-            <img id='edit-pet-image' src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
+            <img id='edit-pet-image' name={props.picture.name} src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
             { deletePic ? <p id='delete-pic' onMouseEnter={picEnter} onMouseLeave={picLeave}>Delete Photo</p> : null}
             </div> 
             </li>;
@@ -230,6 +229,7 @@ const EditPetProfile = () => {
     return (
         <div id='petBox'>
             <form id='edit-pet-form' name='edit-pet-form' onSubmit={submitProfile}>
+                <EditPhotos />
                 <label id='edit-label'>Pet's Name: </label>
                     <input required type='text' name='name' id='name' defaultValue={petName} onChange={e => setName(e.target.value)}/> 
                 <br/>
@@ -263,7 +263,6 @@ const EditPetProfile = () => {
                     <textarea required type='text' maxLength={280} name='edit-description' id='edit-description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>
                 </div>
                 <br />
-                <EditPhotos />
                 <div id='photoBox'>
                     <label id='edit-label'>Upload Pet Photo: </label>
                         <input type='file' id='photo-upload'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>

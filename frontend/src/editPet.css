@@ -99,7 +99,8 @@
 }
 
 #edit-pet-image {
-    width: 12%;
+    width: 25%;
+    height: 280px;
     object-fit: cover;
     display: inline;
     margin-bottom: 1%;
