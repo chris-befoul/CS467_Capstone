@@ -252,10 +252,12 @@ const EditPetProfile = () => {
                 <br />
                 <div id='dispositionBox'>
                 <label id='edit-label'>Disposition: </label>
+                <br />
                     <DispCreate />
                 </div>
                 <br/>
                 <div id='descriptionBox'>
+                    <br />
                 <label id='edit-label'>Description: </label>
                     <br />
                     <textarea required type='text' maxLength={280} name='edit-description' id='edit-description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>

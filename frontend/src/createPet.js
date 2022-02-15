@@ -128,6 +128,8 @@ const CreatePetFormPage = () => {
             <br />
             <div id='dispositionBox'>
                 <label id='create-label'>Disposition: </label>
+                <br />
+
                     <div id='disposition'>
                         <label id='dispositionLabel'>Good with other animals</label>
                             <input type='checkbox' value='Good with other animals' name='disposition'  id='disp-check' onChange={dispositionChange} />
@@ -142,9 +144,10 @@ const CreatePetFormPage = () => {
             </div>
             <br/>
             <div id='descriptionBox'>
+            <br />
                 <label id='create-label'>Description: </label>
                     <br />
-                    <textarea required type='text' maxLength={280} name='description' id='description' placeholder='(280 Character Limit)' onChange={e => setDescript(e.target.value)}></textarea>
+                    <textarea required type='text' maxLength={280} name='description' id='create-description' placeholder='(280 Character Limit)' onChange={e => setDescript(e.target.value)}></textarea>
             </div>
             <br />
             <div id='photoBox'>
