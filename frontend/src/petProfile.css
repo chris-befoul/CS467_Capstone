@@ -1,5 +1,13 @@
+#main-photo {
+    height: 350px;
+    position: relative;
+    display: flex;
+    margin-right: 15%;
+}
+
 #pet-image {
-    width: 70%;
+    object-fit: contain;
+    /* width: 90%; */
 }
 
 #disposition-list {
@@ -59,4 +67,8 @@
 
 #small-photo:hover {
     opacity: 0.38;
+}
+
+#pet-description {
+    margin-right: 35%;
 }

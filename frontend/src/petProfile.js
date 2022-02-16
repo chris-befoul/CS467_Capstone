@@ -125,7 +125,9 @@ const ViewPetProfile = () => {
                 <div id='left-column'>
                     <div id='left-container'>
                         <div id='photos-container'>
-                            <Selectphoto />
+                            <div id='main-photo'>
+                                <Selectphoto />
+                            </div>
                             <br />
                             <PhotoOptions />
                         </div>
