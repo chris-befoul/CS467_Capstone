@@ -58,18 +58,18 @@ const ViewPetProfile = () => {
     const leaveProfile = () => {
         if(user.type === "Shelter") {
             travel('/');
-            window.location.reload();
+            // window.location.reload();
         }
         else {
             travel('/userprofile');
-            window.location.reload();
+            // window.location.reload();
         }
     }
 
     const editProfile = () => {
         const editURL = '/pets/editProfile/' + params.petID;
         travel(editURL);
-        window.location.reload();
+        // window.location.reload();
     }
 
     const Selectphoto = () => {
@@ -88,7 +88,7 @@ const ViewPetProfile = () => {
             return <div id='disposition-list'>
                 <h2>More About Me</h2>
                 <ul>
-                    {petData.disposition.map((disp) => <Disp title={disp} />)}
+                    {petData.disposition.map((disp) => <Disp key={disp} title={disp} />)}
                 </ul>
             </div>
         }
@@ -112,7 +112,7 @@ const ViewPetProfile = () => {
         if(photos.length > 1){
             return photos.map((pic) => {
                 if(pic.name != currPhoto) {
-                    return <Photo picture={pic.name}/>
+                    return <Photo key={pic.name} picture={pic.name}/>
                 }
             })
         }
@@ -154,7 +154,7 @@ const ViewPetProfile = () => {
                     </div>
                     <div id='profile-buttons'>
                         <button id='leave-profile' onClick={leaveProfile}>Leave</button>
-                        <button id="edit-pet" onClick={editProfile} hidden={user.type !== "Shelter"}>Edit Pet Profile</button>
+                        <button type='button' id="edit-pet" onClick={editProfile} hidden={user.id !== petData.shelter_id}>Edit Pet Profile</button>
                     </div>
                 </div>
             </ThemeProvider>

@@ -28,8 +28,7 @@ const EditPetProfile = () => {
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
     const [petDate, setDate] = React.useState();
-    const [petUrl, setUrl] = React.useState();
-    const [navigate, setNavigate] = React.useState(false);
+    const [shelterID, setID] = React.useState(null);
 
     const travel = useNavigate();
     const fetchURL = 'http://localhost:8080';
@@ -56,8 +55,9 @@ const EditPetProfile = () => {
             setAvail(edit.availability);
             setAge(edit.age);
             setDate(edit.date_created);
+            setID(edit.shelter_id);
             return;
-        })
+        }).catch(err => console.log("Error: ", err));
     }
 
     const dispositionChange = (event) => {
@@ -86,12 +86,12 @@ const EditPetProfile = () => {
         disposition: petDisp,
         description: petDescript,
         date_created: petDate,
-        shelter_id: 52
+        shelter_id: shelterID
     }
 
     const submitProfile = async (e) => {
         e.preventDefault();
-        const petURL = fetchURL + '/pets/' + params.petID;
+        const editURL = fetchURL + '/pets/' + params.petID;
 
         const types = ['image/png', 'image/jpeg'];
 
@@ -105,18 +105,12 @@ const EditPetProfile = () => {
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.patch(petURL, formPhoto).then( data => {
+        await axios.patch(editURL, formPhoto).then( async(data) => {
             const id = data.data.id;
             alert('Your pet profile has been updated!');
-            setUrl('/pets/viewProfile/' + id);
-            setNavigate(true);
+            travel('/pets/viewProfile/' + id);
         });
         return;;
-    }
-
-    if(navigate) {
-        travel(petUrl);
-        window.location.reload();
     }
 
     const TypeCreate = () => {
