@@ -11,8 +11,8 @@ const cors = require('cors');
 
 app.use(cors({
   credentials: true,
-  origin: [ 'http://localhost:3000', 'http://localhost:8080', 'https://cs467-sandbox.ue.r.appspot.com','http://cs467-sandbox.ue.r.appspot.com']
-  // origin: ['http://localhost:3000', 'http://localhost:8080', 'https://capstone-animal-adoption-app.wl.r.appspot.com','http://capstone-animal-adoption-app.wl.r.appspot.com']
+  // origin: [ 'http://localhost:3000', 'http://localhost:8080', 'https://cs467-sandbox.ue.r.appspot.com','http://cs467-sandbox.ue.r.appspot.com']
+  origin: ['http://localhost:3000', 'http://localhost:8080', 'https://capstone-animal-adoption-app.wl.r.appspot.com','http://capstone-animal-adoption-app.wl.r.appspot.com']
 }));
 app.options('*', cors());
 app.enable('trust proxy');
