@@ -15,21 +15,21 @@ const ShelterManagement = () => {
         }).then(shelter_id => {
             return fetch(fetchURL + '/pets?shelter=' + shelter_id, { method: 'GET'});
         }).then( res => res.json()).then( pets => {
+            // console.log(pets);
             pets.forEach(pet => {
-                if(pet.image == ''){
+                if(pet.photos.length < 1){
                     pet.image = photoURL + 'no_image/No_Image_Available.jpg';
                 } else {
-                    pet.image = photoURL + pet.id + "/" + pet.image;
+                    pet.image = photoURL + pet.photos[0].name;
                 }
             });
-            // console.log(pets);
+            console.log(pets);
             setPetFromAPI(pets);
         });
     }, []);
 
     const delete_pet = (id) => {
         console.log(id + ' Delete clicked!');
-        setPetFromAPI(petsFromAPI.filter((pet) => pet.id !== id));
     };
 
     return (

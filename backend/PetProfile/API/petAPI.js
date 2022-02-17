@@ -21,7 +21,10 @@ const petFunctions = require('../petHelperFunctions/petFunctions');
 const petPhotoFunction = require('../petHelperFunctions/petPhoto');
 
 router.get('/', function(req, res) {
-    petFunctions.get_all_pets(req.query.shelter).then(pets => {
+    petFunctions.get_all_pets(req.query.shelter).then(async (pets) => {
+        await Promise.all(pets.map(async (pet) => {
+            pet.photos = await petPhotoFunction.petsPhotos(pet.id);
+        }));
         res.status(200).json(pets);
     })
 })
@@ -49,7 +52,6 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
     petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date_created, data.shelter_id)
         .then( key => { 
             if(req.files && req.files.length > 0) {
-                petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date_created, data.shelter_id, req.files[0].originalname);
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
@@ -76,7 +78,7 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
         error.httpStatusCode = 400
         return next(error)
     }
-    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id, req.files[0].originalname).then(key => {
+    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
@@ -98,7 +100,6 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
 
 router.delete('/photo', (req, res) => {
     petPhotoFunction.deletePhoto(req.body.fileName).then(() => {
-        petFunctions.deleteImgFromPet(req.body.petID, req.body.fileName);
         return res.status(201).send(true);
     })
 })
