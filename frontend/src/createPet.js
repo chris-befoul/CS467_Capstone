@@ -19,17 +19,27 @@ const CreatePetFormPage = () => {
     const [petName, setName] = React.useState('');
     const [petBreed, setBreed] = React.useState('Golden Retriever');
     const [petAvail, setAvail] = React.useState('Available');
-    const [petSex, setSex] = React.useState(false);
+    const [petSex, setSex] = React.useState("Male");
     const [petAge, setAge] = React.useState('Puppy/Kitten/Baby');
     const [petDescript, setDescript] = React.useState('');
     const [petWeight, setWeight] = React.useState(0);
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
+    const [shelterID, setID] = React.useState(null);
     const [petUrl, setUrl] = React.useState();
     const [navigate, setNavigate] = React.useState(false);
 
     const travel = useNavigate();
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+
+    React.useEffect(() => {
+        fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+            const userInfo= data;
+            setID(userInfo.id);
+        });
+      }, []);
 
     const dispositionChange = (event) => {
         var tempDisp = petDisp;
@@ -51,12 +61,12 @@ const CreatePetFormPage = () => {
         type: petType,
         breed: petBreed,
         availability: petAvail,
-        sex: JSON.parse(petSex),
+        sex: petSex,
         age: petAge,
         weight: petWeight,
         disposition: petDisp,
         description: petDescript,
-        shelter_id: 52
+        shelter_id: shelterID
     }
 
     const submitProfile = async (e) => {
@@ -72,7 +82,7 @@ const CreatePetFormPage = () => {
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.post(fetchURL + '/pets/createPetProfile', formPhoto).then( data => {
+        await axios.post(fetchURL + '/pets/createProfile', formPhoto).then( data => {
             const id = data.data.id;
             alert('Your new pet profile has been created!');
             setUrl('/pets/viewProfile/' + id);
@@ -89,60 +99,63 @@ const CreatePetFormPage = () => {
     return (
         <div id='petBox'>
         <form id='petForm' name='petForm' onSubmit={submitProfile}>
-            <label>Pet's Name: </label>
+            <label id='create-label'>Pet's Name: </label>
                 <input required type='text' name='name' id='name' onChange={e => setName(e.target.value)}/> 
             <br/>
-            <label>Pet Type: </label>
-                <select onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}} name='type'>
+            <label id='create-label'>Pet Type: </label>
+                <select id='create-select' onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}} name='type'>
                     <option value='dog'>Dog</option>
                     <option value='cat'>Cat</option>
                     <option value='other'>Other</option>
                 </select>
-            <label>Breed: </label>
-                <select name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+            <label id='create-label'>Breed: </label>
+                <select id='create-select' name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
             <br />
-            <label>Availability: </label>
-                <select name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
-            <label>Sex: </label>
-                <select name='sex' onChange={e => setSex(e.target.value)}>
-                    <option value={false}>Male</option>
-                    <option value={true}>Female</option>
+            <label id='create-label'>Availability: </label>
+                <select id='create-select' name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+            <label id='create-label'>Sex: </label>
+                <select id='create-select' name='sex' onChange={e => setSex(e.target.value)}>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
             <br />
             <div id='age-weight'>
-            <label>Age: </label>
-                <select name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
-            <label>Weight: </label> 
+            <label id='create-label'>Age: </label>
+                <select id='create-select' name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+            <label id='create-label'>Weight: </label> 
                 <input required type='number' name='weight' placeholder={0} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
             </div>
             <br />
             <div id='dispositionBox'>
-                <label>Disposition: </label>
+                <label id='create-label'>Disposition: </label>
+                <br />
+
                     <div id='disposition'>
                         <label id='dispositionLabel'>Good with other animals</label>
-                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} />
-                        <label id='dispositionLabel'>Good with children</label>
-                            <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} />
+                            <input type='checkbox' value='Good with other animals' name='disposition'  id='disp-check' onChange={dispositionChange} />
+                        <label id='dispositionLabel-right'>Good with children</label>
+                            <input type='checkbox' value='Good with children' name='disposition' id='disp-check' onChange={dispositionChange} />
                         <br/>
                         <label id='dispositionLabel'>Animal must be leashed at all times</label>
-                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} />
-                        <label id='dispositionLabel'>Very Active</label>
-                            <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange}/>
+                            <input type='checkbox' value='Animal must be leashed at all times' id='disp-check' name='disposition' onChange={dispositionChange} />
+                        <label id='dispositionLabel-right'>Very Active</label>
+                            <input type='checkbox' value='Very Active' name='disposition' id='disp-check' onChange={dispositionChange}/>
                     </div>
             </div>
             <br/>
             <div id='descriptionBox'>
-                <label>Description: </label>
+            <br />
+                <label id='create-label'>Description: </label>
                     <br />
-                    <textarea required type='text' maxLength={280} name='description' id='description' placeholder='(280 Character Limit)' onChange={e => setDescript(e.target.value)}></textarea>
+                    <textarea required type='text' maxLength={280} name='description' id='create-description' placeholder='(280 Character Limit)' onChange={e => setDescript(e.target.value)}></textarea>
             </div>
             <br />
             <div id='photoBox'>
-                <label>Upload Pet Photo: </label>
-                    <input required type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
+                <label id='create-label'>Upload Pet Photo: </label>
+                    <input required type='file' id='photo-upload'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
             </div>
             <br />
-            <input type='submit' value='Save Profile' id='save'/>
+            <input type='submit' value='Save Profile' id='create-save'/>
         </form>
         </div>
     )

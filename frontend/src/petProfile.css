@@ -1,15 +1,37 @@
+#main-photo {
+    height: 350px;
+    position: relative;
+    display: flex;
+    margin-right: 15%;
+}
 
-   
 #pet-image {
-    width: 20%;
-    height: 25%;
-    margin-left: 15%;
-    margin-right: 5%;
+    object-fit: contain;
+    /* width: 90%; */
+}
+
+#disposition-list {
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
+
+#left-column {
     float: left;
+    width: 40%;
+}
+
+#left-container {
+    margin-left: 30%;
+    margin-top: 5%;
+}
+
+#right-column {
+    float: right;
+    width: 60%;
 }
 
 #main-pet-data {
-    padding-top: 5%;
+    padding-top: 10%;
 }
 
 #edit-pet, #leave-profile {
@@ -27,4 +49,29 @@
 #edit-pet:hover, #leave-profile:hover {
     background-color: #144cb4;
     color: white;
+<<<<<<< HEAD
+=======
+}
+
+#profile-buttons {
+    margin-top: 10%;
+    margin-right: 5%;
+}
+
+#pet-name {
+    margin-bottom: 2%;
+}
+
+#small-photo {
+    margin: 2%;
+    width: 16%;
+}
+
+#small-photo:hover {
+    opacity: 0.38;
+}
+
+#pet-description {
+    margin-right: 35%;
+>>>>>>> remotes/origin/HEAD
 }

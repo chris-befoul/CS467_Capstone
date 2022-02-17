@@ -3,23 +3,23 @@
     width: 60%;
 }
 
-input[type=checkbox] {
+#disp-check {
     transform: scale(1.5);
     margin-right: 4%;
-    margin-left: 1%;
+    margin-left: 2%;
     margin-bottom: 3%;
     margin-top: 2%;
 }
 
-#description {
-    margin-bottom: 3%;
+#create-description {
+    margin-bottom: 2%;
     width: 60%;
     float: right;
-    margin-right: 20%;
+    margin-right: 23%;
     height: 200px;
 }
 
-select {
+#create-select {
     transform: scale(1.25);
     margin-right: 12%;
     margin-left: 5%;
@@ -27,7 +27,7 @@ select {
     margin-top: 2%;
 }
 
-label {
+#create-label {
     font-weight: bold;
     font-size: larger;
     margin-bottom: 1%;
@@ -36,10 +36,22 @@ label {
 #disposition {
     background-color: #C4C4C4;
     float: right;
-    padding-left: 3%;
-    padding-top: 2%;
-    width: 75%;
-    margin-right: 8%;
+    padding-left: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 82%;
+    margin-right: 2%;
+}
+
+#dispositionLabel {
+    font-size: large;
+    font-weight: bold;
+}
+
+#dispositionLabel-right {
+    font-size: large;
+    font-weight: bold;
+    margin-left: 11%;
 }
 
 #name {
@@ -48,7 +60,7 @@ label {
     margin-left: 5%;
 }
 
-#save {
+#create-save {
     border-radius: 5px;
     padding: 10px 30px;
     font-family: 'Courier';
@@ -57,9 +69,10 @@ label {
     color: white;
     border: none;
     float: right;
+    margin-top: 10%;
 }
 
-#save:hover {
+#create-save:hover {
     background-color: #144cb4;
     color: white;
 }

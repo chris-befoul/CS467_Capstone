@@ -16,6 +16,9 @@ function App() {
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+    
     if (name === 'undefined undefined') {
         setName('');
     }
@@ -56,7 +59,7 @@ function App() {
                 <Route exact path="/admin" element={<Admin setName={setName}/>} />
                 <Route exact path="/login" element={<Login setName={setName}/>}/>
                 <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
-                <Route exact path="/pets/editProfile" element={<EditPetProfile />} />
+                <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
                 <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
                 <Route exact path="/userprofile" element={<UserProfile />} />
             </Routes>
