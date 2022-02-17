@@ -42,7 +42,8 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
     const data = JSON.parse(req.body.data);
     petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date_created, data.shelter_id)
         .then( key => { 
-            if(req.files) {
+            if(req.files && req.files.length > 0) {
+                petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date_created, data.shelter_id, req.files[0].originalname);
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
@@ -69,7 +70,7 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
         error.httpStatusCode = 400
         return next(error)
     }
-    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
+    petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id, req.files[0].originalname).then(key => {
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
@@ -91,6 +92,7 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
 
 router.delete('/photo', (req, res) => {
     petPhotoFunction.deletePhoto(req.body.fileName).then(() => {
+        petFunctions.deleteImgFromPet(req.body.petID, req.body.fileName);
         return res.status(201).send(true);
     })
 })

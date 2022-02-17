@@ -158,6 +158,11 @@ router.patch('/user', async(req, res) => {
     try {
         const cookie = req.cookies['jwt'];
         const claims = jwt.verify(cookie, 'secret');
+        
+        if (!claims) {
+            return res.status(401).send('Unauthenticated!');
+        }
+
         const userKey = datastore.key([USER, parseInt(claims._id)]);
         const user = await datastore.get(userKey);
         
