@@ -15,8 +15,8 @@ const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 const EditPetProfile = () => {
     const params = useParams();
-    // const [petID, setID] = React.useState('5158257651875840');
     const [petData, setData] = React.useState({});
+    const [currPhotos, setCurr] = React.useState([])
     const [petType, setType] = React.useState(null);
     const [petName, setName] = React.useState(null);
     const [petBreed, setBreed] = React.useState(null);
@@ -28,8 +28,7 @@ const EditPetProfile = () => {
     const [petDisp, setDisp] = React.useState([]);
     const [petPhoto, setPhoto] = React.useState(null);
     const [petDate, setDate] = React.useState();
-    const [petUrl, setUrl] = React.useState();
-    const [navigate, setNavigate] = React.useState(false);
+    const [shelterID, setID] = React.useState(null);
 
     const travel = useNavigate();
     const fetchURL = 'http://localhost:8080';
@@ -38,13 +37,12 @@ const EditPetProfile = () => {
 
     React.useEffect(() => {
         getPetData(params.petID);
-        console.log(petData);
     }, [params.petID]);
 
     const getPetData = async (petID) => {
         const petURL = fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
-            console.log(res.data);
+            setCurr(res.data.photos);
             const edit = res.data.data;
             setData(edit);
             setName(edit.name);
@@ -57,8 +55,9 @@ const EditPetProfile = () => {
             setAvail(edit.availability);
             setAge(edit.age);
             setDate(edit.date_created);
+            setID(edit.shelter_id);
             return;
-        })
+        }).catch(err => console.log("Error: ", err));
     }
 
     const dispositionChange = (event) => {
@@ -87,22 +86,12 @@ const EditPetProfile = () => {
         disposition: petDisp,
         description: petDescript,
         date_created: petDate,
-        shelter_id: petData.shelter_id
-    }
-
-    const needCheck = (label) => {
-        for (var x = 0; x < petDisp; x++) {
-            console.log(petDisp[x]);
-            if(petDisp[x] === label) {
-                return true;
-            }
-        }
-        return false;
+        shelter_id: shelterID
     }
 
     const submitProfile = async (e) => {
         e.preventDefault();
-        const petURL = fetchURL + '/pets/' + params.petID;
+        const editURL = fetchURL + '/pets/' + params.petID;
 
         const types = ['image/png', 'image/jpeg'];
 
@@ -116,110 +105,164 @@ const EditPetProfile = () => {
         }
         formPhoto.append('data', JSON.stringify(formData));
 
-        await axios.patch(petURL, formPhoto).then( data => {
+        await axios.patch(editURL, formPhoto).then( async(data) => {
             const id = data.data.id;
             alert('Your pet profile has been updated!');
-            setUrl('/pets/viewProfile/' + id);
-            setNavigate(true);
+            travel('/pets/viewProfile/' + id);
         });
         return;;
     }
 
-    if(navigate) {
-        travel(petUrl);
-        window.location.reload();
-    }
-
     const TypeCreate = () => {
         if (petType != null) {
-            return <select name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
+            return <select id='edit-select' name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
                         <option value='Dog'>Dog</option>
                         <option value='Cat'>Cat</option>
                         <option value='Other'>Other</option>
                     </select>
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const BreedCreate = () => {
         if (petType != null) {
-            return <select name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+            return <select id='edit-select' name='breed' defaultValue={petBreed} onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option key={x}>{x}</option>})}</select> 
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const AvailableCreate = () => {
         if(petAvail != null) {
-            return <select name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+            return <select id='edit-select' name='availability' defaultValue={petAvail} onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const AgeCreate = () => {
         if(petAge != null) {
-            return <select name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+            return <select id='edit-select' name='age' defaultValue={petAge} onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option key={x}>{x}</option>})}</select>
         }
-        return <p>Loading...</p>
+        return <p></p>
     }
 
     const DispCreate = () => {
         if(petDisp != null) {
-            return <div id='disposition'>
+            return <div id='edit-disposition'>
                         <label id='dispositionLabel'>Good with other animals</label>
-                            <input type='checkbox' value='Good with other animals' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with other animals')}/>
-                        <label id='dispositionLabel'>Good with children </label>
-                            <input type='checkbox' value='Good with children' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
+                            <input type='checkbox' value='Good with other animals' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with other animals')}/>
+                        <label id='dispositionLabel-right'>Good with children </label>
+                            <input type='checkbox' value='Good with children' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Good with children')}/>
+                            <br />
                         <label id='dispositionLabel'>Animal must be leashed at all times </label>
-                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
-                        <label id='dispositionLabel'>Very Active </label>
-                            <input type='checkbox' value='Very Active' name='disposition' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
+                            <input type='checkbox' value='Animal must be leashed at all times' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Animal must be leashed at all times')}/>
+                        <label id='dispositionLabel-right'>Very Active </label>
+                            <input type='checkbox' value='Very Active' name='disposition' id='disp-check' onChange={dispositionChange} defaultChecked={petDisp.includes('Very Active')}/>
                     </div>
         }
-        return <p>Loading...</p>
+        return <p></p>
+    }
+
+    const deletePhoto = async(e) => {
+        e.preventDefault();
+        if(window.confirm("Are you sure you want to delete this photo from your pet profile?")) {
+            await axios({
+                method: 'delete',
+                url: fetchURL + '/pets/photo',
+                data: {
+                fileName: e.target.name
+                }
+            }).then((res) => {
+                if(res.status === 201) {
+                    alert("Pet photo has been removed from profile");
+                    window.location.reload();
+                }
+                else {
+                    alert("Something went wrong with photo deletion please try again and it it persists contact admin.")
+                }
+            });
+        }
+        else {
+            console.log("Photo not deleted");
+        }
+    }
+
+    
+
+    const Photo = (props) => {
+        const [deletePic, setDelete] = React.useState(false);
+
+        const picEnter = () => {
+            setDelete(true);
+        }
+
+        const picLeave = () => {
+            setDelete(false);
+        }
+
+        return <li id='photo-list'>
+            <div id='edit-photo'> 
+            <img id='edit-pet-image' name={props.picture.name} src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
+            { deletePic ? <p id='delete-pic' onMouseEnter={picEnter} onMouseLeave={picLeave}>Delete Photo</p> : null}
+            </div> 
+            </li>;
+    }
+
+    const EditPhotos = () => {
+        if(currPhotos && currPhotos.length > 0) {
+            return <div id='edit-photo-container'>
+                <ul id='edit-photos'>
+                    {currPhotos.map((pic) => <Photo picture={pic} key={pic.name}/>)}
+                </ul>
+            </div>
+        }
+        return <p></p>
     }
     
     return (
         <div id='petBox'>
-            <form id='petForm' name='petForm' onSubmit={submitProfile}>
-                <label>Pet's Name: </label>
+            <form id='edit-pet-form' name='edit-pet-form' onSubmit={submitProfile}>
+                <EditPhotos />
+                <label id='edit-label'>Pet's Name: </label>
                     <input required type='text' name='name' id='name' defaultValue={petName} onChange={e => setName(e.target.value)}/> 
                 <br/>
-                <label>Pet Type: </label>
+                <label id='edit-label'>Pet Type: </label>
                     <TypeCreate />
-                <label>Breed: </label>
+                <label id='edit-label'>Breed: </label>
                     <BreedCreate />
                 <br />
-                <label>Availability: </label>
+                <label id='edit-label'>Availability: </label>
                     <AvailableCreate />
-                <label>Sex: </label>
-                    <select name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
+                <label id='edit-label'>Sex: </label>
+                    <select id='edit-select' name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 <div id='age-weight'>
-                    <label>Age: </label>
+                    <label id='edit-label'>Age: </label>
                         <AgeCreate />
-                    <label>Weight: </label> 
+                    <label id='edit-label'>Weight: </label> 
                         <input required type='number' name='weight' defaultValue={petWeight} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
                 </div>
                 <br />
                 <div id='dispositionBox'>
-                <label>Disposition: </label>
+                <label id='edit-label'>Disposition: </label>
+                <br />
                     <DispCreate />
                 </div>
                 <br/>
                 <div id='descriptionBox'>
-                <label>Description: </label>
                     <br />
-                    <textarea required type='text' maxLength={280} name='description' id='description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>
+                <label id='edit-label'>Description: </label>
+                    <br />
+                    <textarea required type='text' maxLength={280} name='edit-description' id='edit-description' defaultValue={petDescript} onChange={e => setDescript(e.target.value)}></textarea>
                 </div>
                 <br />
                 <div id='photoBox'>
-                    <label>Upload Pet Photo: </label>
-                        <input type='file' name='petPhoto' id='petPhoto'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
+                    <label id='edit-label'>Upload Pet Photo: </label>
+                        <input type='file' id='photo-upload'  onChange={addPhoto} accept='image/jpeg, image/png' multiple/>
                 </div>
                 <br />
-                <input type='submit' value='Save Profile' id='save'/>
+                <input type='submit' value='Save Profile' id='edit-save'/>
             </form>
         </div>
     )

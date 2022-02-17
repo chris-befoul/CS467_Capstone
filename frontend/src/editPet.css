@@ -1,25 +1,25 @@
-#petForm {
+#edit-pet-form {
     margin: auto;
     width: 60%;
 }
 
-input[type=checkbox] {
+#disp-check {
     transform: scale(1.5);
     margin-right: 4%;
-    margin-left: 1%;
+    margin-left: 2%;
     margin-bottom: 3%;
     margin-top: 2%;
 }
 
-#description {
-    margin-bottom: 3%;
+#edit-description {
+    margin-bottom: 2%;
     width: 60%;
     float: right;
-    margin-right: 20%;
+    margin-right: 23%;
     height: 200px;
 }
 
-select {
+#edit-select {
     transform: scale(1.25);
     margin-right: 12%;
     margin-left: 5%;
@@ -27,19 +27,31 @@ select {
     margin-top: 2%;
 }
 
-label {
+#edit-label {
     font-weight: bold;
     font-size: larger;
     margin-bottom: 1%;
 }
 
-#disposition {
+#edit-disposition {
     background-color: #C4C4C4;
     float: right;
-    padding-left: 3%;
-    padding-top: 2%;
-    width: 75%;
-    margin-right: 8%;
+    padding-left: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 82%;
+    margin-right: 2%;
+}
+
+#dispositionLabel {
+    font-size: large;
+    font-weight: bold;
+}
+
+#dispositionLabel-right {
+    font-size: large;
+    font-weight: bold;
+    margin-left: 7%;
 }
 
 #name {
@@ -48,7 +60,9 @@ label {
     margin-left: 5%;
 }
 
-#save {
+#edit-save {
+    margin-top: 14%;
+    margin-bottom: 10%;
     border-radius: 5px;
     padding: 10px 30px;
     font-family: 'Courier';
@@ -59,7 +73,7 @@ label {
     float: right;
 }
 
-#save:hover {
+#edit-save:hover {
     background-color: #144cb4;
     color: white;
 }
@@ -69,5 +83,77 @@ label {
 }
 
 #photoBox {
-    margin-top: 25%;
+    margin-top: 6%;
+    float: left;
+}
+
+#edit-photos {
+    display: inline;
+    float: left;
+}
+
+#edit-photos li {
+    list-style-type: none;
+    display: inline;
+    margin: 1%;
+}
+
+#edit-pet-image {
+    width: 25%;
+    height: 280px;
+    object-fit: cover;
+    display: inline;
+    margin-bottom: 1%;
+}
+
+#edit-pet-image:hover {
+    opacity: 0.38;
+}
+
+#edit-photo {
+    margin: 3%;
+    display: inline;
+    position: relative;
+}
+
+#delete-pic {
+    position: absolute;
+    display: inline;
+    bottom: 600%;
+    left: 30%;
+    right: 30%;
+    font-family: 'Courier';
+    font-weight: bolder;
+    font-size: larger;
+    color: #144cb4;
+}
+
+#delete {
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-family: 'Courier';
+    font-weight: bold;
+    background-color: #3C64B1;
+    color: white;
+    border: none;
+}
+
+#delete:hover {
+    background-color: #144cb4;
+    color: white;
+}
+
+#photo-upload::file-selector-button {
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-family: 'Courier';
+    font-weight: bold;
+    background-color: #3C64B1;
+    color: white;
+    border: none;
+}
+
+#photo-upload::file-selector-button:hover {
+    background-color: #144cb4;
+    color: white;
 }
