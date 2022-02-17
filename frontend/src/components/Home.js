@@ -60,10 +60,12 @@ const Home = (props) => {
         axios.all([requestOne, requestTwo, requestThree, requestFour])
         .then(
           axios.spread((...res) => {
-            const responseOne = res[0].data;
-            const responseTwo = res[1].data;
-            const responseThree = res[2].data;
-            const responseFour = res[3].data;
+            const responseOne = res[0].data.data;
+            const responseTwo = res[1].data.data;
+            const responseThree = res[2].data.data;
+            const responseFour = res[3].data.data;
+
+            console.log(responseOne);
 
             setPet1Name(responseOne.name);
             setPet1Desc(responseOne.description);
