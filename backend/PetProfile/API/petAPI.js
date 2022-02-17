@@ -13,7 +13,7 @@ const os = require('os');
 //     }
 // })
 const upload = multer({ dest: os.tmpdir() });
-// const directory = 'uploads';
+const directory = os.tmpdir();
 const router = express.Router();
 router.use(bodyParser.json());
 
@@ -21,13 +21,18 @@ const petFunctions = require('../petHelperFunctions/petFunctions');
 const petPhotoFunction = require('../petHelperFunctions/petPhoto');
 
 router.get('/:petID', function(req, res) {
-    petFunctions.get_pet(req.params.petID).then(pet => {
+    petFunctions.get_pet(req.params.petID).then( async(pet) => {
         if (pet[0] === undefined || pet[0] === null) {
             res.status(404).json({ 'Error': 'No pet with this petID exists' });
             return;
         }
         else {
-            res.status(200).json(pet[0]);
+            const petFiles = await petPhotoFunction.petsPhotos(req.params.petID);
+            const petData = {
+                data: pet[0],
+                photos: petFiles
+            };
+            res.status(200).json(petData);
             return;
         }
     })
@@ -39,7 +44,7 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
         .then( key => { 
             if(req.files) {
                 for (var x = 0; x < req.files.length; x++) {
-                    const fileName = key.id + '/' + (x + 1);
+                    const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
                 }
                 // fs.readdir(directory, (err, files) => {
@@ -66,7 +71,7 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
     }
     petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
                 for (var x = 0; x < req.files.length; x++) {
-                    const fileName = key.id + '/' + (x + 1);
+                    const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
                 }
                 // fs.readdir(directory, (err, files) => {
@@ -82,6 +87,12 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
                 return;
     })
     return;
+})
+
+router.delete('/photo', (req, res) => {
+    petPhotoFunction.deletePhoto(req.body.fileName).then(() => {
+        return res.status(201).send(true);
+    })
 })
 
 module.exports = router;
