@@ -33,8 +33,8 @@ const Login = (props) => {
     if (content.message === 'User not found!') {
       alert('User not found!');
     } else {
-    setNavigate(true);
-    setName(content.name);
+      setNavigate(true);
+      setName(content.name);
     }
   }
 
