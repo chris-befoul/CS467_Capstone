@@ -20,6 +20,12 @@ router.use(bodyParser.json());
 const petFunctions = require('../petHelperFunctions/petFunctions');
 const petPhotoFunction = require('../petHelperFunctions/petPhoto');
 
+router.get('/', function(req, res) {
+    petFunctions.get_all_pets(req.query.shelter).then(pets => {
+        res.status(200).json(pets);
+    })
+})
+
 router.get('/:petID', function(req, res) {
     petFunctions.get_pet(req.params.petID).then( async(pet) => {
         if (pet[0] === undefined || pet[0] === null) {

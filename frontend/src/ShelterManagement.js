@@ -1,34 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PetList from './components/PetList'
 import { Typography} from "@mui/material";
 
 const ShelterManagement = () => {
-    const pets = [
-        {
-            id: '1',
-            name: 'Callie',
-            type: 'Dog',
-            availability: 'Available',
-            age: 'Young',
-            image: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=1.00xw:0.756xh;0,0.0756xh&resize=980:*'
-        },
-        {
-            id: '2',
-            name: 'Chloe',
-            type: 'Dog',
-            availability: 'Pending',
-            age: 'Adult',
-            image: 'https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/322868_1100-800x825.jpg'
-        },
-        {
-            id: '3',
-            name: 'Jackie',
-            type: 'Dog',
-            availability: 'Adopted',
-            age: 'Puppy',
-            image: 'https://kb.rspca.org.au/wp-content/uploads/2018/11/golder-retriever-puppy.jpeg'
-        }
-    ];
+    const [petsFromAPI, setPetFromAPI] = useState(null);
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    const fetchURL = 'http://localhost:8080';
+    // const fetchURL = "https://cs467-sandbox.ue.r.appspot.com";
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+
+    useEffect(() => {
+        fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+            return data.id;
+        }).then(shelter_id => {
+            return fetch(fetchURL + '/pets?shelter=' + shelter_id, { method: 'GET'});
+        }).then( res => res.json()).then( pets => {
+            pets.forEach(pet => {
+                if(pet.image == ''){
+                    pet.image = photoURL + 'no_image/No_Image_Available.jpg';
+                } else {
+                    pet.image = photoURL + pet.id + "/" + pet.image;
+                }
+            });
+            // console.log(pets);
+            setPetFromAPI(pets);
+        });
+    }, []);
+
+    const delete_pet = (id) => {
+        console.log(id + ' Delete clicked!');
+        setPetFromAPI(petsFromAPI.filter((pet) => pet.id !== id));
+    };
 
     return (
         <div>
@@ -37,7 +39,10 @@ const ShelterManagement = () => {
                     Shelter Management
                 </Typography>
             </div>
-            <PetList pets={pets}/>
+            {(petsFromAPI !== null)
+            ? <PetList pets={petsFromAPI} onDelete={delete_pet}/>
+            : <div style={{textAlign: 'center'}}>Loading</div>
+            }
         </div>
     )
 }

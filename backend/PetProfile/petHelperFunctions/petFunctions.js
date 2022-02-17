@@ -65,6 +65,13 @@ async function post_pet(name, type, breed, availability, sex, age, weight, dispo
         return new_entry });
 }
 
+async function get_all_pets(shelter_id) {
+    const q = helper.datastore.createQuery(PET).filter('shelter_id', '=', shelter_id);
+    return helper.datastore.runQuery(q).then((entities) => {
+        return entities[0].map(helper.fromDatastore);
+    });
+}
+
 async function deleteImgFromPet(pet_id, filename){
     const key = helper.datastore.key([PET, parseInt(pet_id)]);
     const result = await helper.datastore.get(key);
@@ -97,5 +104,6 @@ module.exports = {
     post_pet,
     get_pet,
     edit_pet,
+    get_all_pets,
     deleteImgFromPet
 }

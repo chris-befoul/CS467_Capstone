@@ -41,7 +41,7 @@ const Navbar = (props) => {
         menu = (
             <div className="links">
             <Link to='/pets/createPetProfile' className='nav-link'>Create</Link>
-            <Link to='/' className='nav-link'>Manage</Link>
+            <Link to='/sheltermanagement' className='nav-link'>Manage</Link>
             <Link to='/shelterprofile' className='nav-link'>Shelter Profile</Link>
             <Link to="/Login" className='nav-link' onClick={logout}>Logout</Link>
             </div>
