@@ -22,7 +22,6 @@ app.use(express.json());
 const userRoute = require('./user');
 const shelterRoute = require('./shelter');
 app.use('/api', routes);
-app.use('/api', routes);
 app.use('/users', userRoute);
 app.use('/shelters', shelterRoute);
 app.use('/pets', require('./PetProfile/API/petAPI'));
