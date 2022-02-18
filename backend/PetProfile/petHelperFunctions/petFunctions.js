@@ -63,9 +63,15 @@ async function get_all_pets(shelter_id) {
     });
 }
 
+async function delete_pet(pet_id){
+    const key = helper.datastore.key([PET, parseInt(pet_id)]);
+    await helper.datastore.delete(key);
+}
+
 module.exports = {
     post_pet,
     get_pet,
     edit_pet,
-    get_all_pets
+    get_all_pets,
+    delete_pet
 }

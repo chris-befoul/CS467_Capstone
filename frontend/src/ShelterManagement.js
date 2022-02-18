@@ -29,7 +29,10 @@ const ShelterManagement = () => {
     }, []);
 
     const delete_pet = (id) => {
-        console.log(id + ' Delete clicked!');
+        // console.log(id + ' Delete clicked!');
+        fetch(fetchURL + '/pets/' + id, { method: 'DELETE'}).then(() => {
+            setPetFromAPI(petsFromAPI.filter((pet) => pet.id !== id));
+        });
     };
 
     return (
