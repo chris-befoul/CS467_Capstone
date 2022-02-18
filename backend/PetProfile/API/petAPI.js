@@ -20,6 +20,15 @@ router.use(bodyParser.json());
 const petFunctions = require('../petHelperFunctions/petFunctions');
 const petPhotoFunction = require('../petHelperFunctions/petPhoto');
 
+router.get('/', function(req, res) {
+    petFunctions.get_all_pets(req.query.shelter).then(async (pets) => {
+        await Promise.all(pets.map(async (pet) => {
+            pet.photos = await petPhotoFunction.petsPhotos(pet.id);
+        }));
+        res.status(200).json(pets);
+    })
+})
+
 router.get('/:petID', function(req, res) {
     petFunctions.get_pet(req.params.petID).then( async(pet) => {
         if (pet[0] === undefined || pet[0] === null) {
@@ -42,7 +51,7 @@ router.patch('/:petID', upload.array('file'), (req,res) => {
     const data = JSON.parse(req.body.data);
     petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date_created, data.shelter_id)
         .then( key => { 
-            if(req.files) {
+            if(req.files && req.files.length > 0) {
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + req.files[x].originalname;
                     petPhotoFunction.uploadPhoto(req.files[x].path, fileName);

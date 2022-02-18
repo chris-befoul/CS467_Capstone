@@ -18,7 +18,7 @@ const ViewPetProfile = () => {
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
 
     React.useEffect(() => {
         getPetData(params.petID);
@@ -57,7 +57,7 @@ const ViewPetProfile = () => {
 
     const leaveProfile = () => {
         if(user.type === "Shelter") {
-            travel('/');
+            travel('/shelterprofile');
             // window.location.reload();
         }
         else {

@@ -10,6 +10,8 @@ import CreatePetFormPage from "./createPet";
 import EditPetProfile from "./editPet";
 import ViewPetProfile from "./petProfile";
 import UserProfile from './UserProfile';
+import ShelterProfile from './ShelterProfile';
+import ShelterManagement from './ShelterManagement';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -62,6 +64,8 @@ function App() {
                 <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
                 <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
                 <Route exact path="/userprofile" element={<UserProfile />} />
+                <Route exact path="/shelterprofile" element={<ShelterProfile />} />
+                <Route exact path="/sheltermanagement" element={<ShelterManagement />} />
             </Routes>
         </BrowserRouter>
     )
