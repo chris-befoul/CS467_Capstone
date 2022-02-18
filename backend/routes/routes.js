@@ -154,6 +154,56 @@ router.delete('/user', (req, res) => {
     }
 });
 
+router.patch('/user', async(req, res) => {
+    try {
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, 'secret');
+        
+        if (!claims) {
+            return res.status(401).send('Unauthenticated!');
+        }
+
+        const userKey = datastore.key([USER, parseInt(claims._id)]);
+        const user = await datastore.get(userKey);
+        
+        if (!user[0]){
+            return res.status(404).send('No user with this id is found!');
+        }
+
+        if (req.body.password || req.body.new_password !== ''){
+            if(!await bcrypt.compare(req.body.password, user[0].password)){
+                return res.status(400).send("invalid password!");
+            }
+        }
+
+        const salt = await bcrypt.genSalt();
+        var hashedPassword = '';
+        if(req.body.new_password === ''){
+            hashedPassword = user[0].password;
+        } else{
+            hashedPassword = await bcrypt.hash(req.body.new_password, salt);
+        }
+        const updated_user = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            email: req.body.email,
+            phone: req.body.phone,
+            password: hashedPassword,
+            city: req.body.city,
+            state: req.body.state,
+            zip_code: req.body.zip_code,
+            email_preference: req.body.email_preference,
+            type: req.body.type,
+            shelter_name: req.body.shelter_name
+        };
+        datastore.save({ "key": userKey, "data": updated_user }).then(()=>{
+            res.status(200).send('updated!');
+        });        
+    } catch {
+        res.status(500).send();
+    }
+});
+
 router.post('/logout', (req, res) => {
     // removing cookie
     res.cookie('jwt', '', {maxAge: 0});

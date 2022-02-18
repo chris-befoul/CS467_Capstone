@@ -7,15 +7,15 @@ import "./createPet.css";
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
 const breeds = {
-    dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
-    cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
-    other: ['Other']
+    Dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
+    Cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
+    Other: ['Other']
 };
 const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
 const CreatePetFormPage = () => {
-    const [petType, setType] = React.useState("dog");
+    const [petType, setType] = React.useState("Dog");
     const [petName, setName] = React.useState('');
     const [petBreed, setBreed] = React.useState('Golden Retriever');
     const [petAvail, setAvail] = React.useState('Available');
@@ -104,9 +104,10 @@ const CreatePetFormPage = () => {
             <br/>
             <label id='create-label'>Pet Type: </label>
                 <select id='create-select' onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}} name='type'>
-                    <option value='dog'>Dog</option>
-                    <option value='cat'>Cat</option>
-                    <option value='other'>Other</option>
+                    <option value='Dog'>Dog</option>
+                    <option value='Cat'>Cat</option>
+                    <option value='Other'>Other</option>
+
                 </select>
             <label id='create-label'>Breed: </label>
                 <select id='create-select' name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 

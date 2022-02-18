@@ -31,8 +31,8 @@ const ShelterSignup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormErrors(await validate(formData));
         setIsSubmit(true);
+        setFormErrors(await validate(formData));
     };
 
     useEffect(() => {

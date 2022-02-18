@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from 'react-router-dom';
 import "./UserSignup.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -38,8 +37,8 @@ const UserSignup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormErrors(await validate(formData));
         setIsSubmit(true);
+        setFormErrors(await validate(formData));
     };
 
     useEffect(() => {

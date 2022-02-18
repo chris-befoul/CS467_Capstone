@@ -6,9 +6,9 @@ import "./editPet.css";
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
 const breeds = {
-    dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
-    cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
-    other: ['Other']
+    Dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
+    Cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
+    Other: ['Other']
 }
 const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
@@ -31,6 +31,7 @@ const EditPetProfile = () => {
     const [shelterID, setID] = React.useState(null);
 
     const travel = useNavigate();
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
@@ -116,9 +117,9 @@ const EditPetProfile = () => {
     const TypeCreate = () => {
         if (petType != null) {
             return <select id='edit-select' name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
-                        <option value='dog'>Dog</option>
-                        <option value='cat'>Cat</option>
-                        <option value='other'>Other</option>
+                        <option value='Dog'>Dog</option>
+                        <option value='Cat'>Cat</option>
+                        <option value='Other'>Other</option>
                     </select>
         }
         return <p></p>
@@ -169,7 +170,8 @@ const EditPetProfile = () => {
                 method: 'delete',
                 url: fetchURL + '/pets/photo',
                 data: {
-                fileName: e.target.name
+                fileName: e.target.name,
+                petID: params.petID
                 }
             }).then((res) => {
                 if(res.status === 201) {
@@ -201,7 +203,7 @@ const EditPetProfile = () => {
 
         return <li id='photo-list'>
             <div id='edit-photo'> 
-            <img id='edit-pet-image' name={props.picture.name} src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
+            <img id='edit-pet-image' name={props.picture.name} src={photoURL + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
             { deletePic ? <p id='delete-pic' onMouseEnter={picEnter} onMouseLeave={picLeave}>Delete Photo</p> : null}
             </div> 
             </li>;
