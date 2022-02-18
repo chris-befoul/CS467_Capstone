@@ -3,6 +3,10 @@
     width: 60%;
 }
 
+#edit-photo-container {
+    display: flex;
+}
+
 #disp-check {
     transform: scale(1.5);
     margin-right: 4%;
@@ -90,6 +94,7 @@
 #edit-photos {
     display: inline;
     float: left;
+    width: 100%;
 }
 
 #edit-photos li {
@@ -101,7 +106,7 @@
 #edit-pet-image {
     width: 25%;
     height: 280px;
-    object-fit: cover;
+    object-fit:contain;
     display: inline;
     margin-bottom: 1%;
 }
