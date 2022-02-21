@@ -170,7 +170,7 @@ router.patch('/user', async(req, res) => {
             return res.status(404).send('No user with this id is found!');
         }
 
-        if (req.body.password || req.body.new_password !== ''){
+        if (req.body.password){
             if(!await bcrypt.compare(req.body.password, user[0].password)){
                 return res.status(400).send("invalid password!");
             }

@@ -30,9 +30,11 @@ const ShelterManagement = () => {
 
     const delete_pet = (id) => {
         // console.log(id + ' Delete clicked!');
-        fetch(fetchURL + '/pets/' + id, { method: 'DELETE'}).then(() => {
-            setPetFromAPI(petsFromAPI.filter((pet) => pet.id !== id));
-        });
+        if (window.confirm('Are you sure you wish to delete this pet?')){
+            fetch(fetchURL + '/pets/' + id, { method: 'DELETE'}).then(() => {
+                setPetFromAPI(petsFromAPI.filter((pet) => pet.id !== id));
+            });
+        }
     };
 
     return (
