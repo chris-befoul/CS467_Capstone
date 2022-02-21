@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './Home.css';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import { Button, Container, Paper , Grid, Card, CardActionArea } from '@mui/material';
+import { Button, Container , Grid, Card, CardActionArea } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { Box, borders, padding } from '@mui/system';
-import { grey } from '@mui/material/colors';
 import CssBaseline from '@mui/material/CssBaseline';
 
 const Home = (props) => {
@@ -35,52 +32,76 @@ const Home = (props) => {
         greeting = ('Welcome ' + name);
     }
 
-    const [pet1Name, setPet1Name] = useState('');
+    const [pet1Name, setPet1Name] = useState('');       
     const [pet1Desc, setPet1Desc] = useState('');
-    const [pet2Name, setPet2Name] = useState('');
+    const [pet1Photo, setPet1Photo] = useState('');
+    const [pet2Name, setPet2Name] = useState('');      
     const [pet2Desc, setPet2Desc] = useState('');
-    const [pet3Name, setPet3Name] = useState('');
+    const [pet2Photo, setPet2Photo] = useState('');
+    const [pet3Name, setPet3Name] = useState('');      
     const [pet3Desc, setPet3Desc] = useState('');
-    const [pet4Name, setPet4Name] = useState('');
+    const [pet3Photo, setPet3Photo] = useState('');
+    const [pet4Name, setPet4Name] = useState('');       
     const [pet4Desc, setPet4Desc] = useState('');
+    const [pet4Photo, setPet4Photo] = useState('');
     const fetchURL = 'http://localhost:8080/pets/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
     const petURL = '/pets/viewProfile/';
+    const browseURL = '/browse';
     
-    const pet1 = '5655374346584064';
-    const pet2 = '5066704988143616';
-    const pet3 = '5689540979195904';
-    const pet4 = '5722267187150848';
+    const pet1 = '5655374346584064';        // Daisy
+    const pet2 = '5066704988143616';        // Cooper
+    const pet3 = '5689540979195904';        // Bailey
+    const pet4 = '5722267187150848';        // Buddy
 
-    const requestOne = axios.get(fetchURL+pet1);
-    const requestTwo = axios.get(fetchURL+pet2);
-    const requestThree = axios.get(fetchURL+pet3);
-    const requestFour = axios.get(fetchURL+pet4);
+    const requests = [
+        fetchURL+pet1, fetchURL+pet2, fetchURL+pet3, fetchURL+pet4
+    ]
 
     useEffect(() => {
-        axios.all([requestOne, requestTwo, requestThree, requestFour])
-        .then(
-          axios.spread((...res) => {
-            const responseOne = res[0].data.data;
-            const responseTwo = res[1].data.data;
-            const responseThree = res[2].data.data;
-            const responseFour = res[3].data.data;
+        getPetData(requests);
+    },[]);
 
-            console.log(responseOne);
+    // const getPetData = () => {
+    //     Promise.all(requests.map((request) => axios.get(request)))
+    //     .then(
+    //         (data) => console.log(data),
+    //     );
+    // }
 
-            setPet1Name(responseOne.name);
-            setPet1Desc(responseOne.description);
-            setPet2Name(responseTwo.name);
-            setPet2Desc(responseTwo.description);
-            setPet3Name(responseThree.name);
-            setPet3Desc(responseThree.description);
-            setPet4Name(responseFour.name);
-            setPet4Desc(responseFour.description);
-          })
-        )
-        .catch(errors => {
-          console.error(errors);
-        });
-    }, []);
+    const getPetData = async () => {
+        try {
+            const res = await Promise.all([
+                fetch(requests[0],{headers: {'Access-Control-Allow-Origin': '*', 'Content-Type' : 'application/xml'}})
+                , fetch(requests[1]), fetch(requests[2]), fetch(requests[3])
+            ]);
+            const data = await Promise.all(res.map(r => r.json()));
+
+            const responseOne = data[0];
+            const responseTwo = data[1];
+            const responseThree = data[2];
+            const responseFour = data[3];
+
+            setPet1Name(responseOne.data.name);
+            setPet1Desc(responseOne.data.description);
+            setPet1Photo(responseOne.photos[0].name);
+
+            setPet2Name(responseTwo.data.name);
+            setPet2Desc(responseTwo.data.description);
+            setPet2Photo(responseOne.photos[0].name);
+
+            setPet3Name(responseThree.data.name);
+            setPet3Desc(responseThree.data.description);
+            setPet3Photo(responseOne.photos[0].name);
+
+            setPet4Name(responseFour.data.name);
+            setPet4Desc(responseFour.data.description);
+            setPet4Photo(responseOne.photos[0].name);
+        } catch {
+            throw Error("Promise failed.");
+        }
+    };
 
     const travel = useNavigate();
 
@@ -112,7 +133,11 @@ const Home = (props) => {
                             <p>Ready to adopt? Check out all of our loveable animals that are ready for their forever homes!</p>
                             <br></br>
                             <br></br>
-                                <Button variant="contained" color="primary">Search Pets</Button>
+                                <Button variant="contained" color="primary" 
+                                    onClick={() => {
+                                        toTravel(browseURL)
+                                    }}>
+                                Search Pets</Button>
                             </Grid>
                     </Grid>
                 </Container>
@@ -127,7 +152,7 @@ const Home = (props) => {
                                     <CardMedia
                                         component="img"
                                         height="150"
-                                        image="../../dog_1.jpeg"
+                                        image={photoURL+pet1Photo}
                                         alt=""
                                     />
                                     <CardContent>
@@ -145,8 +170,8 @@ const Home = (props) => {
                                     <CardMedia
                                         component="img"
                                         height="150"
-                                        image="../../cat_1.jpeg"
-                                        alt="green iguana"
+                                        image={photoURL+pet2Photo}
+                                        alt=""
                                     />
                                     <CardContent>
                                         <p>
@@ -163,7 +188,7 @@ const Home = (props) => {
                                     <CardMedia
                                         component="img"
                                         height="150"
-                                        image="../../dog_2.jpeg"
+                                        image={photoURL+pet3Photo}
                                         alt=""
                                     />
                                     <CardContent>
@@ -181,7 +206,7 @@ const Home = (props) => {
                                     <CardMedia
                                         component="img"
                                         height="150"
-                                        image="../../other_1.jpeg"
+                                        image={photoURL+pet4Photo}
                                         alt=""
                                     />
                                     <CardContent>
@@ -200,8 +225,8 @@ const Home = (props) => {
                     </Container>
                 </Grid>
                 <Container maxWidth="xl">
+                    <Grid sx={{ p: 2 }}/>
                     <h2>Testimonials</h2>   
-                    <br/>
                     <Grid container justifyContent="space-evenly"  alignItems="center">
                         <Grid item md={3}>
                             <p>User 1</p>
