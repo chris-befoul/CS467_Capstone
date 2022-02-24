@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {Datastore} = require('@google-cloud/datastore');
 
+const petFunctions = require('../PetProfile/petHelperFunctions/petFunctions');
+const petPhotoFunction = require('../PetProfile/petHelperFunctions/petPhoto');
+
 const datastore = new Datastore();
 const USER = 'User';
 
@@ -144,11 +147,19 @@ router.delete('/user', (req, res) => {
             });
         }
         const userKey = datastore.key([USER, parseInt(claims._id)]);
-        datastore.delete(userKey).then(() => {
+        datastore.delete(userKey).then(async () => {
+            const q = datastore.createQuery('Pet').filter('shelter_id', '=', claims._id);
+            const [pets] = await datastore.runQuery(q);
+            if (pets.length > 0){
+                pets.map(async (pet) => {
+                    await petFunctions.delete_pet(pet[Datastore.KEY].id);
+                    await petPhotoFunction.deletePhotosOfPet(pet[Datastore.KEY].id); 
+                });
+            }
+
             res.cookie('jwt', '', {maxAge: 0}); // remove cookie when the user is deleted
             res.status(204).send();
-        });
-        
+        });  
     } catch {
         res.status(500).send();
     }
