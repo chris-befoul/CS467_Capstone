@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@emotion/react';
 import { Button, Container , Grid, Card, CardActionArea } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
+import axios from 'axios';
 
 const Home = (props) => {
-
-    const theme = createTheme({
-        palette: {
-            primary: {
-                main: '#1473f0'
-            },
-            background: {
-                main: '#f0f4fc'
-            },
-        },
-        spacing: 4,
-    })
 
     // let button = (
     //     <Button variant="contained" color="primary">Search Pets</Button>
@@ -60,28 +47,17 @@ const Home = (props) => {
     ]
 
     useEffect(() => {
-        getPetData(requests);
+        getPetData();
     },[]);
 
-    // const getPetData = () => {
-    //     Promise.all(requests.map((request) => axios.get(request)))
-    //     .then(
-    //         (data) => console.log(data),
-    //     );
-    // }
-
-    const getPetData = async () => {
-        try {
-            const res = await Promise.all([
-                fetch(requests[0],{headers: {'Access-Control-Allow-Origin': '*', 'Content-Type' : 'application/xml'}})
-                , fetch(requests[1]), fetch(requests[2]), fetch(requests[3])
-            ]);
-            const data = await Promise.all(res.map(r => r.json()));
-
-            const responseOne = data[0];
-            const responseTwo = data[1];
-            const responseThree = data[2];
-            const responseFour = data[3];
+    const getPetData = () => {
+        Promise.all(requests.map((request) => axios.get(request)))
+        .then((data) => {
+            const responseOne = data[0].data;
+            const responseTwo = data[1].data;
+            console.log(responseTwo);
+            const responseThree = data[2].data;
+            const responseFour = data[3].data;
 
             setPet1Name(responseOne.data.name);
             setPet1Desc(responseOne.data.description);
@@ -89,29 +65,32 @@ const Home = (props) => {
 
             setPet2Name(responseTwo.data.name);
             setPet2Desc(responseTwo.data.description);
-            setPet2Photo(responseOne.photos[0].name);
+            setPet2Photo(responseTwo.photos[0].name);
 
             setPet3Name(responseThree.data.name);
             setPet3Desc(responseThree.data.description);
-            setPet3Photo(responseOne.photos[0].name);
+            setPet3Photo(responseThree.photos[0].name);
 
             setPet4Name(responseFour.data.name);
             setPet4Desc(responseFour.data.description);
-            setPet4Photo(responseOne.photos[0].name);
-        } catch {
-            throw Error("Promise failed.");
-        }
-    };
+            setPet4Photo(responseFour.photos[0].name);
+        }).catch(error => {
+            console.error(error.message);
+        });
+    }
 
     const travel = useNavigate();
 
     const toTravel = (URL) => {
         travel(URL);
     }
+    
+    if (pet4Photo !== ''){
+        console.log(pet4Photo);
+    }
 
     return ( 
         <div>
-            <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Grid sx={{ p: 4 }}/>
                 <Container maxWidth='xl'>
@@ -246,7 +225,6 @@ const Home = (props) => {
                         </Grid>
                     </Grid>
                 </Container>
-            </ThemeProvider>
         </div>
      );
 }

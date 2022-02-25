@@ -49,8 +49,6 @@
 #edit-pet:hover, #leave-profile:hover {
     background-color: #144cb4;
     color: white;
-<<<<<<< HEAD
-=======
 }
 
 #profile-buttons {
@@ -73,5 +71,4 @@
 
 #pet-description {
     margin-right: 35%;
->>>>>>> remotes/origin/HEAD
 }
