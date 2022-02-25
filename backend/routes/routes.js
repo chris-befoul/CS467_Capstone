@@ -74,6 +74,19 @@ getQuery = async (email) => {
     item = items[0];
 }
 
+async function searchUser(userID) {
+    const key = datastore.key([USER, parseInt(userID, 10)]);
+    return datastore.get(key).then((entity) => {
+        if (entity[0] === undefined || entity[0] === null) {
+            // No entity found. Don't try to add the petID attribute
+            return entity;
+        }
+        else {
+            return entity.map(fromDatastore);
+        }
+    })
+}
+
 router.post('/login', async(req, res) => {
     const userItem = datastore.createQuery(USER).filter('email', '=', req.body.email);
     const [items] = await datastore.runQuery(userItem);
@@ -212,5 +225,11 @@ router.post('/logout', (req, res) => {
         message: "Log out complete!"
     });
 });
+
+router.get('/user/:shelter_id', async(req, res) => {
+    const user = await searchUser(req.params.shelter_id);
+    res.status(201).send(user[0]);
+    return;
+})
 
 module.exports = router;
