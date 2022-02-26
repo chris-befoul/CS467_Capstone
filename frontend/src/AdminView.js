@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Grid, Typography, Button, Box } from "@mui/material";
+import { Grid, Typography, Button, Box, Paper, Container, Card } from "@mui/material";
 
 
 const AdminViewPage = () => {
@@ -45,68 +45,78 @@ const AdminViewPage = () => {
         if(user.type == "Shelter") {
             userName = false
         } 
-        return (
-                    <Grid container>
-                        {/* <Grid xs={11} > */}
-                            <Grid container xs={8} item >
-                                <Typography gutterBottom variant="h5" component="div">
+        return (    
+                <Grid paddingY={2}>
+                    <Paper>
+                        <Grid container p={5}>
+                            <Grid item xs={10}>
+                                <Typography paddingBottom={5} gutterBottom variant="h5" component="div">
                                     {user.type}
                                 </Typography>
-                                <Grid container >
-                                    <Grid item >
+                                <Grid container>
+                                    <Grid item xs={3} >
                                         {!userName ? <ShelterName shelter={user} key={user.id} /> : null}
                                         {userName ? <UserName user={user} key={user.id} /> : null}
                                     </ Grid>
-                                    <Grid item >
+                                    <Grid item xs={3} >
                                         <Typography variant="body1">
                                             Location:   {user.city}, {user.state} {user.zip_code}
                                         </Typography>
                                     </ Grid>
-                                    <Grid item >
+                                    <Grid item xs={3} >
                                         <Typography variant="body1">
                                             Email:  {user.email}
                                         </Typography>
                                     </ Grid>
-                                    <Grid item >
+                                    <Grid item xs={3} >
                                         <Typography variant="body1">
                                             Phone:  {user.phone}
                                         </Typography>
                                     </ Grid>
                                 </Grid>
                             </Grid>
-                        {/* </Grid> */}
-                        <Grid container item xs={2} justifyContent="center" alignItems="center">
-                            <Grid p={2} >
-                                <Button variant="contained" color="error">Delete</Button>
+                            <Grid item xs={2} justifyContent="center" alignItems="center">
+                                <Grid p={2} >
+                                    <Button variant="contained" color="error">Delete</Button>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                )
+                    </Paper>
+                </Grid>
+            )
     }
 
     const FilterBox = () => {
         return (
-                <Grid item xs={2}>
-                    <div >
-                        <h3>Filter By Type</h3>
-                        <div id='filter-box'>
-                            <input type="radio" id="user" name="Type" value="User" onChange={e => setFilter(e.target.value)}/>
+                <div >
+                    <h3>Filter By Type</h3>
+                    <div id='filter-box'>
+                        <input type="radio" id="all" name="Type" value="All" defaultChecked onChange={e => setFilter(e.target.value)}/>
+                            <label for="all">All</label><br />
+                        <input type="radio" id="user" name="Type" value="User" onChange={e => setFilter(e.target.value)}/>
                             <label for="user">User</label><br />
-                            <input type="radio" id="shelter" name="Type" value="Shelter" onChange={e => setFilter(e.target.value)}/>
+                        <input type="radio" id="shelter" name="Type" value="Shelter" onChange={e => setFilter(e.target.value)}/>
                             <label for="shelter">Shelter</label><br />
-                        </div>
                     </div>
-                </Grid>
+                </div>
         )
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <Grid container>
-                <FilterBox />
-                <BuildUsers />
+        <div>
+            <Grid sx={{ p: 3 }}>
+                <Container maxWidth='xl' >
+                    <Grid container >
+                        <Grid item md={2}>
+                            <FilterBox />
+                        </Grid>
+                        <Grid item md={10}>
+                            <BuildUsers />
+                        </Grid>
+                    </Grid>
+                </Container>
             </Grid>
-        </Box>
+        </div>
     )
 }
 
