@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PetList from './components/PetList'
-import { Typography} from "@mui/material";
+import { Typography, InputAdornment, TextField} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const ShelterManagement = () => {
     const [petsFromAPI, setPetFromAPI] = useState(null);
+    const [searchPhrase, setSearchPhrase] = useState('');
     const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = "https://cs467-sandbox.ue.r.appspot.com";
@@ -39,13 +41,25 @@ const ShelterManagement = () => {
 
     return (
         <div>
-            <div style={{textAlign: 'center', paddingTop: 20, marginBottom: 50}}>
+            <div style={{textAlign: 'center', paddingTop: 20, marginBottom: 30}}>
                 <Typography gutterBottom variant="h5" component="div">
                     Shelter Management
                 </Typography>
             </div>
+            <div style={{textAlign: 'center', marginBottom: 50}}>
+                <TextField id="outlined-search" type="search" placeholder='Search...' InputProps={{
+                    startAdornment: (
+                    <InputAdornment position="start">
+                    <SearchIcon />
+                    </InputAdornment>
+                    )
+                    }}
+                    inputProps={{style: {width: 240, height: 10}}}
+                    onChange={(e) => setSearchPhrase(e.target.value)}
+                />
+            </div>
             {(petsFromAPI !== null)
-            ? <PetList pets={petsFromAPI} onDelete={delete_pet}/>
+            ? <PetList pets={petsFromAPI.filter((pet) => searchPhrase === '' || pet.name.toLowerCase().includes(searchPhrase.toLowerCase()))} onDelete={delete_pet}/>
             : <div style={{textAlign: 'center'}}>Loading</div>
             }
         </div>
