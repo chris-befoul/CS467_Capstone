@@ -11,9 +11,9 @@ const Admin = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [navigate, setNavigate] = useState(false);
-  // const fetchURL = 'http://localhost:8080';
+  const fetchURL = 'http://localhost:8080';
   // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
-  const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+  // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,8 +32,13 @@ const Admin = (props) => {
 
     const content = await response.json();
     console.log(content);
-    setNavigate(true);
-    setName(content.first_name + ' ' + content.last_name);
+    if(content.user.type === 'Admin') {
+      setNavigate(true);
+    }
+    else {
+      (content.user.first_name === undefined) ? alert("Unauthorized, sorry " + content.user.shelter_name + " you are not an Admin.") : alert("Unauthorized, sorry " + content.user.first_name + ' ' + content.user.last_name + " you are not an Admin.")
+    }
+    setName(content.user.first_name + ' ' + content.user.last_name);
   }
 
   if (navigate) {
