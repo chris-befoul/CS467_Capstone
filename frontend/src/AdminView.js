@@ -60,6 +60,9 @@ const AdminViewPage = () => {
                         else if(filter === 'Shelter') {
                             return (user.type === 'Shelter') ? <UserInfo user={user} key={user.id}/> : null
                         }
+                        else if(filter === 'Admin') {
+                            return (user.type === 'Admin') ? <UserInfo user={user} key={user.id}/> : null
+                        }
                         else {
                             return <UserInfo user={user} key={user.id}/>
                         }
@@ -149,8 +152,9 @@ const AdminViewPage = () => {
                                 onChange={userFilter}
                             >
                                 <FormControlLabel value="All" control={<Radio />} label="All" />
-                                <FormControlLabel value="User" control={<Radio />} label="User" />
+                                <FormControlLabel value="Admin" control={<Radio />} label="Admin" />
                                 <FormControlLabel value="Shelter" control={<Radio />} label="Shelter" />
+                                <FormControlLabel value="User" control={<Radio />} label="User" />
                             </RadioGroup>
                         </FormControl>
                     </Grid>
