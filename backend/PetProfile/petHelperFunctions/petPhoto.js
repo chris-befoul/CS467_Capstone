@@ -26,9 +26,14 @@ async function petsPhotos(petID) {
 async function deletePhoto(fileName) {
   await storage.bucket(bucketName).file(fileName).delete();
 }
+
+async function deletePhotosOfPet(petID){
+  await storage.bucket(bucketName).deleteFiles({prefix: petID + '/'});
+}
   
 module.exports = {
   uploadPhoto,
   petsPhotos,
-  deletePhoto
+  deletePhoto,
+  deletePhotosOfPet
 }
