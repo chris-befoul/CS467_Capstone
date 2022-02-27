@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {Datastore} = require('@google-cloud/datastore');
 
+const petFunctions = require('../PetProfile/petHelperFunctions/petFunctions');
+const petPhotoFunction = require('../PetProfile/petHelperFunctions/petPhoto');
 const datastore = new Datastore();
 const USER = 'User';
 
@@ -78,7 +80,6 @@ async function searchUser(userID) {
     const key = datastore.key([USER, parseInt(userID, 10)]);
     return datastore.get(key).then((entity) => {
         if (entity[0] === undefined || entity[0] === null) {
-            // No entity found. Don't try to add the petID attribute
             return entity;
         }
         else {
@@ -157,11 +158,19 @@ router.delete('/user', (req, res) => {
             });
         }
         const userKey = datastore.key([USER, parseInt(claims._id)]);
-        datastore.delete(userKey).then(() => {
+        datastore.delete(userKey).then(async () => {
+            const q = datastore.createQuery('Pet').filter('shelter_id', '=', claims._id);
+            const [pets] = await datastore.runQuery(q);
+            if (pets.length > 0){
+                pets.map(async (pet) => {
+                    await petFunctions.delete_pet(pet[Datastore.KEY].id);
+                    await petPhotoFunction.deletePhotosOfPet(pet[Datastore.KEY].id); 
+                });
+            }
+
             res.cookie('jwt', '', {maxAge: 0}); // remove cookie when the user is deleted
             res.status(204).send();
-        });
-        
+        });  
     } catch {
         res.status(500).send();
     }
@@ -230,6 +239,39 @@ router.get('/user/:shelter_id', async(req, res) => {
     const user = await searchUser(req.params.shelter_id);
     res.status(201).send(user[0]);
     return;
+})
+
+router.delete('/admin/:user_id', async(req, res) => {
+    try {
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, 'secret');
+
+        if (!claims) {
+            return res.status(401).send({
+                message: 'Unauthenticated!'
+            });
+        }
+        const userKey = datastore.key([USER, parseInt(req.params.user_id)]);
+        datastore.get(userKey).then((user) => {
+            if (user[0]){
+                datastore.delete(userKey).then(async () => {
+                    const q = datastore.createQuery('Pet').filter('shelter_id', '=', req.params.user_id);
+                    const [pets] = await datastore.runQuery(q);
+                    if (pets.length > 0){
+                        pets.map(async (pet) => {
+                            await petFunctions.delete_pet(pet[Datastore.KEY].id);
+                            await petPhotoFunction.deletePhotosOfPet(pet[Datastore.KEY].id); 
+                        });
+                    }
+                    res.status(204).send();
+                });  
+            } else{
+                res.status(404).send({'Error': 'No user with this id is found!'});
+            }
+        });         
+    } catch {
+        res.status(500).send();
+    }
 })
 
 module.exports = router;
