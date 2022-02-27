@@ -72,7 +72,7 @@ const AdminViewPage = () => {
                 <Grid paddingY={2}>
                     <Paper>
                         <Grid container p={5}>
-                            <Grid item xs={10}>
+                            <Grid item xs={11}>
                                 <Typography paddingBottom={5} gutterBottom variant="h5" component="div">
                                     {user.type}
                                 </Typography>
@@ -98,7 +98,7 @@ const AdminViewPage = () => {
                                     </ Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item xs={2} justifyContent="center" alignItems="center">
+                            <Grid item xs={1} justifyContent="center" alignItems="center">
                                 <Grid p={2} >
                                     <Button variant="contained" color="error">Delete</Button>
                                 </Grid>
@@ -116,8 +116,8 @@ const AdminViewPage = () => {
     const FilterBox = () => {
         return (
                 <Grid >
-                    <Typography variant='h5'>
-                        Filter By Type
+                    <Typography variant='h6'>
+                        Filter Users
                     </Typography>
                     <Grid paddingY={2}>
                         <FormControl>
@@ -137,13 +137,13 @@ const AdminViewPage = () => {
 
     return (
         <div>
-            <Grid sx={{ p: 3 }}>
+            <Grid sx={{ p: 1 }}>
                 <Container maxWidth='xl' >
                     <Grid container >
-                        <Grid item md={2}>
+                        <Grid item md={1}>
                             <FilterBox />
                         </Grid>
-                        <Grid item md={10}>
+                        <Grid item md={11}>
                             <BuildUsers />
                         </Grid>
                     </Grid>
