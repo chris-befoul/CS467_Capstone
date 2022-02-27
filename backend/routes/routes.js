@@ -114,6 +114,8 @@ router.post('/login', async(req, res) => {
         maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
 
+    delete user['password'];
+
     res.send({
         message: "success",
         user: user
