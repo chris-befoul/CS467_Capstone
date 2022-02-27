@@ -21,10 +21,33 @@ const AdminViewPage = () => {
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
     React.useEffect(() => {
-        axios.get(fetchURL + '/api/').then((res) => {
+        getUsers();
+    }, [])
+
+    const getUsers = async() => {
+        await axios.get(fetchURL + '/api/').then((res) => {
             setUsers(res.data);
         })
-    }, [])
+    }
+    
+
+    const deleteUser = async (e, user) => {
+        e.preventDefault();
+        if(window.confirm("Are you sure you want to delete this " + user.type + " profile?")) {
+            await axios.delete(fetchURL + '/api/admin/' + user.id, {withCredentials: true}).then((res) => {
+                if(res.status === 204) {
+                    alert(user.type + " profile has been removed from site.");
+                    getUsers();
+                }
+                else {
+                    alert("Something went wrong with profile deletion please try again and it it persists contact admin.")
+                }
+            });
+        }
+        else {
+            console.log(user.type + " profile not deleted");
+        }
+    }
 
     const BuildUsers = () => {
         if(userList.length > 0) {
@@ -100,7 +123,7 @@ const AdminViewPage = () => {
                             </Grid>
                             <Grid item xs={1} justifyContent="center" alignItems="center">
                                 <Grid p={2} >
-                                    <Button variant="contained" color="error">Delete</Button>
+                                    <Button variant="contained" color="error" onClick={(e) => {deleteUser(e, user)}}>Delete</Button>
                                 </Grid>
                             </Grid>
                         </Grid>
