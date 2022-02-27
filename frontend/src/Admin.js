@@ -46,7 +46,7 @@ const Admin = (props) => {
   }
 
   if (navigate) {
-    return <Navigate to="/adminView" />
+    return <Navigate to="/" />
   }
 
   return (
