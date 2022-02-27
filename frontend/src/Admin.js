@@ -32,6 +32,10 @@ const Admin = (props) => {
 
     const content = await response.json();
     console.log(content);
+    if (content.message === 'User not found!') {
+      alert('User not found!');
+      return;
+    }
     if(content.user.type === 'Admin') {
       setNavigate(true);
     }
