@@ -1,11 +1,21 @@
 import React from 'react';
 import axios from 'axios';
-import { Grid, Typography, Button, Box, Paper, Container, Card } from "@mui/material";
+import { 
+    Grid, 
+    Typography, 
+    Button, 
+    FormControl, 
+    FormControlLabel, 
+    Paper, 
+    Container, 
+    Radio, 
+    RadioGroup 
+} from "@mui/material";
 
 
 const AdminViewPage = () => {
     const [userList, setUsers] = React.useState([]);
-    const [filter, setFilter] = React.useState([]);
+    const [filter, setFilter] = React.useState('All');
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
@@ -19,25 +29,38 @@ const AdminViewPage = () => {
     const BuildUsers = () => {
         if(userList.length > 0) {
             return (
-            <div>
-                {userList.map((user) => {
-                    return <UserInfo user={user} key={user.id}/>
-            })}
-            </div>)
+                <div>
+                    {userList.map((user) => {
+                        if(filter === 'User') {
+                            return (user.type === 'User') ? <UserInfo user={user} key={user.id}/> : null
+                        } 
+                        else if(filter === 'Shelter') {
+                            return (user.type === 'Shelter') ? <UserInfo user={user} key={user.id}/> : null
+                        }
+                        else {
+                            return <UserInfo user={user} key={user.id}/>
+                        }
+                    })}
+                </div>
+            )
         }
         return <p>No Users Availabe</p>
     }
 
     const ShelterName = ({shelter}) => {
-        return <Typography variant="body1">
-        Shelter Name: {shelter.shelter_name}
-    </Typography>
+        return (
+            <Typography variant="body1">
+                Shelter Name: {shelter.shelter_name}
+            </Typography>
+        )
     }
 
     const UserName = ({user}) => {
-        return <Typography variant="body1">
-        Name:   {user.first_name} {user.last_name}
-    </Typography>
+        return (
+            <Typography variant="body1">
+                Name:   {user.first_name} {user.last_name}
+            </Typography>
+        )
     }
 
     const UserInfo = ({user}) => {
@@ -86,19 +109,29 @@ const AdminViewPage = () => {
             )
     }
 
+    const userFilter = (e) => {
+        setFilter(e.target.value)
+    }
+
     const FilterBox = () => {
         return (
-                <div >
-                    <h3>Filter By Type</h3>
-                    <div id='filter-box'>
-                        <input type="radio" id="all" name="Type" value="All" defaultChecked onChange={e => setFilter(e.target.value)}/>
-                            <label for="all">All</label><br />
-                        <input type="radio" id="user" name="Type" value="User" onChange={e => setFilter(e.target.value)}/>
-                            <label for="user">User</label><br />
-                        <input type="radio" id="shelter" name="Type" value="Shelter" onChange={e => setFilter(e.target.value)}/>
-                            <label for="shelter">Shelter</label><br />
-                    </div>
-                </div>
+                <Grid >
+                    <Typography variant='h5'>
+                        Filter By Type
+                    </Typography>
+                    <Grid paddingY={2}>
+                        <FormControl>
+                            <RadioGroup
+                                defaultValue={filter}
+                                onChange={userFilter}
+                            >
+                                <FormControlLabel value="All" control={<Radio />} label="All" />
+                                <FormControlLabel value="User" control={<Radio />} label="User" />
+                                <FormControlLabel value="Shelter" control={<Radio />} label="Shelter" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                </Grid>
         )
     }
 
