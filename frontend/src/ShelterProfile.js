@@ -19,6 +19,7 @@ const ShelterProfile = () => {
     });
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const [changePassword, setChangePassword] = useState(false);
     const navigate = useNavigate();
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = "https://cs467-sandbox.ue.r.appspot.com";
@@ -43,7 +44,7 @@ const ShelterProfile = () => {
     };
 
     useEffect(() => {
-        fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+        fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include' }).then(res => res.json()).then(data => {
             const userInfo = data;
             console.log(userInfo);
             userInfo.password = "";
@@ -51,21 +52,21 @@ const ShelterProfile = () => {
             userInfo.confirm_new_password = "";
             setFormData(userInfo);
         });
-      }, []);
+    }, []);
 
-      useEffect(() => {
+    useEffect(() => {
         // console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-        //   console.log(formData);
+            //   console.log(formData);
             fetch(fetchURL + '/api/user', {
                 method: 'PATCH',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             }).then(res => {
-                if (!res.ok){
+                if (!res.ok) {
                     throw new Error('invalid password!');
-                }else{
+                } else {
                     return res.text();
                 }
             }).then(data => {
@@ -74,18 +75,27 @@ const ShelterProfile = () => {
                 window.location.reload();
             }).catch(e => alert("Invalid current password!"));
         }
-      }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (changePassword === false) {
+            const newdata = { ...formData, password: '', new_password: '', confirm_new_password: '' };
+            setFormData(newdata);
+        }
+    }, [changePassword]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const deleteAccount = () => {
         // console.log('Delete account!')
-        fetch(fetchURL + '/api/user', {method: 'DELETE', credentials: 'include'}).then(() => {
-            console.log('Deleted!');
-            alert("Shelter deleted!");
-
-            // redirect to landing page
-            navigate("/");
-            window.location.reload();
-        });
+        if (window.confirm('Are you sure you wish to delete your account?')){
+            fetch(fetchURL + '/api/user', { method: 'DELETE', credentials: 'include' }).then(() => {
+                console.log('Deleted!');
+                alert("Shelter deleted!");
+    
+                // redirect to landing page
+                navigate("/");
+                window.location.reload();
+            });
+        }
     };
 
     const validate = async (values) => {
@@ -122,7 +132,7 @@ const ShelterProfile = () => {
         if (!email_regex.test(values.email)) {
             errors.email = "Invalid email!";
         }
-        if (values.new_password !== ''){
+        if (values.new_password !== '') {
             if (!password_regex.test(values.new_password)) {
                 errors.new_password = "Invalid password! Passwords should be 8-25 characters long and contain at least 1 lowercase, 1 uppercase, and 1 digit.";
             }
@@ -130,16 +140,46 @@ const ShelterProfile = () => {
                 errors.confirm_new_password = "Passwords do not match!";
             }
         }
-        
-        const res = await fetch(fetchURL + '/users', { method: 'GET'});
+
+        const res = await fetch(fetchURL + '/users', { method: 'GET' });
         const users = await res.json();
         users.forEach(user => {
-            if (user.email === values.email && user.id!==values.id){
+            if (user.email === values.email && user.id !== values.id) {
                 errors.duplicate_email = "This email already exists!";
             }
         });
 
         return errors;
+    };
+
+    const displayPassword = () => {
+        if (changePassword === true){
+            return <div>
+                <div className='form-field-group'>
+                        <div className='input-pair'>
+                            <div className='form-input-field'>
+                                <label>Current Password:</label>
+                                <input required type="password" name="password" disabled={!changePassword} value={formData.password} onChange={(e) => handleChange(e)}></input>
+                                <p className='form-error-msg'>{formErrors.password}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='form-field-group'>
+                        <div className='input-pair'>
+                            <div className='form-input-field'>
+                                <label>New Password:</label>
+                                <input required type="password" name="new_password" disabled={!changePassword} value={formData.new_password} onChange={(e) => handleChange(e)}></input>
+                                <p className='form-error-msg'>{formErrors.new_password}</p>
+                            </div>
+                            <div className='form-input-field'>
+                                <label>Confirm New Password:</label>
+                                <input required type="password" name="confirm_new_password" disabled={!changePassword} value={formData.confirm_new_password} onChange={(e) => handleChange(e)}></input>
+                                <p className='form-error-msg'>{formErrors.confirm_new_password}</p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        }
     };
 
     return (
@@ -197,32 +237,11 @@ const ShelterProfile = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='form-field-group'>
-                        <div className='input-pair'>
-                            <div className='form-input-field'>
-                                <label>Current Password:</label>
-                                <input type="password" name="password" value={formData.password} onChange={(e) => handleChange(e)}></input>
-                                <p className='form-error-msg'>{formErrors.password}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='form-field-group'>
-                        <div className='input-pair'>
-                            <div className='form-input-field'>
-                                <label>New Password:</label>
-                                <input type="password" name="new_password" value={formData.new_password} onChange={(e) => handleChange(e)}></input>
-                                <p className='form-error-msg'>{formErrors.new_password}</p>
-                            </div>
-                            <div className='form-input-field'>
-                                <label>Confirm New Password:</label>
-                                <input type="password" name="confirm_new_password" value={formData.confirm_new_password} onChange={(e) => handleChange(e)}></input>
-                                <p className='form-error-msg'>{formErrors.confirm_new_password}</p>
-                            </div>
-                        </div>
-                    </div>
+                    {displayPassword()}
+                    {(changePassword) ? <button className='edit-password-btn' type='button' onClick={() => setChangePassword(false)}>Close</button> : <button className='edit-password-btn' type='button' onClick={() => setChangePassword(true)}>Edit Password</button>}
                 </div>
                 <div className='submit-btn-block1'><input className="submit-btn" type="submit" value="Update Account" /></div>
-                <div className='delete-btn-block'><button className="delete-btn" type='button'onClick={deleteAccount}>Delete Account</button></div>
+                <div className='delete-btn-block'><button className="delete-btn" type='button' onClick={deleteAccount}>Delete Account</button></div>
             </form>
         </div>
     )

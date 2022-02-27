@@ -104,4 +104,11 @@ router.delete('/photo', (req, res) => {
     })
 })
 
+router.delete('/:petID', (req, res) => {
+    petFunctions.delete_pet(req.params.petID).then(() => {
+        petPhotoFunction.deletePhotosOfPet(req.params.petID);
+        return res.status(204).send();
+    });
+})
+
 module.exports = router;

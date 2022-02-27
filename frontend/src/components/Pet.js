@@ -14,7 +14,7 @@ const Pet = ({ pet, onDelete }) => {
     const update_pet = () => {
         // console.log(pet.id);
         const redirectURL = '/pets/editProfile/' + pet.id;
-        navigate(redirectURL);
+        navigate(redirectURL, {state: {from: 'shelterManagement'}});
     };
 
     return (

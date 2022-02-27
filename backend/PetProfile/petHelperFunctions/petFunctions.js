@@ -49,7 +49,7 @@ async function post_pet(name, type, breed, availability, sex, age, weight, dispo
         'disposition': disposition, 
         'description': description, 
         'date_created': new Date(), 
-        'shelter_id': shelter_id,
+        'shelter_id': shelter_id
     };
     return helper.datastore.save({ 'key': key, 'data': new_pet}).then(() => { 
         var new_entry = new_pet; new_entry['id'] = key.id;
