@@ -115,7 +115,8 @@ router.post('/login', async(req, res) => {
     });
 
     res.send({
-        message: "success"
+        message: "success",
+        user: user
     });
 });
 
