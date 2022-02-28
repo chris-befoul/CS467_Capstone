@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Login = (props) => {
 
   const setName = props.setName;
+  const setType = props.setType;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +39,12 @@ const Login = (props) => {
       alert('Invalid password!');
     } else{
       setNavigate(true);
-      setName(content.name);
+      setType(content.user.type);
+      if (content.user.type === 'Shelter'){
+        setName(content.user.shelter_name);
+      } else {
+        setName(content.user.first_name + ' ' + content.user.last_name);
+      }
     }
   }
 

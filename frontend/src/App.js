@@ -59,9 +59,9 @@ function App() {
                 <Route exact path="/signup" element={<Signup />} />
                 <Route exact path="/usersignup" element={<UserSignup />} />
                 <Route exact path="/sheltersignup" element={<ShelterSignup />} />
-                <Route exact path="/admin" element={<Admin setName={setName}/>} />
+                <Route exact path="/admin" element={<Admin setName={setName} setType={setType}/>} />
                 <Route exact path="/adminView" element={<AdminViewPage />}/>
-                <Route exact path="/login" element={<Login setName={setName}/>}/>
+                <Route exact path="/login" element={<Login setName={setName} setType={setType}/>}/>
                 <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
                 <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
                 <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />

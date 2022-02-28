@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Admin = (props) => {
 
   const setName = props.setName;
+  const setType = props.setType;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +46,10 @@ const Admin = (props) => {
     }
     else {
       (content.user.first_name === undefined) ? alert("Unauthorized, sorry " + content.user.shelter_name + " you are not an Admin.") : alert("Unauthorized, sorry " + content.user.first_name + ' ' + content.user.last_name + " you are not an Admin.")
+      await fetch(fetchURL + '/api/logout', {method: 'POST', credentials: 'include'}).then(res => res.json());
+      return;
     }
+    setType(content.user.type);
     setName(content.user.first_name + ' ' + content.user.last_name);
   }
 
