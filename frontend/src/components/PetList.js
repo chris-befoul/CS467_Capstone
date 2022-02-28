@@ -1,11 +1,12 @@
 import React from 'react'
 import Pet from './Pet'
 
-const PetList = ({ pets, onDelete}) => {
-  if (pets.length > 0){
+const PetList = ({ pets, onDelete, filterByType}) => {
+  const filteredPets = pets.filter(pet => filterByType === 'All' || pet.type === filterByType);
+  if (filteredPets.length > 0){
     return (
       <div>
-        {pets.map(pet => {
+        {filteredPets.map(pet => {
           return <Pet pet={pet} key={pet.id} onDelete={onDelete}/>;
         })}
       </div>
