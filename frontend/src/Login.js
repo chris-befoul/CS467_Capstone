@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { Navigate } from 'react-router-dom';
 import "./Login.css";
 import Button from "./components/Button";
@@ -34,9 +34,11 @@ const Login = (props) => {
     console.log(content.message);
     if (content.message === 'User not found!') {
       alert('User not found!');
-    } else {
-    setNavigate(true);
-    setName(content.name);
+    } else if (content.message === 'Invalid password!'){
+      alert('Invalid password!');
+    } else{
+      setNavigate(true);
+      setName(content.name);
     }
   }
 

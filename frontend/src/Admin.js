@@ -36,6 +36,10 @@ const Admin = (props) => {
       alert('User not found!');
       return;
     }
+    if (content.message === 'Invalid password!'){
+      alert('Invalid password!')
+      return;
+    }
     if(content.user.type === 'Admin') {
       setNavigate(true);
     }
