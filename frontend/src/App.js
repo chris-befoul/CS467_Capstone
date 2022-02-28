@@ -65,8 +65,8 @@ function App() {
                 <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
                 <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
                 <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
-                <Route exact path="/userprofile" element={<UserProfile />} />
-                <Route exact path="/shelterprofile" element={<ShelterProfile />} />
+                <Route exact path="/userprofile" element={<UserProfile setName={setName} setType={setType}/>} />
+                <Route exact path="/shelterprofile" element={<ShelterProfile setName={setName} setType={setType}/>} />
                 <Route exact path="/sheltermanagement" element={<ShelterManagement />} />
             </Routes>
         </BrowserRouter>

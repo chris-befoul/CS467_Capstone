@@ -3,7 +3,7 @@ import "./UserSignup.css";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ShelterProfile = () => {
+const ShelterProfile = ({setName, setType}) => {
     const [formData, setFormData] = useState({
         id: "",
         shelter_name: "",
@@ -93,7 +93,9 @@ const ShelterProfile = () => {
     
                 // redirect to landing page
                 navigate("/");
-                window.location.reload();
+                // window.location.reload();
+                setName('');
+                setType('');
             });
         }
     };

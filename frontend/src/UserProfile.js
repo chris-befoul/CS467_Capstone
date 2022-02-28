@@ -3,7 +3,7 @@ import "./UserSignup.css";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const UserProfile = () => {
+const UserProfile = ({setName, setType}) => {
     const [formData, setFormData] = useState({
         id: "",
         first_name: "",
@@ -95,7 +95,9 @@ const UserProfile = () => {
 
                 // redirect to landing page
                 navigate("/");
-                window.location.reload();
+                // window.location.reload();
+                setName('');
+                setType('');
             });
         }
     };
