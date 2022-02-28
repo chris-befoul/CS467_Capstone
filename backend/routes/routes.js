@@ -5,7 +5,6 @@ const {Datastore} = require('@google-cloud/datastore');
 
 const petFunctions = require('../PetProfile/petHelperFunctions/petFunctions');
 const petPhotoFunction = require('../PetProfile/petHelperFunctions/petPhoto');
-
 const datastore = new Datastore();
 const USER = 'User';
 
@@ -77,6 +76,18 @@ getQuery = async (email) => {
     item = items[0];
 }
 
+async function searchUser(userID) {
+    const key = datastore.key([USER, parseInt(userID, 10)]);
+    return datastore.get(key).then((entity) => {
+        if (entity[0] === undefined || entity[0] === null) {
+            return entity;
+        }
+        else {
+            return entity.map(fromDatastore);
+        }
+    })
+}
+
 router.post('/login', async(req, res) => {
     const userItem = datastore.createQuery(USER).filter('email', '=', req.body.email);
     const [items] = await datastore.runQuery(userItem);
@@ -103,8 +114,11 @@ router.post('/login', async(req, res) => {
         maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
 
+    delete user['password'];
+
     res.send({
-        message: "success"
+        message: "success",
+        user: user
     });
 });
 
@@ -223,5 +237,44 @@ router.post('/logout', (req, res) => {
         message: "Log out complete!"
     });
 });
+
+router.get('/user/:shelter_id', async(req, res) => {
+    const user = await searchUser(req.params.shelter_id);
+    res.status(201).send(user[0]);
+    return;
+})
+
+router.delete('/admin/:user_id', async(req, res) => {
+    try {
+        const cookie = req.cookies['jwt'];
+        const claims = jwt.verify(cookie, 'secret');
+
+        if (!claims) {
+            return res.status(401).send({
+                message: 'Unauthenticated!'
+            });
+        }
+        const userKey = datastore.key([USER, parseInt(req.params.user_id)]);
+        datastore.get(userKey).then((user) => {
+            if (user[0]){
+                datastore.delete(userKey).then(async () => {
+                    const q = datastore.createQuery('Pet').filter('shelter_id', '=', req.params.user_id);
+                    const [pets] = await datastore.runQuery(q);
+                    if (pets.length > 0){
+                        pets.map(async (pet) => {
+                            await petFunctions.delete_pet(pet[Datastore.KEY].id);
+                            await petPhotoFunction.deletePhotosOfPet(pet[Datastore.KEY].id); 
+                        });
+                    }
+                    res.status(204).send();
+                });  
+            } else{
+                res.status(404).send({'Error': 'No user with this id is found!'});
+            }
+        });         
+    } catch {
+        res.status(500).send();
+    }
+})
 
 module.exports = router;

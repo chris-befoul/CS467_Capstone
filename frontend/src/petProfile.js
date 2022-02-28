@@ -18,19 +18,22 @@ const ViewPetProfile = () => {
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
 
     React.useEffect(() => {
         getPetData(params.petID);
         userInfo();
+        // shelterInfo();
     }, [params.petID]);
 
     const getPetData = async (petID) => {
         const petURL =  fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
+            console.log(res.data.data);
             setData(res.data.data);
             setPhotos(res.data.photos);
             setPhoto(res.data.photos[0].name);
+            shelterInfo(res.data.data.shelter_id);
             return;
         })
     }
@@ -41,8 +44,8 @@ const ViewPetProfile = () => {
         });
     }
 
-    const shelterInfo = async() => {
-        await fetch(fetchURL + '/shelters/' + petData.shelter_id, { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+    const shelterInfo = async(shelter_id) => {
+        await fetch(fetchURL + '/api/user/' + shelter_id, { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
             setShelter(data);
         });
     }
@@ -141,8 +144,8 @@ const ViewPetProfile = () => {
                         <p style={{fontSize: 20}}>Age:             {petData.age}</p>
                         <p style={{fontSize: 20}}>Weight:          {petData.weight} lbs</p>
                         <p style={{fontSize: 20}}>Sex:            {petData.sex}</p>
-                        {/* <p>Rescued By:      {shelter.shelter_name}</p> */}
-                        {/* <p>Location:        {shelter.city}, {shelter.state}</p> */}
+                        <p style={{fontSize: 20}}>Rescued By:      {shelter.shelter_name}</p>
+                        <p style={{fontSize: 20}}>Location:        {shelter.city}, {shelter.state}</p>
                         <p style={{fontSize: 20}}>Profile Created:        {formatDate(petData.date_created)}</p>
                         <p style={{fontSize: 20}}>Adoption Status:    {petData.availability}</p>
                     </div>
