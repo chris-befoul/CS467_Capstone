@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Container , Grid, Card, CardActionArea, CardMedia, Drawer, Toolbar, Divider, Typography, CardContent } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Container , Grid, Typography } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import BrowseFilter from './BrowseFilter';
-import BrowsePetCard from './BrowsePetCard';
 import BrowsePetList from './BrowsePetList';
 
 const Browse = () => {
 
-    const fetchURL = 'http://localhost:8080/browse';
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+    const fetchURL = 'http://localhost:8080/pets/browse';
 
     const [pets, setPets] = useState(null);
     const [petNames, setPetNames] = useState([]);
@@ -40,7 +37,7 @@ const Browse = () => {
             <Grid sx={{ p: 3 }}/>            
             <Container maxWidth='xl' >
                 <Grid container justifyContent="space-evenly">
-                    {filter}
+                {filter}
                     <Grid item md={10} align="center">
                         <Typography>Pet Results</Typography>
                         <BrowsePetList pets={pets} />
