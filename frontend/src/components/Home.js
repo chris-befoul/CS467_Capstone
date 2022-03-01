@@ -55,7 +55,6 @@ const Home = (props) => {
         .then((data) => {
             const responseOne = data[0].data;
             const responseTwo = data[1].data;
-            console.log(responseTwo);
             const responseThree = data[2].data;
             const responseFour = data[3].data;
 
@@ -83,10 +82,6 @@ const Home = (props) => {
 
     const toTravel = (URL) => {
         travel(URL);
-    }
-    
-    if (pet4Photo !== ''){
-        console.log(pet4Photo);
     }
 
     return ( 
