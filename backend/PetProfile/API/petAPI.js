@@ -29,6 +29,15 @@ router.get('/', function(req, res) {
     })
 })
 
+router.get('/featuredpets', function(req, res) {
+    petFunctions.get_featured_pets().then(async (pets) => {
+        await Promise.all(pets.map(async (pet) => {
+            pet.photos = await petPhotoFunction.petsPhotos(pet.id);
+        }));
+        res.status(200).json(pets);
+    })
+})
+
 router.get('/:petID', function(req, res) {
     petFunctions.get_pet(req.params.petID).then( async(pet) => {
         if (pet[0] === undefined || pet[0] === null) {
