@@ -6,10 +6,11 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const ShelterManagement = () => {
     const [petsFromAPI, setPetFromAPI] = useState(null);
+    const [filteredPets, setFilteredPets] = useState(null);
     const [searchPhrase, setSearchPhrase] = useState('');
     const [filterType, setFilterType] = useState("All");
     const [currPage, setCurrPage] = useState(1);
-    const [pageCount, setPageCount] = useState(null);
+    const [pageCount, setPageCount] = useState(0);
     const petPerPage = 3;
     const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
     const fetchURL = 'http://localhost:8080';
@@ -30,14 +31,20 @@ const ShelterManagement = () => {
                     pet.image = photoURL + pet.photos[0].name;
                 }
             });
-            console.log(pets);
+            // console.log(pets);
             setPetFromAPI(pets);
+            setFilteredPets(pets);
             setPageCount(Math.ceil(pets.length / petPerPage));
         });
     }, []);
 
     useEffect(() => {
         setCurrPage(1);
+        if(petsFromAPI !== null){
+            const filtered = petsFromAPI.filter((pet) => (searchPhrase === '' || pet.name.toLowerCase().includes(searchPhrase.toLowerCase())) && (filterType === 'All' || pet.type === filterType));
+            setFilteredPets(filtered);
+            setPageCount(Math.ceil(filtered.length / petPerPage));
+        }
     }, [searchPhrase, filterType]);
 
     const delete_pet = (id) => {
@@ -79,9 +86,9 @@ const ShelterManagement = () => {
                     <MenuItem value={"Other"}>Other</MenuItem>
                 </Select>
             </div>
-            {(petsFromAPI !== null)
-            ? <PetList pets={petsFromAPI.filter((pet) => searchPhrase === '' || pet.name.toLowerCase().includes(searchPhrase.toLowerCase()))} onDelete={delete_pet} filterByType={filterType} currPage={currPage} petPerPage={petPerPage} setPageCount={setPageCount}/>
-            : <div style={{textAlign: 'center'}}>Loading</div>
+            {(petsFromAPI !== null && filteredPets !== null)
+            ? <PetList pets={filteredPets} onDelete={delete_pet} currPage={currPage} petPerPage={petPerPage}/>
+            : <div style={{textAlign: 'center', marginBottom: 20}}>Loading...</div>
             }
             <div  style={{display:'flex', justifyContent: 'center', marginBottom: 20}}>
                 <Pagination count={pageCount} page={currPage} size="large" color="primary" onChange={update_page} />
