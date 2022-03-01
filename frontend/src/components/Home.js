@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { Box, borders } from '@mui/system';
 import './Home.css';
+import FeaturedPet from './FeaturedPet';
 
 
 
@@ -54,86 +55,11 @@ const Home = (props) => {
                     <h2>Featured Pets</h2>    
                     <br /> 
                     <Grid container justifyContent="space-evenly"  alignItems="center">
-                        <Grid item md={3}>
-                            <Card sx={{ maxWidth: 345 }}>
-                                <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image="../../dog_1.jpeg"
-                                    alt=""
-                                />
-                                <CardContent>
-                                    <p>
-                                    Max
-                                    </p>
-                                    <p>
-                                    At eripuit signiferumque sea, vel ad mucius molestie, cu labitur.
-                                    </p>
-                                </CardContent>
-                                </CardActionArea>
-                            </Card>        
-                        </Grid>
-                        <Grid item md={3}>
-                            <Card sx={{ maxWidth: 345 }}>
-                                <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image="../../cat_1.jpeg"
-                                    alt="green iguana"
-                                />
-                                <CardContent>
-                                    <p>
-                                    Phoebe
-                                    </p>
-                                    <p>
-                                    At eripuit signiferumque sea, vel ad mucius molestie, cu labitur.
-                                    </p>
-                                </CardContent>
-                                </CardActionArea>
-                            </Card>        
-                        </Grid>
-                        <Grid item md={3}>
-                            <Card sx={{ maxWidth: 345 }}>
-                                <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image="../../dog_2.jpeg"
-                                    alt=""
-                                />
-                                <CardContent>
-                                    <p>
-                                    Phoebe
-                                    </p>
-                                    <p>
-                                    At eripuit signiferumque sea, vel ad mucius molestie, cu labitur.
-                                    </p>
-                                </CardContent>
-                                </CardActionArea>
-                            </Card>        
-                        </Grid>
-                        <Grid item md={3}>
-                            <Card sx={{ maxWidth: 345 }}>
-                                <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image="../../other_1.jpeg"
-                                    alt=""
-                                />
-                                <CardContent>
-                                    <p>
-                                    Phoebe
-                                    </p>
-                                    <p>
-                                    At eripuit signiferumque sea, vel ad mucius molestie, cu labitur.
-                                    </p>
-                                </CardContent>
-                                </CardActionArea>
-                            </Card>        
-                        </Grid>
+                        {props.featuredPets !== null 
+                        ? props.featuredPets.map(pet => {
+                            return <FeaturedPet pet={pet} key={pet.id}/>
+                        })
+                        : <>Loading...</>}
                     </Grid>
                     <br/>
                     <br/>

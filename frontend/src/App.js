@@ -18,6 +18,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 function App() {
     const [name, setName] = useState('');
     const [type, setType] = useState('');
+    const [featuredPets, setFeaturedPets] = useState(null);
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
@@ -49,13 +50,25 @@ function App() {
                     setName(fullName);
                     setType(data.type);
                 }
-            })
+            });
+        getFeaturedPets();
+        // update featured pets every day
+        let interval = setInterval(() => getFeaturedPets(), (1000 * 24 * 60 * 60));
+        return () => clearInterval(interval)
     }, []);
+
+    const getFeaturedPets = () => {
+        fetch(fetchURL + '/pets/featuredpets', { method: 'GET'}).then(res => res.json()).then(data => {
+            // console.log(data);
+            setFeaturedPets(data);
+        });
+    }
+
     return (
         <BrowserRouter>
             <Navbar name={name} setName={setName} type={type} setType={setType}/>
             <Routes>
-                <Route exact path="/" element={<Home name={name} type={type}/>}/>
+                <Route exact path="/" element={<Home name={name} type={type} featuredPets={featuredPets}/>}/>
                 <Route exact path="/signup" element={<Signup />} />
                 <Route exact path="/usersignup" element={<UserSignup />} />
                 <Route exact path="/sheltersignup" element={<ShelterSignup />} />
