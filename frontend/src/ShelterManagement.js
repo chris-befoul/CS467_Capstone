@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PetList from './components/PetList'
-import { Typography, InputAdornment, TextField, MenuItem, InputLabel, Select} from "@mui/material";
+import { Typography, InputAdornment, TextField, MenuItem, InputLabel, Select, Pagination} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 
@@ -8,6 +8,9 @@ const ShelterManagement = () => {
     const [petsFromAPI, setPetFromAPI] = useState(null);
     const [searchPhrase, setSearchPhrase] = useState('');
     const [filterType, setFilterType] = useState("All");
+    const [currPage, setCurrPage] = useState(1);
+    const [pageCount, setPageCount] = useState(null);
+    const petPerPage = 3;
     const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = "https://cs467-sandbox.ue.r.appspot.com";
@@ -29,8 +32,13 @@ const ShelterManagement = () => {
             });
             console.log(pets);
             setPetFromAPI(pets);
+            setPageCount(Math.ceil(pets.length / petPerPage));
         });
     }, []);
+
+    useEffect(() => {
+        setCurrPage(1);
+    }, [searchPhrase, filterType]);
 
     const delete_pet = (id) => {
         // console.log(id + ' Delete clicked!');
@@ -39,6 +47,10 @@ const ShelterManagement = () => {
                 setPetFromAPI(petsFromAPI.filter((pet) => pet.id !== id));
             });
         }
+    };
+
+    const update_page = (e, value) => {
+        setCurrPage(value);
     };
 
     return (
@@ -68,9 +80,12 @@ const ShelterManagement = () => {
                 </Select>
             </div>
             {(petsFromAPI !== null)
-            ? <PetList pets={petsFromAPI.filter((pet) => searchPhrase === '' || pet.name.toLowerCase().includes(searchPhrase.toLowerCase()))} onDelete={delete_pet} filterByType={filterType}/>
+            ? <PetList pets={petsFromAPI.filter((pet) => searchPhrase === '' || pet.name.toLowerCase().includes(searchPhrase.toLowerCase()))} onDelete={delete_pet} filterByType={filterType} currPage={currPage} petPerPage={petPerPage} setPageCount={setPageCount}/>
             : <div style={{textAlign: 'center'}}>Loading</div>
             }
+            <div  style={{display:'flex', justifyContent: 'center', marginBottom: 20}}>
+                <Pagination count={pageCount} page={currPage} size="large" color="primary" onChange={update_page} />
+            </div>
         </div>
     )
 }
