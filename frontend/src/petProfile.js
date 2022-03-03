@@ -76,7 +76,7 @@ const ViewPetProfile = () => {
     }
 
     const Selectphoto = () => {
-        if(photos[0] !== undefined && currPhoto != undefined) {
+        if(photos[0] !== undefined && currPhoto !== undefined) {
             return <img id='pet-image' src={photoURL + currPhoto}/>;
         }
         return <p>No Image Availabile</p>
@@ -114,7 +114,7 @@ const ViewPetProfile = () => {
     const PhotoOptions = () => {
         if(photos.length > 1){
             return photos.map((pic) => {
-                if(pic.name != currPhoto) {
+                if(pic.name !== currPhoto) {
                     return <Photo key={pic.name} picture={pic.name}/>
                 }
             })
