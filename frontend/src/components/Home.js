@@ -1,41 +1,107 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@emotion/react';
-import { Container, Grid} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import { Button, Container , Grid, Card, CardActionArea } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import CssBaseline from '@mui/material/CssBaseline';
+import axios from 'axios';
 import FeaturedPet from './FeaturedPet';
-
 
 
 const Home = (props) => {
 
-    const theme = createTheme({
-        palette: {
-            primary: {
-                main: '#1473f0'
-            }
-        }
-    })
-
-    let button = (
-        <Button variant="contained" color="primary">Search Pets</Button>
-    )
+    // let button = (
+    //     <Button variant="contained" color="primary">Search Pets</Button>
+    // )
     
     const name = props.name;
-    let elem;
+    let greeting;
     if (name !== '') {
-        elem = ('Welcome ' + name);
+        greeting = ('Welcome ' + name);
+    }
+
+    const [pet1Name, setPet1Name] = useState('');       
+    const [pet1Desc, setPet1Desc] = useState('');
+    const [pet1Photo, setPet1Photo] = useState('');
+    const [pet2Name, setPet2Name] = useState('');      
+    const [pet2Desc, setPet2Desc] = useState('');
+    const [pet2Photo, setPet2Photo] = useState('');
+    const [pet3Name, setPet3Name] = useState('');      
+    const [pet3Desc, setPet3Desc] = useState('');
+    const [pet3Photo, setPet3Photo] = useState('');
+    const [pet4Name, setPet4Name] = useState('');       
+    const [pet4Desc, setPet4Desc] = useState('');
+    const [pet4Photo, setPet4Photo] = useState('');
+    const fetchURL = 'http://localhost:8080/pets/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
+    const petURL = '/pets/viewProfile/';
+    const browseURL = '/browse';
+    
+    const pet1 = '5655374346584064';        // Daisy
+    const pet2 = '5066704988143616';        // Cooper
+    const pet3 = '5689540979195904';        // Bailey
+    const pet4 = '5722267187150848';        // Buddy
+
+    const requests = [
+        fetchURL+pet1, fetchURL+pet2, fetchURL+pet3, fetchURL+pet4
+    ]
+
+    useEffect(() => {
+        getPetData();
+    },[]);
+
+    const getPetData = () => {
+        Promise.all(requests.map((request) => axios.get(request)))
+        .then((data) => {
+            const responseOne = data[0].data;
+            const responseTwo = data[1].data;
+            const responseThree = data[2].data;
+            const responseFour = data[3].data;
+
+            setPet1Name(responseOne.data.name);
+            setPet1Desc(responseOne.data.description);
+            setPet1Photo(responseOne.photos[0].name);
+
+            setPet2Name(responseTwo.data.name);
+            setPet2Desc(responseTwo.data.description);
+            setPet2Photo(responseTwo.photos[0].name);
+
+            setPet3Name(responseThree.data.name);
+            setPet3Desc(responseThree.data.description);
+            setPet3Photo(responseThree.photos[0].name);
+
+            setPet4Name(responseFour.data.name);
+            setPet4Desc(responseFour.data.description);
+            setPet4Photo(responseFour.photos[0].name);
+        }).catch(error => {
+            console.error(error.message);
+        });
+    }
+
+    const travel = useNavigate();
+
+    const toTravel = (URL) => {
+        travel(URL);
     }
 
     return ( 
         <div>
-            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Grid sx={{ p: 4 }}/>
                 <Container maxWidth='xl'>
-                    <div>{elem}</div>   
+                    <Grid container justifyContent="space-evenly">
+                        <Grid item md={10} />
+                        <Grid item md={2}>
+                            <p>{greeting}</p>                    
+                        </Grid>
+                    </Grid>
+                </Container>
+                <Container maxWidth='xl'> 
                     <Grid container justifyContent="space-evenly"  alignItems="center">
                         <Grid item md={5}>
-                            <img className="image" src="../../dog_human.jpeg" alt="" width="550"></img> 
+                            <img className="image" src="../../dog_human.jpeg" alt="" width="575"></img> 
                         </Grid>
                         <Grid item md={7}>
                             <h1>View Our Adoptable Animals</h1>
@@ -43,10 +109,14 @@ const Home = (props) => {
                             <p>Ready to adopt? Check out all of our loveable animals that are ready for their forever homes!</p>
                             <br></br>
                             <br></br>
-                            <br></br>
-                            {button}
-                        </Grid>
+                                <Button variant="contained" color="primary" 
+                                    onClick={() => {
+                                        toTravel(browseURL)
+                                    }}>
+                                Search Pets</Button>
+                            </Grid>
                     </Grid>
+                </Container>
                     <br/>
                     <br/>
                     <h2>Featured Pets</h2>    
@@ -61,7 +131,6 @@ const Home = (props) => {
                     <br/>
                     <br/>
                     <h2>Testimonials</h2>   
-                    <br/>
                     <Grid container justifyContent="space-evenly"  alignItems="center">
                         <Grid item md={3}>
                             <p>User 1</p>
@@ -81,7 +150,6 @@ const Home = (props) => {
                         </Grid>
                     </Grid>
                 </Container>
-            </ThemeProvider>
         </div>
      );
 }

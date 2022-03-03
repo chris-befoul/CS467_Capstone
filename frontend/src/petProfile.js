@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import { ThemeProvider } from '@mui/material'
+import { ThemeProvider, Button, Grid } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { createTheme } from '@mui/material/styles';
 import "./petProfile.css";
 
@@ -18,7 +19,11 @@ const ViewPetProfile = () => {
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+
     const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+
 
     React.useEffect(() => {
         getPetData(params.petID);
@@ -122,14 +127,30 @@ const ViewPetProfile = () => {
         return <br />
     }
 
+
+    const navigateBrowse = (
+        <Grid container sx={{ mt: 3.5, ml: 20}}>
+            <Grid item xs={3} align="center">
+                <Button 
+                    variant="outlined"
+                    onClick={() => {travel('/browse')}}
+                    startIcon={<ArrowBackIcon />}
+                >Back to Pets</Button>
+            </Grid>
+            <Grid item xs={9} />
+        </Grid>
+    )
+
     const emailShelter = () => {
         window.open('mailto:' + shelter.email)
     }
+
 
     return (
         <div id='pet-profile'>
             <ThemeProvider theme={theme}>
                 <div id='left-column'>
+                    {navigateBrowse}
                     <div id='left-container'>
                         <div id='photos-container'>
                             <div id='main-photo'>

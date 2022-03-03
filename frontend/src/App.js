@@ -11,9 +11,25 @@ import CreatePetFormPage from "./createPet";
 import EditPetProfile from "./editPet";
 import ViewPetProfile from "./petProfile";
 import UserProfile from './UserProfile';
+import Browse from './components/Browse';
 import ShelterProfile from './ShelterProfile';
 import ShelterManagement from './ShelterManagement';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@emotion/react';
+
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#1473f0'
+        },
+        background: {
+            main: '#f0f4fc'
+        },
+    },
+    spacing: 4,
+})
 
 function App() {
     const [name, setName] = useState('');
@@ -37,7 +53,7 @@ function App() {
                 return res.json();
             })
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 if (data.type === "User"){
                     const fullName = (data.first_name + ' ' + data.last_name);
                     setName(fullName);
@@ -66,22 +82,25 @@ function App() {
 
     return (
         <BrowserRouter>
-            <Navbar name={name} setName={setName} type={type} setType={setType}/>
-            <Routes>
-                <Route exact path="/" element={<Home name={name} type={type} featuredPets={featuredPets}/>}/>
-                <Route exact path="/signup" element={<Signup />} />
-                <Route exact path="/usersignup" element={<UserSignup />} />
-                <Route exact path="/sheltersignup" element={<ShelterSignup />} />
-                <Route exact path="/admin" element={<Admin setName={setName} setType={setType}/>} />
-                <Route exact path="/adminView" element={<AdminViewPage />}/>
-                <Route exact path="/login" element={<Login setName={setName} setType={setType}/>}/>
-                <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
-                <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
-                <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
-                <Route exact path="/userprofile" element={<UserProfile setName={setName} setType={setType}/>} />
-                <Route exact path="/shelterprofile" element={<ShelterProfile setName={setName} setType={setType}/>} />
-                <Route exact path="/sheltermanagement" element={<ShelterManagement />} />
-            </Routes>
+            <ThemeProvider theme={theme}>
+              <Navbar name={name} setName={setName} type={type} setType={setType}/>
+              <Routes>
+                  <Route exact path="/" element={<Home name={name} type={type} featuredPets={featuredPets}/>}/>
+                  <Route exact path="/browse" element={<Browse />} />
+                  <Route exact path="/signup" element={<Signup />} />
+                  <Route exact path="/usersignup" element={<UserSignup />} />
+                  <Route exact path="/sheltersignup" element={<ShelterSignup />} />
+                  <Route exact path="/admin" element={<Admin setName={setName} setType={setType}/>} />
+                  <Route exact path="/adminView" element={<AdminViewPage />}/>
+                  <Route exact path="/login" element={<Login setName={setName} setType={setType}/>}/>
+                  <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
+                  <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
+                  <Route exact path="/pets/viewProfile/:petID" element={<ViewPetProfile />} />
+                  <Route exact path="/userprofile" element={<UserProfile setName={setName} setType={setType}/>} />
+                  <Route exact path="/shelterprofile" element={<ShelterProfile setName={setName} setType={setType}/>} />
+                  <Route exact path="/sheltermanagement" element={<ShelterManagement />} />
+              </Routes>
+            </ThemeProvider>
         </BrowserRouter>
     )
 }

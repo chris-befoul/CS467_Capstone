@@ -11,8 +11,8 @@ const cors = require('cors');
 
 app.use(cors({
   credentials: true,
-  // origin: [ 'http://localhost:3000', 'http://localhost:8080', 'https://cs467-sandbox.ue.r.appspot.com','http://cs467-sandbox.ue.r.appspot.com']
-  origin: ['http://localhost:3000', 'http://localhost:8080', 'https://capstone-animal-adoption-app.wl.r.appspot.com','http://capstone-animal-adoption-app.wl.r.appspot.com']
+  // // origin: [ 'http://localhost:3000', 'http://localhost:8080', 'https://cs467-sandbox.ue.r.appspot.com','http://cs467-sandbox.ue.r.appspot.com']
+  origin: ['http://localhost:3000', 'http://localhost:8080', 'https://capstone-animal-adoption-app.wl.r.appspot.com','http://capstone-animal-adoption-app.wl.r.appspot.com', 'https://storage.googleapis.com/pet_profile_photos_cs467/'],
 }));
 app.options('*', cors());
 app.enable('trust proxy');
@@ -23,9 +23,11 @@ app.use(express.json());
 
 const userRoute = require('./user');
 const shelterRoute = require('./shelter');
+const browseRoute = require('./browse');
 app.use('/api', routes);
 app.use('/users', userRoute);
 app.use('/shelters', shelterRoute);
+app.use('/browse', browseRoute);
 app.use('/pets', require('./PetProfile/API/petAPI'));
 // app.use('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public', 'index.html'));
