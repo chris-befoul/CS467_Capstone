@@ -20,19 +20,25 @@ const ViewPetProfile = () => {
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
     // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+
 
     React.useEffect(() => {
         getPetData(params.petID);
         userInfo();
+        // shelterInfo();
     }, [params.petID]);
 
     const getPetData = async (petID) => {
         const petURL =  fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
+            // console.log(res.data.data);
             setData(res.data.data);
             setPhotos(res.data.photos);
             setPhoto(res.data.photos[0].name);
+            shelterInfo(res.data.data.shelter_id);
             return;
         })
     }
@@ -43,8 +49,8 @@ const ViewPetProfile = () => {
         });
     }
 
-    const shelterInfo = async() => {
-        await fetch(fetchURL + '/shelters/' + petData.shelter_id, { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
+    const shelterInfo = async(shelter_id) => {
+        await fetch(fetchURL + '/api/user/' + shelter_id, { method: 'GET', credentials: 'include'}).then( res => res.json()).then( data => {
             setShelter(data);
         });
     }
@@ -59,7 +65,7 @@ const ViewPetProfile = () => {
 
     const leaveProfile = () => {
         if(user.type === "Shelter") {
-            travel('/');
+            travel('/shelterprofile');
             // window.location.reload();
         }
         else {
@@ -75,7 +81,7 @@ const ViewPetProfile = () => {
     }
 
     const Selectphoto = () => {
-        if(photos[0] !== undefined && currPhoto != undefined) {
+        if(photos[0] !== undefined && currPhoto !== undefined) {
             return <img id='pet-image' src={photoURL + currPhoto}/>;
         }
         return <p>No Image Availabile</p>
@@ -113,13 +119,14 @@ const ViewPetProfile = () => {
     const PhotoOptions = () => {
         if(photos.length > 1){
             return photos.map((pic) => {
-                if(pic.name != currPhoto) {
+                if(pic.name !== currPhoto) {
                     return <Photo key={pic.name} picture={pic.name}/>
                 }
             })
         }
         return <br />
     }
+
 
     const navigateBrowse = (
         <Grid container sx={{ mt: 3.5, ml: 20}}>
@@ -133,6 +140,11 @@ const ViewPetProfile = () => {
             <Grid item xs={9} />
         </Grid>
     )
+
+    const emailShelter = () => {
+        window.open('mailto:' + shelter.email)
+    }
+
 
     return (
         <div id='pet-profile'>
@@ -157,8 +169,10 @@ const ViewPetProfile = () => {
                         <p style={{fontSize: 20}}>Age:             {petData.age}</p>
                         <p style={{fontSize: 20}}>Weight:          {petData.weight} lbs</p>
                         <p style={{fontSize: 20}}>Sex:            {petData.sex}</p>
-                        {/* <p>Rescued By:      {shelter.shelter_name}</p> */}
-                        {/* <p>Location:        {shelter.city}, {shelter.state}</p> */}
+                        <p style={{fontSize: 20}}>Rescued By:      {shelter.shelter_name}</p>
+                        <p style={{fontSize: 20}}>Location:        {shelter.city}, {shelter.state}</p>
+                        <p style={{fontSize: 20}}>Email:            <em onClick={emailShelter} id='shelter-email'>{shelter.email}</em> </p>
+                        <p style={{fontSize: 20}}>Phone:            {shelter.phone}</p>
                         <p style={{fontSize: 20}}>Profile Created:        {formatDate(petData.date_created)}</p>
                         <p style={{fontSize: 20}}>Adoption Status:    {petData.availability}</p>
                     </div>

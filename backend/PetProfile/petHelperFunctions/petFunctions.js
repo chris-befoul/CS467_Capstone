@@ -29,7 +29,7 @@ async function edit_pet(petID, name, type, breed, availability, sex, age, weight
         'disposition': disposition, 
         'description': description, 
         'date_created': date, 
-        'shelter_id': shelter_id 
+        'shelter_id': shelter_id
     };
     return helper.datastore.save({ 'key': key, 'data': updated_pet}).then(() => { 
         var updated_entry = updated_pet; updated_entry['id'] = key.id;
@@ -49,7 +49,7 @@ async function post_pet(name, type, breed, availability, sex, age, weight, dispo
         'disposition': disposition, 
         'description': description, 
         'date_created': new Date(), 
-        'shelter_id': shelter_id 
+        'shelter_id': shelter_id
     };
     return helper.datastore.save({ 'key': key, 'data': new_pet}).then(() => { 
         var new_entry = new_pet; new_entry['id'] = key.id;
@@ -62,6 +62,7 @@ async function get_all_pets(shelter_id) {
         return entities[0].map(helper.fromDatastore);
     });
 }
+
 
 async function get_all_pets_browse() {
     const q = helper.datastore.createQuery(PET);
@@ -109,6 +110,17 @@ async function get_pets_filter(type, breed, availability, sex, age) {
     return helper.datastore.runQuery(q).then((entities) => {
         return entities[0].map(helper.fromDatastore);
     });
+
+async function get_featured_pets() {
+    const q = helper.datastore.createQuery(PET).filter('availability', '=', 'Available');
+    return helper.datastore.runQuery(q).then((entities) => {
+        return entities[0].sort((a, b) => b.date_created - a.date_created).slice(0,4).map(helper.fromDatastore);
+    });
+}
+
+async function delete_pet(pet_id){
+    const key = helper.datastore.key([PET, parseInt(pet_id)]);
+    await helper.datastore.delete(key);
 }
 
 module.exports = {
@@ -117,5 +129,8 @@ module.exports = {
     edit_pet,
     get_all_pets,
     get_all_pets_browse,
-    get_pets_filter
+    get_pets_filter,
+    delete_pet,
+    get_featured_pets
+
 }

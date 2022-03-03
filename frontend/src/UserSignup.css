@@ -45,7 +45,7 @@ form {
     overflow-wrap: break-word;
 }
 
-.submit-btn {
+.submit-btn, .edit-password-btn{
     border-radius: 5px;
     padding: 10px 30px;
     font-family: 'Courier';
@@ -55,7 +55,7 @@ form {
     border: none;
 }
 
-.submit-btn:hover {
+.submit-btn:hover, .edit-password-btn:hover {
     background-color: #144cb4;
     color: white;
 }

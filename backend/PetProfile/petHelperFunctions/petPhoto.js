@@ -1,15 +1,30 @@
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 
-const bucketName = 'pet_profile_photos_cs467';
+
+// const bucketName = 'pet_profile_photos_cs467';
 // pet_profile_photos_cs467 <-- Vincent
 // pet_profile_photo
 
-async function uploadPhoto(filePath, destFileName) {
+// const bucketName = 'pet_profile_photo';
+const bucketName = 'pet_profile_photos';
+const bucket = storage.bucket(bucketName);
 
-  await storage.bucket(bucketName).upload(filePath, {
-    destination: destFileName,
+
+async function uploadPhoto(file, fileName) {
+
+  const blob = bucket.file(fileName);
+  const blobStream = blob.createWriteStream();
+
+  blobStream.on('error', err => {
+  next(err);
   });
+
+  blobStream.on('finish', () => {
+      return;
+    });
+  
+    blobStream.end(file.buffer);
 }
 
 async function petsPhotos(petID) {

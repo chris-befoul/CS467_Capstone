@@ -3,11 +3,10 @@ import "./UserSignup.css";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const UserProfile = ({setName, setType}) => {
+const ShelterProfile = ({setName, setType}) => {
     const [formData, setFormData] = useState({
         id: "",
-        first_name: "",
-        last_name: "",
+        shelter_name: "",
         city: "",
         phone: "",
         zip_code: "",
@@ -16,8 +15,7 @@ const UserProfile = ({setName, setType}) => {
         password: "",
         new_password: "",
         confirm_new_password: "",
-        type: "",
-        email_preference: false
+        type: ""
     });
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -73,15 +71,15 @@ const UserProfile = ({setName, setType}) => {
                 }
             }).then(data => {
                 console.log(data);
-                alert("User Updated!");
+                alert("Shelter Updated!");
                 window.location.reload();
             }).catch(e => alert("Invalid current password!"));
         }
     }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        if (changePassword === false){
-            const newdata = {...formData, password: '', new_password: '', confirm_new_password: ''};
+        if (changePassword === false) {
+            const newdata = { ...formData, password: '', new_password: '', confirm_new_password: '' };
             setFormData(newdata);
         }
     }, [changePassword]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -91,8 +89,8 @@ const UserProfile = ({setName, setType}) => {
         if (window.confirm('Are you sure you wish to delete your account?')){
             fetch(fetchURL + '/api/user', { method: 'DELETE', credentials: 'include' }).then(() => {
                 console.log('Deleted!');
-                alert("user deleted!");
-
+                alert("Shelter deleted!");
+    
                 // redirect to landing page
                 navigate("/");
                 // window.location.reload();
@@ -104,7 +102,7 @@ const UserProfile = ({setName, setType}) => {
 
     const validate = async (values) => {
         const errors = {};
-        const name_regex = /^[a-zA-Z\s]{3,25}$/;
+        const name_regex = /^[a-zA-Z\s]{3,30}$/;
         const email_regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
         const city_regex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/; // letters, spaces, and dashes
         const states = [
@@ -118,11 +116,8 @@ const UserProfile = ({setName, setType}) => {
         const phone_regex = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
         const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,25}$/; // 8-25 characters, at least 1 lowercase, 1 uppercase, and 1 digit
 
-        if (!name_regex.test(values.first_name)) {
-            errors.first_name = "Invalid first name! It should be letters only and 3-25 characters long.";
-        }
-        if (!name_regex.test(values.last_name)) {
-            errors.last_name = "Invalid last name! It should be letters only and 3-25 characters long.";
+        if (!name_regex.test(values.shelter_name)) {
+            errors.shelter_name = "Invalid shelter name! It should be letters only and 3-30 characters long.";
         }
         if (!city_regex.test(values.city)) {
             errors.city = "Invalid city! It should consist of letters, spaces, and dashes only.";
@@ -193,18 +188,13 @@ const UserProfile = ({setName, setType}) => {
         <div>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <div><label className='form-section-header'>About Me</label></div>
+                    <div><label className='form-section-header'>Shelter Info</label></div>
                     <div className='form-field-group'>
                         <div className='input-pair'>
                             <div className='form-input-field'>
-                                <label>First Name: </label>
-                                <input required type="text" name='first_name' defaultValue={formData.first_name} onChange={(e) => handleChange(e)}></input>
-                                <p className='form-error-msg'>{formErrors.first_name}</p>
-                            </div>
-                            <div className='form-input-field'>
-                                <label>Last Name:</label>
-                                <input required type="text" name='last_name' defaultValue={formData.last_name} onChange={(e) => handleChange(e)}></input>
-                                <p className='form-error-msg'>{formErrors.last_name}</p>
+                                <label>Shelter Name: </label>
+                                <input required type="text" name='shelter_name' defaultValue={formData.shelter_name} onChange={(e) => handleChange(e)}></input>
+                                <p className='form-error-msg'>{formErrors.shelter_name}</p>
                             </div>
                         </div>
                     </div>
@@ -252,15 +242,6 @@ const UserProfile = ({setName, setType}) => {
                     {displayPassword()}
                     {(changePassword) ? <button className='edit-password-btn' type='button' onClick={() => setChangePassword(false)}>Close</button> : <button className='edit-password-btn' type='button' onClick={() => setChangePassword(true)}>Edit Password</button>}
                 </div>
-                <div className='form-group'>
-                    <div><label className='form-section-header'>Email Preference</label></div>
-                    <div className='form-field-group'>
-                        <div>
-                            <label>Enable email notifications for newly added profiles: </label>
-                            <input type="checkbox" name="email_preference" checked={formData.email_preference} onChange={(e) => handleChange(e)}></input>
-                        </div>
-                    </div>
-                </div>
                 <div className='submit-btn-block1'><input className="submit-btn" type="submit" value="Update Account" /></div>
                 <div className='delete-btn-block'><button className="delete-btn" type='button' onClick={deleteAccount}>Delete Account</button></div>
             </form>
@@ -268,4 +249,4 @@ const UserProfile = ({setName, setType}) => {
     )
 }
 
-export default UserProfile;
+export default ShelterProfile;

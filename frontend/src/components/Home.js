@@ -6,6 +6,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import axios from 'axios';
+import FeaturedPet from './FeaturedPet';
+
 
 const Home = (props) => {
 
@@ -117,89 +119,17 @@ const Home = (props) => {
                 </Container>
                     <br/>
                     <br/>
-                <Grid backgroundColor='background.main'>
-                    <Container maxWidth='xl'>
-                        <h2>Featured Pets</h2>    
-                        <Grid container  justifyContent="space-evenly" alignItems="stretch">
-                            <Grid item component={Card} xs sx={{ m: 2 }}>
-                                <CardActionArea onClick={() => {toTravel(petURL+pet1)}}>
-                                    <CardMedia
-                                        component="img"
-                                        height="150"
-                                        image={photoURL+pet1Photo}
-                                        alt=""
-                                    />
-                                    <CardContent>
-                                        <p>
-                                        {pet1Name}
-                                        </p>
-                                        <p>
-                                        {pet1Desc}
-                                        </p>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Grid>
-                            <Grid item component={Card} xs sx={{ m: 2 }}>
-                                <CardActionArea onClick={() => {toTravel(petURL+pet2)}}>
-                                    <CardMedia
-                                        component="img"
-                                        height="150"
-                                        image={photoURL+pet2Photo}
-                                        alt=""
-                                    />
-                                    <CardContent>
-                                        <p>
-                                        {pet2Name}
-                                        </p>
-                                        <p>
-                                        {pet2Desc}
-                                        </p>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Grid>
-                            <Grid item component={Card} xs sx={{ m: 2 }}>
-                                <CardActionArea onClick={() => {toTravel(petURL+pet3)}}>
-                                    <CardMedia
-                                        component="img"
-                                        height="150"
-                                        image={photoURL+pet3Photo}
-                                        alt=""
-                                    />
-                                    <CardContent>
-                                        <p>
-                                        {pet3Name}
-                                        </p>
-                                        <p>
-                                        {pet3Desc}
-                                        </p>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Grid>
-                            <Grid item component={Card} xs sx={{ m: 2 }}>
-                                <CardActionArea onClick={() => {toTravel(petURL+pet4)}}>
-                                    <CardMedia
-                                        component="img"
-                                        height="150"
-                                        image={photoURL+pet4Photo}
-                                        alt=""
-                                    />
-                                    <CardContent>
-                                        <p>
-                                        {pet4Name}
-                                        </p>
-                                        <p>
-                                        {pet4Desc}
-                                        </p>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <br/>
-                    </Container>
-                </Grid>
-                <Container maxWidth="xl">
-                    <Grid sx={{ p: 2 }}/>
+                    <h2>Featured Pets</h2>    
+                    <br /> 
+                    <Grid container justifyContent="space-evenly"  alignItems="center">
+                        {props.featuredPets !== null 
+                        ? props.featuredPets.map(pet => {
+                            return <FeaturedPet pet={pet} key={pet.id}/>
+                        })
+                        : <>Loading...</>}
+                    </Grid>
+                    <br/>
+                    <br/>
                     <h2>Testimonials</h2>   
                     <Grid container justifyContent="space-evenly"  alignItems="center">
                         <Grid item md={3}>

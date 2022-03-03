@@ -14,8 +14,8 @@
 }
 
 .signup-btn div{
-    display: inline;
-    padding: 100px;
+    display: inline-block;
+    width: 500px;
 }
 
 .signup-btn {

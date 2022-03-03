@@ -72,3 +72,8 @@
 #pet-description {
     margin-right: 35%;
 }
+
+#shelter-email:hover {
+    color: blue;
+    font-weight: bold;
+}

@@ -1,14 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import "./editPet.css";
 
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
 const breeds = {
-    dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
-    cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
-    other: ['Other']
+    Dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
+    Cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
+    Other: ['Other']
 }
 const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
@@ -29,8 +29,9 @@ const EditPetProfile = () => {
     const [petPhoto, setPhoto] = React.useState(null);
     const [petDate, setDate] = React.useState();
     const [shelterID, setID] = React.useState(null);
-
+    const location = useLocation();
     const travel = useNavigate();
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
@@ -116,9 +117,9 @@ const EditPetProfile = () => {
     const TypeCreate = () => {
         if (petType != null) {
             return <select id='edit-select' name='type' defaultValue={petType} onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}}>
-                        <option value='dog'>Dog</option>
-                        <option value='cat'>Cat</option>
-                        <option value='other'>Other</option>
+                        <option value='Dog'>Dog</option>
+                        <option value='Cat'>Cat</option>
+                        <option value='Other'>Other</option>
                     </select>
         }
         return <p></p>
@@ -169,7 +170,8 @@ const EditPetProfile = () => {
                 method: 'delete',
                 url: fetchURL + '/pets/photo',
                 data: {
-                fileName: e.target.name
+                fileName: e.target.name,
+                petID: params.petID
                 }
             }).then((res) => {
                 if(res.status === 201) {
@@ -201,7 +203,7 @@ const EditPetProfile = () => {
 
         return <li id='photo-list'>
             <div id='edit-photo'> 
-            <img id='edit-pet-image' name={props.picture.name} src={'https://storage.googleapis.com/pet_profile_photo/' + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
+            <img id='edit-pet-image' name={props.picture.name} src={photoURL + props.picture.name} onMouseEnter={picEnter} onMouseLeave={picLeave} onClick={deletePhoto}/> 
             { deletePic ? <p id='delete-pic' onMouseEnter={picEnter} onMouseLeave={picLeave}>Delete Photo</p> : null}
             </div> 
             </li>;
@@ -214,6 +216,16 @@ const EditPetProfile = () => {
                     {currPhotos.map((pic) => <Photo picture={pic} key={pic.name}/>)}
                 </ul>
             </div>
+        }
+        return <p></p>
+    }
+
+    const BuildSex = () => {
+        if(petSex != null) {
+            return <select id='edit-select' name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
         }
         return <p></p>
     }
@@ -233,10 +245,7 @@ const EditPetProfile = () => {
                 <label id='edit-label'>Availability: </label>
                     <AvailableCreate />
                 <label id='edit-label'>Sex: </label>
-                    <select id='edit-select' name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
+                    <BuildSex />
                 <div id='age-weight'>
                     <label id='edit-label'>Age: </label>
                         <AgeCreate />
@@ -263,6 +272,9 @@ const EditPetProfile = () => {
                 </div>
                 <br />
                 <input type='submit' value='Save Profile' id='edit-save'/>
+                {(location.state && location.state.from === 'shelterManagement') 
+                ? <button type='button' id='back-btn' style={{marginRight:20}} onClick={() => travel('/sheltermanagement')}>Back</button>
+                : null}
             </form>
         </div>
     )

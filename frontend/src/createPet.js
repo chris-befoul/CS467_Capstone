@@ -7,15 +7,15 @@ import "./createPet.css";
 
 const petAvailabitiy = ['Available', 'Not Availabe', 'Pending', 'Adopted'];
 const breeds = {
-    dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
-    cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
-    other: ['Other']
+    Dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
+    Cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
+    Other: ['Other']
 };
 const ages = ['Puppy/Kitten/Baby', 'Young', 'Adult', 'Senior'];
 
 
 const CreatePetFormPage = () => {
-    const [petType, setType] = React.useState("dog");
+    const [petType, setType] = React.useState("Dog");
     const [petName, setName] = React.useState('');
     const [petBreed, setBreed] = React.useState('Golden Retriever');
     const [petAvail, setAvail] = React.useState('Available');
@@ -75,7 +75,7 @@ const CreatePetFormPage = () => {
         const types = ['image/png', 'image/jpeg'];
 
         const formPhoto = new FormData();
-        for(var x = 0; x<petPhoto.length; x++) {
+        for(var x = 0; x < petPhoto.length; x++) {
             if (!types.every(value => petPhoto[x].type !== value)) {
                 formPhoto.append('file', petPhoto[x]);
             }
@@ -104,15 +104,16 @@ const CreatePetFormPage = () => {
             <br/>
             <label id='create-label'>Pet Type: </label>
                 <select id='create-select' onChange={e => {setType(e.target.value); setBreed(breeds[e.target.value][0])}} name='type'>
-                    <option value='dog'>Dog</option>
-                    <option value='cat'>Cat</option>
-                    <option value='other'>Other</option>
+                    <option value='Dog'>Dog</option>
+                    <option value='Cat'>Cat</option>
+                    <option value='Other'>Other</option>
+
                 </select>
             <label id='create-label'>Breed: </label>
-                <select id='create-select' name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+                <select id='create-select' name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option key={x}>{x}</option>})}</select> 
             <br />
             <label id='create-label'>Availability: </label>
-                <select id='create-select' name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+                <select id='create-select' name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option key={x}>{x}</option>})}</select>
             <label id='create-label'>Sex: </label>
                 <select id='create-select' name='sex' onChange={e => setSex(e.target.value)}>
                     <option value="Male">Male</option>
@@ -121,7 +122,7 @@ const CreatePetFormPage = () => {
             <br />
             <div id='age-weight'>
             <label id='create-label'>Age: </label>
-                <select id='create-select' name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+                <select id='create-select' name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option key={x}>{x}</option>})}</select>
             <label id='create-label'>Weight: </label> 
                 <input required type='number' name='weight' placeholder={0} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
             </div>

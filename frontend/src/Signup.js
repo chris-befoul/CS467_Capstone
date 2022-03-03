@@ -1,4 +1,3 @@
-import Navbar from "./components/Navbar";
 import "./Signup.css";
 import Button from "./components/Button";
 import { Link } from "react-router-dom";

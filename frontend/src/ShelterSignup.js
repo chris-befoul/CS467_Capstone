@@ -31,8 +31,8 @@ const ShelterSignup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormErrors(await validate(formData));
         setIsSubmit(true);
+        setFormErrors(await validate(formData));
     };
 
     useEffect(() => {
@@ -128,7 +128,7 @@ const ShelterSignup = () => {
                             </div>
                             <div className='form-input-field'>
                                 <label>Phone Number:</label>
-                                <input required type="tel" name="phone" value={formData.phone} onChange={ (e) => handleChange(e)}></input>
+                                <input required type="tel" name="phone" placeholder='123-456-7890' value={formData.phone} onChange={ (e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.phone}</p>
                             </div>
                         </div>
@@ -142,7 +142,7 @@ const ShelterSignup = () => {
                             </div>
                             <div className='form-input-field'>
                                 <label>State:</label>
-                                <input required type="text" name="state" value={formData.state} onChange={ (e) => handleChange(e)}></input>
+                                <input required type="text" name="state" placeholder='CA' value={formData.state} onChange={ (e) => handleChange(e)}></input>
                                 <p className='form-error-msg'>{formErrors.state}</p>
                             </div>
                         </div>

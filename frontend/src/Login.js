@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { Navigate } from 'react-router-dom';
 import "./Login.css";
 import Button from "./components/Button";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Login = (props) => {
 
   const setName = props.setName;
+  const setType = props.setType;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,9 +35,16 @@ const Login = (props) => {
     console.log(content.message);
     if (content.message === 'User not found!') {
       alert('User not found!');
-    } else {
+    } else if (content.message === 'Invalid password!'){
+      alert('Invalid password!');
+    } else{
       setNavigate(true);
-      setName(content.name);
+      setType(content.user.type);
+      if (content.user.type === 'Shelter'){
+        setName(content.user.shelter_name);
+      } else {
+        setName(content.user.first_name + ' ' + content.user.last_name);
+      }
     }
   }
 
