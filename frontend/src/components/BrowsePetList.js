@@ -19,7 +19,7 @@ const BrowsePetList = ({ pets }) => {
     if (petsLength > 0) {
         return (
             <div>
-                <Grid container spacing={3}>
+                <Grid container>
                     {petRow}
                 </Grid>
             </div>

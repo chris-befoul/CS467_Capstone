@@ -27,7 +27,7 @@ const Browse = () => {
     const filter = (
         <Grid item md={2} align="center">
             <Typography align="center">Filter</Typography>
-            <BrowseFilter />
+            <BrowseFilter pets={pets}/>
         </Grid>
     )
 
