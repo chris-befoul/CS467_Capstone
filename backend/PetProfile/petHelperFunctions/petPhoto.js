@@ -1,9 +1,9 @@
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 
-const bucket = storage.bucket('pet_profile_photo');
-
 const bucketName = 'pet_profile_photo';
+// const bucketName = 'pet_profile_photos';
+const bucket = storage.bucket(bucketName);
 
 async function uploadPhoto(file, fileName) {
 

@@ -63,6 +63,13 @@ async function get_all_pets(shelter_id) {
     });
 }
 
+async function get_featured_pets() {
+    const q = helper.datastore.createQuery(PET).filter('availability', '=', 'Available');
+    return helper.datastore.runQuery(q).then((entities) => {
+        return entities[0].sort((a, b) => b.date_created - a.date_created).slice(0,4).map(helper.fromDatastore);
+    });
+}
+
 async function delete_pet(pet_id){
     const key = helper.datastore.key([PET, parseInt(pet_id)]);
     await helper.datastore.delete(key);
@@ -73,5 +80,6 @@ module.exports = {
     get_pet,
     edit_pet,
     get_all_pets,
-    delete_pet
+    delete_pet,
+    get_featured_pets
 }
