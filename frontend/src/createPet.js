@@ -75,7 +75,7 @@ const CreatePetFormPage = () => {
         const types = ['image/png', 'image/jpeg'];
 
         const formPhoto = new FormData();
-        for(var x = 0; x<petPhoto.length; x++) {
+        for(var x = 0; x < petPhoto.length; x++) {
             if (!types.every(value => petPhoto[x].type !== value)) {
                 formPhoto.append('file', petPhoto[x]);
             }
@@ -110,10 +110,10 @@ const CreatePetFormPage = () => {
 
                 </select>
             <label id='create-label'>Breed: </label>
-                <select id='create-select' name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option>{x}</option>})}</select> 
+                <select id='create-select' name='breed' onChange={e => setBreed(e.target.value)} >{breeds[petType].map((x) => {return <option key={x}>{x}</option>})}</select> 
             <br />
             <label id='create-label'>Availability: </label>
-                <select id='create-select' name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option>{x}</option>})}</select>
+                <select id='create-select' name='availability' onChange={e => setAvail(e.target.value)} >{petAvailabitiy.map((x) => {return <option key={x}>{x}</option>})}</select>
             <label id='create-label'>Sex: </label>
                 <select id='create-select' name='sex' onChange={e => setSex(e.target.value)}>
                     <option value="Male">Male</option>
@@ -122,7 +122,7 @@ const CreatePetFormPage = () => {
             <br />
             <div id='age-weight'>
             <label id='create-label'>Age: </label>
-                <select id='create-select' name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option>{x}</option>})}</select>
+                <select id='create-select' name='age' onChange={e => setAge(e.target.value)} >{ages.map((x) => {return <option key={x}>{x}</option>})}</select>
             <label id='create-label'>Weight: </label> 
                 <input required type='number' name='weight' placeholder={0} onChange={e => setWeight(e.target.value)} /> <span>lbs.</span>
             </div>

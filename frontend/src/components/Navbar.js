@@ -56,7 +56,7 @@ const Navbar = (props) => {
     } else if (type === 'Admin') {    // logged in - admin
         menu = (
             <div className="links">
-            <Link to="/" className='nav-link'>Manage Profiles</Link>
+            <Link to="/adminView" className='nav-link'>Manage Profiles</Link>
             <Link to="/Login" className='nav-link' onClick={logout}>Logout</Link>
             </div>
         );

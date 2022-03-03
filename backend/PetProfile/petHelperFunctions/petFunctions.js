@@ -49,7 +49,7 @@ async function post_pet(name, type, breed, availability, sex, age, weight, dispo
         'disposition': disposition, 
         'description': description, 
         'date_created': new Date(), 
-        'shelter_id': shelter_id,
+        'shelter_id': shelter_id
     };
     return helper.datastore.save({ 'key': key, 'data': new_pet}).then(() => { 
         var new_entry = new_pet; new_entry['id'] = key.id;
@@ -63,9 +63,15 @@ async function get_all_pets(shelter_id) {
     });
 }
 
+async function delete_pet(pet_id){
+    const key = helper.datastore.key([PET, parseInt(pet_id)]);
+    await helper.datastore.delete(key);
+}
+
 module.exports = {
     post_pet,
     get_pet,
     edit_pet,
-    get_all_pets
+    get_all_pets,
+    delete_pet
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import "./editPet.css";
 
 
@@ -29,9 +29,9 @@ const EditPetProfile = () => {
     const [petPhoto, setPhoto] = React.useState(null);
     const [petDate, setDate] = React.useState();
     const [shelterID, setID] = React.useState(null);
-
+    const location = useLocation();
     const travel = useNavigate();
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
@@ -219,6 +219,16 @@ const EditPetProfile = () => {
         }
         return <p></p>
     }
+
+    const BuildSex = () => {
+        if(petSex != null) {
+            return <select id='edit-select' name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        }
+        return <p></p>
+    }
     
     return (
         <div id='petBox'>
@@ -235,10 +245,7 @@ const EditPetProfile = () => {
                 <label id='edit-label'>Availability: </label>
                     <AvailableCreate />
                 <label id='edit-label'>Sex: </label>
-                    <select id='edit-select' name='sex' defaultValue={petSex} onChange={e => setSex(e.target.value)}>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
+                    <BuildSex />
                 <div id='age-weight'>
                     <label id='edit-label'>Age: </label>
                         <AgeCreate />
@@ -265,6 +272,9 @@ const EditPetProfile = () => {
                 </div>
                 <br />
                 <input type='submit' value='Save Profile' id='edit-save'/>
+                {(location.state && location.state.from === 'shelterManagement') 
+                ? <button type='button' id='back-btn' style={{marginRight:20}} onClick={() => travel('/sheltermanagement')}>Back</button>
+                : null}
             </form>
         </div>
     )

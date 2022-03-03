@@ -1,24 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const path = require('path');
-const multer = require('multer');
-const os = require('os');
-// const storage = multer.diskStorage({
-//     destination: (req, file, callBack) => {
-//         callBack(null, 'uploads')
-//     },
-//     filename: (req, file, callBack) => {
-//         callBack(null, `${file.originalname}`)
-//     }
-// })
-const upload = multer({ dest: os.tmpdir() });
-const directory = os.tmpdir();
+const Multer = require('multer');
+const multer = Multer({
+    storage: Multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024,
+    },
+});
 const router = express.Router();
 router.use(bodyParser.json());
 
 const petFunctions = require('../petHelperFunctions/petFunctions');
 const petPhotoFunction = require('../petHelperFunctions/petPhoto');
+
 
 router.get('/', function(req, res) {
     petFunctions.get_all_pets(req.query.shelter).then(async (pets) => {
@@ -47,31 +41,22 @@ router.get('/:petID', function(req, res) {
     })
 })
 
-router.patch('/:petID', upload.array('file'), (req,res) => {
+router.patch('/:petID', multer.array('file'), (req,res) => {
     const data = JSON.parse(req.body.data);
     petFunctions.edit_pet(req.params.petID, data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.date_created, data.shelter_id)
         .then( key => { 
             if(req.files && req.files.length > 0) {
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + req.files[x].originalname;
-                    petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
+                    petPhotoFunction.uploadPhoto(req.files[x], fileName);
                 }
-                // fs.readdir(directory, (err, files) => {
-                //     if (err) throw err;
-                
-                //     for (const file of files) {
-                //     fs.unlink(path.join(directory, file), err => {
-                //         if (err) throw err;
-                //     });
-                //     }
-                // });   
             }
             res.status(201).send(key);
             return; });
         return;
 })
 
-router.post('/createProfile', upload.array('file'), (req, res) => {
+router.post('/createProfile', multer.array('file'), (req, res) => {
     const data = JSON.parse(req.body.data);
     if (!req.files) {
         const error = new Error('No File')
@@ -81,17 +66,8 @@ router.post('/createProfile', upload.array('file'), (req, res) => {
     petFunctions.post_pet(data.name, data.type, data.breed, data.availability, data.sex, data.age, data.weight, data.disposition, data.description, data.shelter_id).then(key => {
                 for (var x = 0; x < req.files.length; x++) {
                     const fileName = key.id + '/' + req.files[x].originalname;
-                    petPhotoFunction.uploadPhoto(req.files[x].path, fileName);
+                    petPhotoFunction.uploadPhoto(req.files[x], fileName);
                 }
-                // fs.readdir(directory, (err, files) => {
-                //     if (err) throw err;
-                  
-                //     for (const file of files) {
-                //       fs.unlink(path.join(directory, file), err => {
-                //         if (err) throw err;
-                //       });
-                //     }
-                //   });
                 res.status(201).send(key);
                 return;
     })
@@ -102,6 +78,13 @@ router.delete('/photo', (req, res) => {
     petPhotoFunction.deletePhoto(req.body.fileName).then(() => {
         return res.status(201).send(true);
     })
+})
+
+router.delete('/:petID', (req, res) => {
+    petFunctions.delete_pet(req.params.petID).then(() => {
+        petPhotoFunction.deletePhotosOfPet(req.params.petID);
+        return res.status(204).send();
+    });
 })
 
 module.exports = router;

@@ -6,6 +6,7 @@ import UserSignup from './UserSignup';
 import ShelterSignup from './ShelterSignup';
 import Login from './Login';
 import Admin from './Admin';
+import AdminViewPage from './AdminView';
 import CreatePetFormPage from "./createPet";
 import EditPetProfile from "./editPet";
 import ViewPetProfile from "./petProfile";
@@ -59,6 +60,7 @@ function App() {
                 <Route exact path="/usersignup" element={<UserSignup />} />
                 <Route exact path="/sheltersignup" element={<ShelterSignup />} />
                 <Route exact path="/admin" element={<Admin setName={setName}/>} />
+                <Route exact path="/adminView" element={<AdminViewPage />}/>
                 <Route exact path="/login" element={<Login setName={setName}/>}/>
                 <Route exact path="/pets/createPetProfile" element={<CreatePetFormPage />} />
                 <Route exact path="/pets/editProfile/:petID" element={<EditPetProfile />} />
