@@ -29,7 +29,7 @@ const ViewPetProfile = () => {
     const getPetData = async (petID) => {
         const petURL =  fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
-            console.log(res.data.data);
+            // console.log(res.data.data);
             setData(res.data.data);
             setPhotos(res.data.photos);
             setPhoto(res.data.photos[0].name);
@@ -76,7 +76,7 @@ const ViewPetProfile = () => {
     }
 
     const Selectphoto = () => {
-        if(photos[0] !== undefined && currPhoto != undefined) {
+        if(photos[0] !== undefined && currPhoto !== undefined) {
             return <img id='pet-image' src={photoURL + currPhoto}/>;
         }
         return <p>No Image Availabile</p>
@@ -114,12 +114,16 @@ const ViewPetProfile = () => {
     const PhotoOptions = () => {
         if(photos.length > 1){
             return photos.map((pic) => {
-                if(pic.name != currPhoto) {
+                if(pic.name !== currPhoto) {
                     return <Photo key={pic.name} picture={pic.name}/>
                 }
             })
         }
         return <br />
+    }
+
+    const emailShelter = () => {
+        window.open('mailto:' + shelter.email)
     }
 
     return (
@@ -146,6 +150,8 @@ const ViewPetProfile = () => {
                         <p style={{fontSize: 20}}>Sex:            {petData.sex}</p>
                         <p style={{fontSize: 20}}>Rescued By:      {shelter.shelter_name}</p>
                         <p style={{fontSize: 20}}>Location:        {shelter.city}, {shelter.state}</p>
+                        <p style={{fontSize: 20}}>Email:            <em onClick={emailShelter} id='shelter-email'>{shelter.email}</em> </p>
+                        <p style={{fontSize: 20}}>Phone:            {shelter.phone}</p>
                         <p style={{fontSize: 20}}>Profile Created:        {formatDate(petData.date_created)}</p>
                         <p style={{fontSize: 20}}>Adoption Status:    {petData.availability}</p>
                     </div>

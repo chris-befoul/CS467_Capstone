@@ -75,7 +75,7 @@ const CreatePetFormPage = () => {
         const types = ['image/png', 'image/jpeg'];
 
         const formPhoto = new FormData();
-        for(var x = 0; x<petPhoto.length; x++) {
+        for(var x = 0; x < petPhoto.length; x++) {
             if (!types.every(value => petPhoto[x].type !== value)) {
                 formPhoto.append('file', petPhoto[x]);
             }

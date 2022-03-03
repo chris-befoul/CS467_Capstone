@@ -9,7 +9,7 @@ import {
     Paper, 
     Container, 
     Radio, 
-    RadioGroup 
+    RadioGroup
 } from "@mui/material";
 
 
@@ -91,7 +91,7 @@ const AdminViewPage = () => {
 
     const UserInfo = ({user}) => {
         var userName = true;
-        if(user.type == "Shelter") {
+        if(user.type === "Shelter") {
             userName = false
         } 
         return (    
