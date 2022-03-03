@@ -45,7 +45,7 @@ const ShelterManagement = () => {
             setFilteredPets(filtered);
             setPageCount(Math.ceil(filtered.length / petPerPage));
         }
-    }, [searchPhrase, filterType]);
+    }, [searchPhrase, filterType]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const delete_pet = (id) => {
         // console.log(id + ' Delete clicked!');

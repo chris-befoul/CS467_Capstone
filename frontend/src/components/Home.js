@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
-import { Container, Paper , Grid, Card, CardActionArea } from '@mui/material';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { Box, borders } from '@mui/system';
+import { Container, Grid} from '@mui/material';
 import './Home.css';
 import FeaturedPet from './FeaturedPet';
 
