@@ -63,7 +63,11 @@ const ViewPetProfile = () => {
     })
 
     const leaveProfile = () => {
+        if(user.type === "Shelter") {
+            travel('/sheltermanagement');
+        } else{
             travel('/browse');
+        }
     }
 
     const editProfile = () => {
