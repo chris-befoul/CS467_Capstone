@@ -110,6 +110,7 @@ async function get_pets_filter(type, breed, availability, sex, age) {
     return helper.datastore.runQuery(q).then((entities) => {
         return entities[0].map(helper.fromDatastore);
     });
+}
 
 async function get_featured_pets() {
     const q = helper.datastore.createQuery(PET).filter('availability', '=', 'Available');

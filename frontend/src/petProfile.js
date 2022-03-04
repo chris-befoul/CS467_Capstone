@@ -34,7 +34,6 @@ const ViewPetProfile = () => {
     const getPetData = async (petID) => {
         const petURL =  fetchURL + '/pets/' + petID;
         await axios.get(petURL).then(res => {
-            // console.log(res.data.data);
             setData(res.data.data);
             setPhotos(res.data.photos);
             setPhoto(res.data.photos[0].name);
@@ -64,14 +63,7 @@ const ViewPetProfile = () => {
     })
 
     const leaveProfile = () => {
-        if(user.type === "Shelter") {
-            travel('/shelterprofile');
-            // window.location.reload();
-        }
-        else {
-            travel('/userprofile');
-            // window.location.reload();
-        }
+            travel('/browse');
     }
 
     const editProfile = () => {
@@ -150,7 +142,7 @@ const ViewPetProfile = () => {
         <div id='pet-profile'>
             <ThemeProvider theme={theme}>
                 <div id='left-column'>
-                    {navigateBrowse}
+                    {/* {navigateBrowse} */}
                     <div id='left-container'>
                         <div id='photos-container'>
                             <div id='main-photo'>
