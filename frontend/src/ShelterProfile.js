@@ -46,7 +46,7 @@ const ShelterProfile = ({setName, setType}) => {
     useEffect(() => {
         fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include' }).then(res => res.json()).then(data => {
             const userInfo = data;
-            console.log(userInfo);
+            // console.log(userInfo);
             userInfo.password = "";
             userInfo.new_password = "";
             userInfo.confirm_new_password = "";
@@ -70,7 +70,7 @@ const ShelterProfile = ({setName, setType}) => {
                     return res.text();
                 }
             }).then(data => {
-                console.log(data);
+                // console.log(data);
                 alert("Shelter Updated!");
                 window.location.reload();
             }).catch(e => alert("Invalid current password!"));

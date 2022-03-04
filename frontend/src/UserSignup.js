@@ -50,7 +50,7 @@ const UserSignup = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
             }).then(res => res.json()).then(data => {
-                console.log(data);
+                // console.log(data);
                 alert("User created!");
 
                 //redirect to sign in page

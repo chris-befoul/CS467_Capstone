@@ -7,7 +7,7 @@ const FeaturedPet = ({pet}) => {
     const nagivate = useNavigate();
 
     return (
-        <Grid item md={3}>
+        <Grid item m={2}>
             <Card sx={{ maxWidth: 345 }}>
                 <CardActionArea onClick={() => nagivate('/pets/viewProfile/' + pet.id)}>
                     <CardMedia
