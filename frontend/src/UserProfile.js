@@ -48,7 +48,7 @@ const UserProfile = ({setName, setType}) => {
     useEffect(() => {
         fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include' }).then(res => res.json()).then(data => {
             const userInfo = data;
-            console.log(userInfo);
+            // console.log(userInfo);
             userInfo.password = "";
             userInfo.new_password = "";
             userInfo.confirm_new_password = "";
@@ -72,7 +72,7 @@ const UserProfile = ({setName, setType}) => {
                     return res.text();
                 }
             }).then(data => {
-                console.log(data);
+                // console.log(data);
                 alert("User Updated!");
                 window.location.reload();
             }).catch(e => alert("Invalid current password!"));

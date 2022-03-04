@@ -3,9 +3,6 @@ const storage = new Storage();
 
 
 // const bucketName = 'pet_profile_photos_cs467';
-// pet_profile_photos_cs467 <-- Vincent
-// pet_profile_photo
-
 const bucketName = 'pet_profile_photo';
 // const bucketName = 'pet_profile_photos';
 const bucket = storage.bucket(bucketName);
