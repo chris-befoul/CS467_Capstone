@@ -7,7 +7,7 @@
 
 #pet-image {
     object-fit: contain;
-    /* width: 90%; */
+    width: 100%;
 }
 
 #disposition-list {
