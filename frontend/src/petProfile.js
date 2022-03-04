@@ -65,7 +65,7 @@ const ViewPetProfile = () => {
 
     const leaveProfile = () => {
         if(user.type === "Shelter") {
-            travel('/shelterprofile');
+            travel('/sheltermanagement');
             // window.location.reload();
         }
         else {
