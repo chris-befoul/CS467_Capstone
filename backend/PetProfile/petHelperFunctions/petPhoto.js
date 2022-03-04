@@ -6,8 +6,8 @@ const storage = new Storage();
 // pet_profile_photos_cs467 <-- Vincent
 // pet_profile_photo
 
-// const bucketName = 'pet_profile_photo';
-const bucketName = 'pet_profile_photos';
+const bucketName = 'pet_profile_photo';
+// const bucketName = 'pet_profile_photos';
 const bucket = storage.bucket(bucketName);
 
 
