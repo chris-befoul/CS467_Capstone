@@ -8,7 +8,7 @@ const BrowsePetCard = ({ pet }) => {
 
     // const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
     const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
-    const petPhoto = photoURL + pet.photos[0].name;
+    var petPhoto = (pet.photos.length > 0) ? photoURL + pet.photos[0].name : photoURL + 'no_image/No_Image_Available.jpg';
 
     const petURL = '/pets/viewProfile/' + pet.id;
 

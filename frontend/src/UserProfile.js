@@ -45,7 +45,7 @@ const UserProfile = ({setName, setType}) => {
         setFormErrors(await validate(formData));
     };
 
-    useEffect(() => {
+    const getUserInfo = () => {
         fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include' }).then(res => res.json()).then(data => {
             const userInfo = data;
             // console.log(userInfo);
@@ -54,6 +54,10 @@ const UserProfile = ({setName, setType}) => {
             userInfo.confirm_new_password = "";
             setFormData(userInfo);
         });
+    };
+
+    useEffect(() => {
+        getUserInfo();
     }, []);
 
     useEffect(() => {
@@ -74,7 +78,8 @@ const UserProfile = ({setName, setType}) => {
             }).then(data => {
                 // console.log(data);
                 alert("User Updated!");
-                window.location.reload();
+                // window.location.reload();
+                getUserInfo();
             }).catch(e => alert("Invalid current password!"));
         }
     }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps

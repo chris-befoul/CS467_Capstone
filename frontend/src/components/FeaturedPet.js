@@ -9,11 +9,11 @@ const FeaturedPet = ({pet}) => {
     return (
         <Grid item md={3} marginBottom={10}>
             <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea onClick={() => nagivate('/pets/viewProfile/' + pet.id)}>
+                <CardActionArea onClick={() => nagivate('/pets/viewProfile/' + pet.id, {state: {from: 'landingpage'}})}>
                     <CardMedia
                         component="img"
                         height='300'
-                        image={photoURL + pet.photos[0].name}
+                        image={(pet.photos.length > 0) ? photoURL + pet.photos[0].name : photoURL + 'no_image/No_Image_Available.jpg'}
                         alt=""
                     />
                     <CardContent>
