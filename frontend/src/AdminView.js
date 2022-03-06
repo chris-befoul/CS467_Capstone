@@ -9,13 +9,17 @@ import {
     Paper, 
     Container, 
     Radio, 
-    RadioGroup
+    RadioGroup,
+    Pagination
 } from "@mui/material";
 
 
 const AdminViewPage = () => {
     const [userList, setUsers] = React.useState([]);
     const [filter, setFilter] = React.useState('All');
+    const [filteredList, setFilteredList] = React.useState([]);
+    const [pages, setPages] = React.useState(0);
+    const [currPage, setCurrPage] = React.useState(1);
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
@@ -24,12 +28,26 @@ const AdminViewPage = () => {
         getUsers();
     }, [])
 
+    React.useEffect(() => {
+        var filterList = userList;
+        if(filter !== 'All') {
+            filterList = userList.filter((user) => user.type === filter)
+            setFilteredList(filterList);
+        }
+        else {
+            setFilteredList(filterList);
+        }
+        setPages(Math.ceil(filterList.length / 5));
+        setCurrPage(1);
+    }, [filter])
+
     const getUsers = async() => {
         await axios.get(fetchURL + '/api/').then((res) => {
             setUsers(res.data);
+            setFilteredList(res.data);
+            setPages(Math.ceil(res.data.length / 5));
         })
     }
-    
 
     const deleteUser = async (e, user) => {
         e.preventDefault();
@@ -45,27 +63,21 @@ const AdminViewPage = () => {
             });
         }
         else {
-            console.log(user.type + " profile not deleted");
+            alert(user.type + " profile not deleted");
         }
     }
 
     const BuildUsers = () => {
         if(userList.length > 0) {
+            // var filteredList = userList;
+            // if (filter !== 'All') {
+            //     filteredList = userList.filter((user) => user.type === filter);
+            // }
+            // setPages(Math.ceil(filteredList.length / 5));
             return (
                 <div>
-                    {userList.map((user) => {
-                        if(filter === 'User') {
-                            return (user.type === 'User') ? <UserInfo user={user} key={user.id}/> : null
-                        } 
-                        else if(filter === 'Shelter') {
-                            return (user.type === 'Shelter') ? <UserInfo user={user} key={user.id}/> : null
-                        }
-                        else if(filter === 'Admin') {
-                            return (user.type === 'Admin') ? <UserInfo user={user} key={user.id}/> : null
-                        }
-                        else {
-                            return <UserInfo user={user} key={user.id}/>
-                        }
+                    {filteredList.slice((currPage - 1) * 5, currPage * 5).map((user) => {
+                        return <UserInfo user={user} key={user.id} />
                     })}
                 </div>
             )
@@ -135,9 +147,9 @@ const AdminViewPage = () => {
             )
     }
 
-    const userFilter = (e) => {
-        setFilter(e.target.value)
-    }
+    const update_page = (e, page) => {
+        setCurrPage(page);
+    };
 
     const FilterBox = () => {
         return (
@@ -149,7 +161,7 @@ const AdminViewPage = () => {
                         <FormControl>
                             <RadioGroup
                                 defaultValue={filter}
-                                onChange={userFilter}
+                                onChange={(e) => {setFilter(e.target.value)}}
                             >
                                 <FormControlLabel value="All" control={<Radio />} label="All" />
                                 <FormControlLabel value="Admin" control={<Radio />} label="Admin" />
@@ -174,6 +186,9 @@ const AdminViewPage = () => {
                             <BuildUsers />
                         </Grid>
                     </Grid>
+                    <div style={{display:'flex', justifyContent: 'center', marginBottom: 20, marginTop: 15}}>
+                        <Pagination count={pages} page={currPage} size="large" color="primary" onChange={update_page} />
+                    </div>
                 </Container>
             </Grid>
         </div>
