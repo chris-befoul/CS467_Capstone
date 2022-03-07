@@ -65,9 +65,11 @@ const Navbar = (props) => {
 
     return (
         <div className='navbar'>
-            <Link to=''>
-                <img className='logo' src="../../logo/logo.png" alt="" height="50"></img>
-            </Link>
+            <div className='logo'>
+                <Link to=''>
+                    <img src="../../logo/logo_2.png" alt="" height="40"></img>
+                </Link>            
+            </div>
             {menu}
         </div>
     )

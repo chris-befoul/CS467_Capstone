@@ -62,7 +62,7 @@ const Home = (props) => {
             <Container maxWidth='xl'>
             <h2>Featured Pets</h2>
             <br />
-            <Grid container justifyContent="space-evenly" alignItems="center">
+            <Grid container justifyContent="space-evenly" alignItems="stretch">
                 {props.featuredPets !== null
                     ? props.featuredPets.map(pet => {
                         return <FeaturedPet pet={pet} key={pet.id} />
