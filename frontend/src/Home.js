@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import { Button, Container, Grid} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import FeaturedPet from './FeaturedPet';
+import FeaturedPet from './components/FeaturedPet';
 
 
 const Home = (props) => {
@@ -40,7 +40,7 @@ const Home = (props) => {
             <Container maxWidth='xl'>
                 <Grid container justifyContent="space-evenly" alignItems="center">
                     <Grid item md={5}>
-                        <img className="image" src="../../dog_human.jpeg" alt="" width="575"></img>
+                        <img className="image" src="../../pet_images/dog_human.jpeg" alt="" width="575"></img>
                     </Grid>
                     <Grid item md={7}>
                         <h1>View Our Adoptable Animals</h1>
@@ -62,7 +62,7 @@ const Home = (props) => {
             <Container maxWidth='xl'>
             <h2>Featured Pets</h2>
             <br />
-            <Grid container justifyContent="space-evenly" alignItems="center">
+            <Grid container justifyContent="space-evenly" alignItems="stretch">
                 {props.featuredPets !== null
                     ? props.featuredPets.map(pet => {
                         return <FeaturedPet pet={pet} key={pet.id} />

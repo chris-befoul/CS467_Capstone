@@ -11,9 +11,9 @@ const Navbar = (props) => {
     let setType = props.setType;
 
     let menu;
-    const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
-    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+    const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
     const logout = async() => {
         await fetch(fetchURL + '/api/logout', {
@@ -63,7 +63,11 @@ const Navbar = (props) => {
 
     return (
         <div className='navbar'>
-            <Link to=''><h1 style={{display:"block", paddingLeft: 30, paddingTop:10}}>Logo</h1></Link>
+            <div className='logo'>
+                 <Link to=''>
+                     <img src="../../logo/logo.png" alt="" height="40"></img>
+                 </Link>            
+             </div>
             {menu}
         </div>
     )

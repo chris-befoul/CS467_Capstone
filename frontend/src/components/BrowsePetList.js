@@ -2,13 +2,15 @@ import React from 'react';
 import BrowsePetCard from './BrowsePetCard';
 import { Grid, Typography } from '@mui/material';
 
-const BrowsePetList = ({ pets }) => {
+const petPerPage = 8;
+
+const BrowsePetList = ({ pets, currPage }) => {
 
     let petsLength, petRow;
     
     if (pets !== null && pets !== undefined) {
         petsLength = pets.length;
-        petRow = pets.map((pet) => {
+        petRow = pets.slice((currPage - 1) * petPerPage, currPage * petPerPage).map((pet) => {
             return (
                 <BrowsePetCard pet={pet} key={pet.id} />
             );

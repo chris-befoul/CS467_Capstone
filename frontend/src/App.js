@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import Home from './components/Home';
+import Home from './Home';
 import Signup from './Signup';
 import UserSignup from './UserSignup';
 import ShelterSignup from './ShelterSignup';
@@ -11,7 +11,7 @@ import CreatePetFormPage from "./createPet";
 import EditPetProfile from "./editPet";
 import ViewPetProfile from "./petProfile";
 import UserProfile from './UserProfile';
-import Browse from './components/Browse';
+import Browse from './Browse';
 import ShelterProfile from './ShelterProfile';
 import ShelterManagement from './ShelterManagement';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -35,9 +35,9 @@ function App() {
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const [featuredPets, setFeaturedPets] = useState(null);
-    const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
-    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+    const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     
     if (name === 'undefined undefined') {
         setName('');

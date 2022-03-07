@@ -15,9 +15,9 @@ const ViewPetProfile = () => {
     const [currPhoto, setPhoto] = React.useState();
     const [shelter, setShelter] = React.useState({});
     const [photos, setPhotos] = React.useState([]);
-    const fetchURL = 'http://localhost:8080';
+    // const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
-    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+    const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
     const location = useLocation();
     // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
