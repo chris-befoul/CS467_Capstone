@@ -38,7 +38,6 @@ const BrowsePetCard = ({ pet }) => {
                         ? <Typography align="center" fontSize={13}>{pet.breed}
                         </Typography>
                         : <Typography></Typography>}
-                    <Typography fontSize={13}>Distance</Typography>
                 </CardContent>
             </CardActionArea>
         </Grid>

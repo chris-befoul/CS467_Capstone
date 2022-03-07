@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Container , Grid, InputLabel, Select, MenuItem, FormGroup, FormControlLabel, Checkbox, FormControl } from '@mui/material';
-import './BrowseFilter.css';
-const db = require('../db/data.json');
+import { Select, MenuItem, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 
 const breeds = {
-    dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
-    cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
-    other: ['Other']
+    Dog: ['Golden Retriever', 'German Shepard', 'Beagle', 'Poodle', 'Australian Shepard', 'Pug', 'Chihuahua', 'Dalmatian', 'Bulldog', 'French Bulldog', 'Pit Bull', 'Other'],
+    Cat: ['Maine Coon', 'Siamese', 'British Shorthair', 'Chartreux', 'Selkirk Rex', 'Munchkin', 'Himalayan', 'Scottish Fold', 'Sphynx', 'Other'],
+    Other: ['Other']
 };
 
 const fetchURL = 'http://localhost:8080/pets/browse';
@@ -23,12 +21,6 @@ const useBrowseFilter = () => {
     const [age, setAge] = useState('default');
     const [size, setSize] = useState('default');
     const [dispo, setDispo] = useState([]);
-
-    // const [petCity, setPetCity] = useState([]);
-    // const [petState, setPetState] = useState([]);
-    
-    // // geo filter
-    // const [dist, setDist] = useState('');
 
     useEffect(() => {
         const getPets = async () => {
@@ -160,9 +152,9 @@ const useBrowseFilter = () => {
                         onChange={(e) => setType(e.target.value)}
                     >
                         <MenuItem value='default'>All</MenuItem>
-                        <MenuItem value="dog">Dog</MenuItem>
-                        <MenuItem value="cat">Cat</MenuItem>
-                        <MenuItem value="other">Other</MenuItem>
+                        <MenuItem value="Dog">Dog</MenuItem>
+                        <MenuItem value="Cat">Cat</MenuItem>
+                        <MenuItem value="Other">Other</MenuItem>
                         </Select>
                     <br/>
                     <br/>

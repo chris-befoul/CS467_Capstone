@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import Home from './components/Home';
+import Home from './Home';
 import Signup from './Signup';
 import UserSignup from './UserSignup';
 import ShelterSignup from './ShelterSignup';
@@ -11,7 +11,7 @@ import CreatePetFormPage from "./createPet";
 import EditPetProfile from "./editPet";
 import ViewPetProfile from "./petProfile";
 import UserProfile from './UserProfile';
-import Browse from './components/Browse';
+import Browse from './Browse';
 import ShelterProfile from './ShelterProfile';
 import ShelterManagement from './ShelterManagement';
 import { BrowserRouter, Route, Routes } from "react-router-dom";

@@ -1,31 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container , Grid, Typography } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import useBrowseFilter from './BrowseFilter';
-import BrowsePetList from './BrowsePetList';
+import useBrowseFilter from './components/BrowseFilter';
+import BrowsePetList from './components/BrowsePetList';
 
 const Browse = () => {
-
-    const fetchURL = 'http://localhost:8080/pets/browse';
-
-    // const [pets, setPets] = useState(null);
-    // const [petNames, setPetNames] = useState([]);
-
-    // useEffect(() => {
-    //     const getPets = async () => {
-    //         await fetch(fetchURL).then(res => {
-    //             return res.json();
-    //         }).then(data => {
-    //             setPets(data);
-    //         });
-    //     }
-    //     getPets();
-    // }, []);
-
+    
     // obtain pets as a prop from child component Filter
     const { render, petsFiltered } = useBrowseFilter();
-
-    // console.log(petsFiltered);
 
     const filter = (
         <Grid item md={2} align="center">
