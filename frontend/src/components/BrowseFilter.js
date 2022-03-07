@@ -16,12 +16,12 @@ const useBrowseFilter = () => {
     const [pets, setPets] = useState(null);
     const [petsFiltered, setPetsFiltered] = useState(null);
 
-    const [type, setType] = useState('');
-    const [breed, setBreed] = useState('');
-    const [availability, setAvailability] = useState('');
-    const [sex, setSex] = useState('');
-    const [age, setAge] = useState('');
-    const [size, setSize] = useState('');
+    const [type, setType] = useState('default');
+    const [breed, setBreed] = useState('default');
+    const [availability, setAvailability] = useState('default');
+    const [sex, setSex] = useState('default');
+    const [age, setAge] = useState('default');
+    const [size, setSize] = useState('default');
     const [dispo, setDispo] = useState([]);
 
     // const [petCity, setPetCity] = useState([]);
@@ -44,41 +44,41 @@ const useBrowseFilter = () => {
     }, []);
 
     const filterType = (pets, type) => {
-        if (type !== '') {
+        if (type !== 'default') {
             return pets.filter((pet) => (pet.type === type));
-        } else if (type === '') {
+        } else if (type === 'default') {
             return pets;
         }
     }
 
     const filterBreed = (pets, breed) => {
-        if (breed !== '') {
+        if (breed !== 'default') {
             return pets.filter((pet) => (pet.breed === breed));
-        } else if (breed === '') {
+        } else if (breed === 'default') {
             return pets;
         }
     }
 
     const filterAvail = (pets, availability) => {
-        if (availability !== '') {
+        if (availability !== 'default') {
             return pets.filter((pet) => (pet.availability === availability));
-        } else if (availability === '') {
+        } else if (availability === 'default') {
             return pets;
         }
     }
 
     const filterSex = (pets, sex) => {
-        if (sex !== '') {
+        if (sex !== 'default') {
             return pets.filter((pet) => (pet.sex === sex));
-        } else if (sex === '') {
+        } else if (sex === 'default') {
             return pets;
         }
     }
 
     const filterAge = (pets, age) => {
-        if (age !== '') {
+        if (age !== 'default') {
             return pets.filter((pet) => (pet.age === age));
-        } else if (age === '') {
+        } else if (age === 'default') {
             return pets;
         }
     }
@@ -92,7 +92,7 @@ const useBrowseFilter = () => {
             return pets.filter((pet) => (pet.weight <= 100 && pet.weight > 60));
         } else if (size === 'Extra Large') {
             return pets.filter((pet) => (pet.weight >= 101));
-        }else if (size === '') {
+        }else if (size === 'default') {
             return pets;
         }
     }
@@ -137,7 +137,7 @@ const useBrowseFilter = () => {
     }, [type, breed, availability, sex, age, size, dispo]);
 
     let petBreeds;
-    if (type !== '') {
+    if (type !== 'default') {
         petBreeds = breeds[type].map((breed) => {
             return <MenuItem value={breed}>{breed}</MenuItem>
         }) 
@@ -159,7 +159,7 @@ const useBrowseFilter = () => {
                         value={type}
                         onChange={(e) => setType(e.target.value)}
                     >
-                        <MenuItem value=''>All</MenuItem>
+                        <MenuItem value='default'>All</MenuItem>
                         <MenuItem value="dog">Dog</MenuItem>
                         <MenuItem value="cat">Cat</MenuItem>
                         <MenuItem value="other">Other</MenuItem>
@@ -171,7 +171,7 @@ const useBrowseFilter = () => {
                         value={breed}
                         onChange={(e) => setBreed(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
+                        <MenuItem value="default">All</MenuItem>
                         {petBreeds}
                     </Select>
                     <br/>
@@ -181,7 +181,7 @@ const useBrowseFilter = () => {
                         value={availability}
                         onChange={(e) => setAvailability(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
+                        <MenuItem value="default">All</MenuItem>
                         <MenuItem value="Available">Available</MenuItem>
                         <MenuItem value="Not Available">Not Available</MenuItem>
                         <MenuItem value="Pending">Pending</MenuItem>
@@ -194,7 +194,7 @@ const useBrowseFilter = () => {
                         value={sex}
                         onChange={(e) => setSex(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
+                        <MenuItem value="default">All</MenuItem>
                         <MenuItem value="Male">Male</MenuItem>
                         <MenuItem value="Female">Female</MenuItem>
                     </Select>
@@ -205,7 +205,7 @@ const useBrowseFilter = () => {
                         value={age}
                         onChange={(e) => setAge(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
+                        <MenuItem value="default">All</MenuItem>
                         <MenuItem value="Puppy/Kitten/Baby">Puppy/Kitten/Baby</MenuItem>
                         <MenuItem value="Young">Young</MenuItem>
                         <MenuItem value="Adult">Adult</MenuItem>
@@ -218,7 +218,7 @@ const useBrowseFilter = () => {
                         value={size}
                         onChange={(e) => setSize(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
+                        <MenuItem value="default">All</MenuItem>
                         <MenuItem value="Small">Small (0-25 lbs)</MenuItem>
                         <MenuItem value="Medium">Medium (26-60 lbs)</MenuItem>
                         <MenuItem value="Large">Large (61-100 lbs)</MenuItem>
