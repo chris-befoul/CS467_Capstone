@@ -7,6 +7,7 @@ const cardHeight = 225;
 const BrowsePetCard = ({ pet }) => {
 
     // const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
     const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
     var petPhoto = (pet.photos.length > 0) ? photoURL + pet.photos[0].name : photoURL + 'no_image/No_Image_Available.jpg';
 

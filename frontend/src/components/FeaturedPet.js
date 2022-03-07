@@ -3,7 +3,9 @@ import { Grid, Card, CardActionArea, CardContent, CardMedia } from '@mui/materia
 import { useNavigate } from 'react-router-dom';
 
 const FeaturedPet = ({pet}) => {
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
+
     const nagivate = useNavigate();
 
     return (

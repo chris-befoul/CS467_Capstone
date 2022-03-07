@@ -31,7 +31,8 @@ const EditPetProfile = () => {
     const [shelterID, setID] = React.useState(null);
     const location = useLocation();
     const travel = useNavigate();
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
