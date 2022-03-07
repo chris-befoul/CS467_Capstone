@@ -1,33 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Container , Grid, Typography } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import BrowseFilter from './BrowseFilter';
+import useBrowseFilter from './BrowseFilter';
 import BrowsePetList from './BrowsePetList';
 
 const Browse = () => {
 
     const fetchURL = 'http://localhost:8080/pets/browse';
 
-    const [pets, setPets] = useState(null);
-    const [petNames, setPetNames] = useState([]);
-    const [numPets, setNumPets] = useState(0);
+    // const [pets, setPets] = useState(null);
+    // const [petNames, setPetNames] = useState([]);
 
-    useEffect(() => {
-        const getPets = async () => {
-            await fetch(fetchURL).then(res => {
-                return res.json();
-            }).then(data => {
-                setPets(data);
-                setNumPets(data.length);
-            });
-        }
-        getPets();
-    }, []);
+    // useEffect(() => {
+    //     const getPets = async () => {
+    //         await fetch(fetchURL).then(res => {
+    //             return res.json();
+    //         }).then(data => {
+    //             setPets(data);
+    //         });
+    //     }
+    //     getPets();
+    // }, []);
+
+    // obtain pets as a prop from child component Filter
+    const { render, petsFiltered } = useBrowseFilter();
+
+    // console.log(petsFiltered);
 
     const filter = (
         <Grid item md={2} align="center">
             <Typography align="center">Filter</Typography>
-            <BrowseFilter pets={pets}/>
+            {render}
         </Grid>
     )
 
@@ -40,7 +43,7 @@ const Browse = () => {
                 {filter}
                     <Grid item md={10} align="center">
                         <Typography>Pet Results</Typography>
-                        <BrowsePetList pets={pets} />
+                        <BrowsePetList pets={petsFiltered} />
                     </Grid>
                 </Grid>
             </Container>

@@ -6,8 +6,7 @@ const BrowsePetList = ({ pets }) => {
 
     let petsLength, petRow;
     
-    if (pets !== null) {
-       
+    if (pets !== null && pets !== undefined) {
         petsLength = pets.length;
         petRow = pets.map((pet) => {
             return (
@@ -26,7 +25,7 @@ const BrowsePetList = ({ pets }) => {
         );
     } else {
         return (
-            <Typography align="center" sx={{ mt: 8 }}>Pets loading...</Typography>
+            <Typography align="center" sx={{ mt: 8 }}>No pets found!</Typography>
         )
     }
 }

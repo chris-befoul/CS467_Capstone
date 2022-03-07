@@ -28,7 +28,7 @@ const BrowsePetCard = ({ pet }) => {
                 />
                 <CardContent>
                     {(pet !== null)
-                        ? <Typography align="center" fontSize={15}>{pet.name}
+                        ? <Typography align="center" fontSize={15} fontWeight={'bold'}>{pet.name}
                         </Typography>
                         : <Typography></Typography>}
                     {(pet !== null)
@@ -39,7 +39,14 @@ const BrowsePetCard = ({ pet }) => {
                         ? <Typography align="center" fontSize={13}>{pet.breed}
                         </Typography>
                         : <Typography></Typography>}
-                    <Typography fontSize={13}>Distance</Typography>
+                    {(pet !== null)
+                        ? <Typography align="center" fontSize={13}>{pet.sex}
+                        </Typography>
+                        : <Typography></Typography>}
+                    {(pet !== null)
+                        ? <Typography align="center" fontSize={13}>{pet.weight} lbs
+                        </Typography>
+                        : <Typography></Typography>}
                 </CardContent>
             </CardActionArea>
         </Grid>
