@@ -22,6 +22,10 @@ const useBrowseFilter = () => {
     const [size, setSize] = useState('default');
     const [dispo, setDispo] = useState([]);
 
+    const [currPage, setCurrPage] = useState(1);
+    const [pageCount, setPageCount] = useState(0);
+    const petPerPage = 8;
+
     useEffect(() => {
         const getPets = async () => {
             await fetch(fetchURL).then(res => {
@@ -29,7 +33,7 @@ const useBrowseFilter = () => {
             }).then(data => {
                 setPets(data);
                 setPetsFiltered(data);
-                console.log(data);
+                setPageCount(Math.ceil(data.length/petPerPage));
             })
         }
         getPets();
@@ -113,7 +117,7 @@ const useBrowseFilter = () => {
     }
 
     useEffect(() => {
-
+        setCurrPage(1);
         if(pets !== null){            
             let result = pets;
             result = filterType(result, type);
@@ -123,7 +127,7 @@ const useBrowseFilter = () => {
             result = filterAge(result, age);
             result = filterSize(result, size);
             result = filterDispo(result, dispo);
-            console.log(`dispo = ${dispo}`);
+            setPageCount(Math.ceil(result.length/petPerPage));
             setPetsFiltered(result);
         }
     }, [type, breed, availability, sex, age, size, dispo]);
@@ -139,8 +143,15 @@ const useBrowseFilter = () => {
         <><p>{type}</p><p>{breed}</p><p>{availability}</p><p>{sex}</p><p>{age}</p><p>{size}</p><p>{dispo}</p></>
     )
 
+    const handlePage = (e, value) => {
+        setCurrPage(value);
+    }
+
     return {
         petsFiltered,
+        currPage,
+        pageCount,
+        handlePage,
         render: (
         <div className="filter">
             <form>

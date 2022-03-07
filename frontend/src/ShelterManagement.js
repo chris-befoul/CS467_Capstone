@@ -12,7 +12,8 @@ const ShelterManagement = () => {
     const [currPage, setCurrPage] = useState(1);
     const [pageCount, setPageCount] = useState(0);
     const petPerPage = 3;
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
     const fetchURL = 'http://localhost:8080';
     // const fetchURL = "https://cs467-sandbox.ue.r.appspot.com";
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
