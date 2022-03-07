@@ -49,13 +49,25 @@ const AdminViewPage = () => {
         })
     }
 
+    const reloadUsersAfterDelete = async() => {
+        await axios.get(fetchURL + '/api/').then((res) => {
+            setUsers(res.data);
+            const filteredUsers = res.data.filter((user) => (filter === 'All' || user.type === filter));
+            setFilteredList(filteredUsers);
+            setPages(Math.ceil(filteredUsers.length / 5));
+            if (currPage > Math.ceil(filteredUsers.length / 5)){
+                setCurrPage(Math.ceil(filteredUsers.length / 5));
+            }
+        })
+    }
+
     const deleteUser = async (e, user) => {
         e.preventDefault();
         if(window.confirm("Are you sure you want to delete this " + user.type + " profile?")) {
             await axios.delete(fetchURL + '/api/admin/' + user.id, {withCredentials: true}).then((res) => {
                 if(res.status === 204) {
                     alert(user.type + " profile has been removed from site.");
-                    getUsers();
+                    reloadUsersAfterDelete();
                 }
                 else {
                     alert("Something went wrong with profile deletion please try again and it it persists contact admin.")
