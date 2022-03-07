@@ -61,9 +61,13 @@ const Navbar = (props) => {
         );
     }
 
+    // <Link to=''><h1 style={{display:"block", paddingLeft: 30, paddingTop:10}}>Logo</h1></Link>
+
     return (
         <div className='navbar'>
-            <Link to=''><h1 style={{display:"block", paddingLeft: 30, paddingTop:10}}>Logo</h1></Link>
+            <Link to=''>
+                <img className='logo' src="../../logo/logo.png" alt="" height="50"></img>
+            </Link>
             {menu}
         </div>
     )

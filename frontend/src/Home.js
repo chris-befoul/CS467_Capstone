@@ -40,7 +40,7 @@ const Home = (props) => {
             <Container maxWidth='xl'>
                 <Grid container justifyContent="space-evenly" alignItems="center">
                     <Grid item md={5}>
-                        <img className="image" src="../../dog_human.jpeg" alt="" width="575"></img>
+                        <img className="image" src="../../pet_images/dog_human.jpeg" alt="" width="575"></img>
                     </Grid>
                     <Grid item md={7}>
                         <h1>View Our Adoptable Animals</h1>
