@@ -20,9 +20,9 @@ const ViewPetProfile = () => {
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
     // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
-    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
 
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
 
 
     React.useEffect(() => {

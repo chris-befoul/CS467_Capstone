@@ -88,7 +88,7 @@ const Home = (props) => {
 
     return ( 
         <div>
-                <CssBaseline />
+            <CssBaseline />
                 <Grid sx={{ p: 4 }}/>
                 <Container maxWidth='xl'>
                     <Grid container justifyContent="space-evenly">
@@ -117,6 +117,7 @@ const Home = (props) => {
                             </Grid>
                     </Grid>
                 </Container>
+                <Container maxwidth="xl">
                     <br/>
                     <br/>
                     <h2>Featured Pets</h2>    
@@ -150,7 +151,7 @@ const Home = (props) => {
                         </Grid>
                     </Grid>
                 </Container>
-        </div>
+            </div>
      );
 }
  

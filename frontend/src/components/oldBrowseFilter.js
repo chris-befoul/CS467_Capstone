@@ -11,17 +11,16 @@ const breeds = {
 
 const fetchURL = 'http://localhost:8080/pets/browse';
 
-const useBrowseFilter = () => {
+const useOldBrowseFilter = () => {
 
     const [pets, setPets] = useState(null);
-    const [petsFiltered, setPetsFiltered] = useState(null);
 
-    const [type, setType] = useState('');
-    const [breed, setBreed] = useState('');
-    const [availability, setAvailability] = useState('');
-    const [sex, setSex] = useState('');
-    const [age, setAge] = useState('');
-    const [size, setSize] = useState('');
+    const [type, setType] = useState('all');
+    const [breed, setBreed] = useState('all');
+    const [avail, setAvail] = useState('all');
+    const [sex, setSex] = useState('all');
+    const [age, setAge] = useState('all');
+    const [size, setSize] = useState('all');
     const [dispo, setDispo] = useState([]);
 
     // const [petCity, setPetCity] = useState([]);
@@ -36,105 +35,31 @@ const useBrowseFilter = () => {
                 return res.json();
             }).then(data => {
                 setPets(data);
-                setPetsFiltered(data);
-                console.log(data);
             })
         }
         getPets();
     }, []);
 
-    const filterType = (pets, type) => {
-        if (type !== '') {
-            return pets.filter((pet) => (pet.type === type));
-        } else if (type === '') {
-            return pets;
-        }
+    // useEffect(() => {
+
+    // }, [])
+
+    if (pets !== null || pets !== undefined) {
+        console.log(pets);
     }
 
-    const filterBreed = (pets, breed) => {
-        if (breed !== '') {
-            return pets.filter((pet) => (pet.breed === breed));
-        } else if (breed === '') {
-            return pets;
+    const dispositionChange = (e) => {
+        var tempDisp = dispo;
+        if (!tempDisp.includes(e.target.value)) {
+            tempDisp.push(e.target.value);
+            console.log(e.target.value);
+            return setDispo(tempDisp);
         }
+        var index = tempDisp.indexOf(e.target.value);
+        tempDisp.splice(index, 1);
+        console.log(dispo);
+        return setDispo(tempDisp);
     }
-
-    const filterAvail = (pets, availability) => {
-        if (availability !== '') {
-            return pets.filter((pet) => (pet.availability === availability));
-        } else if (availability === '') {
-            return pets;
-        }
-    }
-
-    const filterSex = (pets, sex) => {
-        if (sex !== '') {
-            return pets.filter((pet) => (pet.sex === sex));
-        } else if (sex === '') {
-            return pets;
-        }
-    }
-
-    const filterAge = (pets, age) => {
-        if (age !== '') {
-            return pets.filter((pet) => (pet.age === age));
-        } else if (age === '') {
-            return pets;
-        }
-    }
-
-    const filterSize = (pets, size) => {
-        if (size === 'Small') {
-            return pets.filter((pet) => (pet.weight < 26));
-        } else if (size === 'Medium') {
-            return pets.filter((pet) => (pet.weight <= 60 && pet.weight > 25));
-        } else if (size === 'Large') {
-            return pets.filter((pet) => (pet.weight <= 100 && pet.weight > 60));
-        } else if (size === 'Extra Large') {
-            return pets.filter((pet) => (pet.weight >= 101));
-        }else if (size === '') {
-            return pets;
-        }
-    }
-
-    const filterDispo = (pets, dispo) => {
-        if (dispo.length > 0) {
-            return pets.filter((pet) => 
-                (dispo.every(d => (pet.disposition.includes(d))))   // return true if dispo is subset of pet.disposition                 
-            );  
-        } else if (dispo.length === 0) {
-            return pets;
-        }
-    }
-
-    const handleDisposition = (e) => {
-        let arr = [];
-        arr = [...dispo];
-        if (!arr.includes(e.target.value)) {
-            arr.push(e.target.value);
-            setDispo(arr);
-        } else {
-            let index = arr.indexOf(e.target.value);
-            arr.splice(index, 1);
-            setDispo(arr);
-        }
-    }
-
-    useEffect(() => {
-
-        if(pets !== null){            
-            let result = pets;
-            result = filterType(result, type);
-            result = filterBreed(result, breed);
-            result = filterAvail(result, availability);
-            result = filterSex(result, sex);
-            result = filterAge(result, age);
-            result = filterSize(result, size);
-            result = filterDispo(result, dispo);
-            console.log(`dispo = ${dispo}`);
-            setPetsFiltered(result);
-        }
-    }, [type, breed, availability, sex, age, size, dispo]);
 
     let petBreeds;
     if (type !== '') {
@@ -143,27 +68,40 @@ const useBrowseFilter = () => {
         }) 
     }
 
-    const testFilterLogs = (
-        <><p>{type}</p><p>{breed}</p><p>{availability}</p><p>{sex}</p><p>{age}</p><p>{size}</p><p>{dispo}</p></>
-    )
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const formData = {
+            type: type,
+            breed: breed,
+            availability: avail,
+            sex: sex,
+            age: age,
+            size: size,
+            disposition: dispo
+        }
+
+        console.log(formData);
+    }
+
+    // {breeds[type].map((x) => {return <MenuItem>{x}</MenuItem>})}
+    // <MenuItem select disabled selected value> -- Select availability -- </MenuItem>
 
     return {
-        petsFiltered,
+        pets,
         render: (
         <div className="filter">
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label>Pet Type:</label>
                     <Select
-                        defaultValue='default'
                         value={type}
                         onChange={(e) => setType(e.target.value)}
                     >
-                        <MenuItem value=''>All</MenuItem>
                         <MenuItem value="dog">Dog</MenuItem>
                         <MenuItem value="cat">Cat</MenuItem>
                         <MenuItem value="other">Other</MenuItem>
-                        </Select>
+                    </Select>
                     <br/>
                     <br/>
                     <label>Breed: </label>
@@ -171,17 +109,15 @@ const useBrowseFilter = () => {
                         value={breed}
                         onChange={(e) => setBreed(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
                         {petBreeds}
                     </Select>
                     <br/>
                     <br/>
                     <label>Availability: </label>
                     <Select
-                        value={availability}
-                        onChange={(e) => setAvailability(e.target.value)}
+                        value={avail}
+                        onChange={(e) => setAvail(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
                         <MenuItem value="Available">Available</MenuItem>
                         <MenuItem value="Not Available">Not Available</MenuItem>
                         <MenuItem value="Pending">Pending</MenuItem>
@@ -194,7 +130,6 @@ const useBrowseFilter = () => {
                         value={sex}
                         onChange={(e) => setSex(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
                         <MenuItem value="Male">Male</MenuItem>
                         <MenuItem value="Female">Female</MenuItem>
                     </Select>
@@ -205,7 +140,6 @@ const useBrowseFilter = () => {
                         value={age}
                         onChange={(e) => setAge(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
                         <MenuItem value="Puppy/Kitten/Baby">Puppy/Kitten/Baby</MenuItem>
                         <MenuItem value="Young">Young</MenuItem>
                         <MenuItem value="Adult">Adult</MenuItem>
@@ -218,7 +152,6 @@ const useBrowseFilter = () => {
                         value={size}
                         onChange={(e) => setSize(e.target.value)}
                     >
-                        <MenuItem value="">All</MenuItem>
                         <MenuItem value="Small">Small (0-25 lbs)</MenuItem>
                         <MenuItem value="Medium">Medium (26-60 lbs)</MenuItem>
                         <MenuItem value="Large">Large (61-100 lbs)</MenuItem>
@@ -232,7 +165,7 @@ const useBrowseFilter = () => {
                             control={
                                 <Checkbox 
                                     value="Good with other animals"
-                                    onChange={handleDisposition}
+                                    onChange={dispositionChange}
                                 />} 
                         />
                         <FormControlLabel sx={{ p: 2}}
@@ -240,7 +173,7 @@ const useBrowseFilter = () => {
                             control={
                                 <Checkbox 
                                     value="Good with children"
-                                    onChange={handleDisposition}
+                                    onChange={dispositionChange}
                                 />} 
                         />
                         <FormControlLabel sx={{ p: 2}}
@@ -248,22 +181,32 @@ const useBrowseFilter = () => {
                             control={
                                 <Checkbox 
                                     value="Animal must be leashed at all times"
-                                    onChange={handleDisposition}
+                                    onChange={dispositionChange}
                                 />} 
                         />
                         <FormControlLabel sx={{ p: 2}}
-                            label="Very Active"
+                            label="Very active"
                             control={
                                 <Checkbox 
-                                    value="Very Active"
-                                    onChange={handleDisposition}
+                                    value="Very active"
+                                    onChange={dispositionChange}
                                 />} 
                         />
                     </FormGroup>
                 </div>
+                <button>
+                    Submit
+                </button>
+                <p>{ type }</p>
+                <p>{ breed }</p>
+                <p>{ avail }</p>
+                <p>{ sex }</p>
+                <p>{ age }</p>
+                <p>{ size }</p>
+                <p>{ dispo }</p>
             </form>
         </div>
     )}
 }
 
-export default useBrowseFilter;
+export default useOldBrowseFilter;
