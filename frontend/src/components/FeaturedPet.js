@@ -12,7 +12,7 @@ const FeaturedPet = ({pet}) => {
                  <CardMedia
                      component="img"
                      height='300'
-                     image={photoURL + pet.photos[0].name}
+                     image={(pet.photos.length > 0) ? photoURL + pet.photos[0].name : photoURL + 'no_image/No_Image_Available.jpg'}
                      alt=""
                  />
                  <CardContent>
@@ -20,7 +20,7 @@ const FeaturedPet = ({pet}) => {
                      <p>{pet.description}</p>
                  </CardContent>
              </CardActionArea>
-         </Grid>
+        </Grid>
     )
 }
 

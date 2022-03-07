@@ -20,9 +20,9 @@ const AdminViewPage = () => {
     const [filteredList, setFilteredList] = React.useState([]);
     const [pages, setPages] = React.useState(0);
     const [currPage, setCurrPage] = React.useState(1);
-    // const fetchURL = 'http://localhost:8080';
+    const fetchURL = 'http://localhost:8080';
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
-    const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
+    // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
 
     React.useEffect(() => {
         getUsers();

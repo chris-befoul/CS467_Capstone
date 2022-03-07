@@ -7,8 +7,8 @@ const breeds = {
     Other: ['Other']
 };
 
-// const fetchURL = 'http://localhost:8080/pets/browse';
-const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com/pets/browse';
+const fetchURL = 'http://localhost:8080/pets/browse';
+// const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com/pets/browse';
 
 const useBrowseFilter = () => {
 
