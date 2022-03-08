@@ -9,21 +9,19 @@ const FeaturedPet = ({pet}) => {
     const nagivate = useNavigate();
 
     return (
-        <Grid item m={2}>
-            <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea onClick={() => nagivate('/pets/viewProfile/' + pet.id)}>
-                    <CardMedia
-                        component="img"
-                        height='300'
-                        image={photoURL + pet.photos[0].name}
-                        alt=""
-                    />
-                    <CardContent>
-                        <p>{pet.name}</p>
-                        <p>{pet.description}</p>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
+        <Grid item component={Card} xs sx={{ m: 4}}>
+             <CardActionArea onClick={() => nagivate('/pets/viewProfile/' + pet.id, {state: {from: 'landingpage'}})}>
+                 <CardMedia
+                     component="img"
+                     height='300'
+                     image={(pet.photos.length > 0) ? photoURL + pet.photos[0].name : photoURL + 'no_image/No_Image_Available.jpg'}
+                     alt=""
+                 />
+                 <CardContent>
+                     <p>{pet.name}</p>
+                     <p>{pet.description}</p>
+                 </CardContent>
+             </CardActionArea>
         </Grid>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation  } from 'react-router-dom'
 import axios from 'axios';
 import { ThemeProvider, Button, Grid } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -19,10 +19,10 @@ const ViewPetProfile = () => {
     // const fetchURL = 'https://cs467-sandbox.ue.r.appspot.com';
     // const fetchURL = 'https://capstone-animal-adoption-app.wl.r.appspot.com';
     const travel = useNavigate();
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
+    const location = useLocation();
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';       // Chris's cloud storage
     // const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
-
-    // const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
 
 
     React.useEffect(() => {
@@ -36,7 +36,9 @@ const ViewPetProfile = () => {
         await axios.get(petURL).then(res => {
             setData(res.data.data);
             setPhotos(res.data.photos);
-            setPhoto(res.data.photos[0].name);
+            if (res.data.photos.length > 0){
+                setPhoto(res.data.photos[0].name);
+            }
             shelterInfo(res.data.data.shelter_id);
             return;
         })
@@ -63,7 +65,9 @@ const ViewPetProfile = () => {
     })
 
     const leaveProfile = () => {
-        if(user.type === "Shelter") {
+        if (location.state && location.state.from === 'landingpage'){
+            travel('/');
+        } else if(user.type === "Shelter") {
             travel('/sheltermanagement');
         } else{
             travel('/browse');
@@ -138,7 +142,7 @@ const ViewPetProfile = () => {
     )
 
     const emailShelter = () => {
-        window.open('mailto:' + shelter.email)
+        window.open('mailto:' + shelter.email, '_self')
     }
 
 

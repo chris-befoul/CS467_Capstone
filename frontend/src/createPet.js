@@ -91,10 +91,16 @@ const CreatePetFormPage = () => {
         return;
     }
 
-    if(navigate) {
-        travel(petUrl);
-        window.location.reload();
-    }
+    React.useEffect(() => {
+        if(navigate) {
+            travel(petUrl);
+        }
+      }, [navigate]);
+      
+    // if(navigate) {
+    //     travel(petUrl);
+    //     // window.location.reload();
+    // }
     
     return (
         <div id='petBox'>

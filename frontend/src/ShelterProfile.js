@@ -43,7 +43,7 @@ const ShelterProfile = ({setName, setType}) => {
         setFormErrors(await validate(formData));
     };
 
-    useEffect(() => {
+    const getShelterInfo = () => {
         fetch(fetchURL + '/api/user', { method: 'GET', credentials: 'include' }).then(res => res.json()).then(data => {
             const userInfo = data;
             // console.log(userInfo);
@@ -52,6 +52,10 @@ const ShelterProfile = ({setName, setType}) => {
             userInfo.confirm_new_password = "";
             setFormData(userInfo);
         });
+    };
+
+    useEffect(() => {
+        getShelterInfo();
     }, []);
 
     useEffect(() => {
@@ -72,7 +76,8 @@ const ShelterProfile = ({setName, setType}) => {
             }).then(data => {
                 // console.log(data);
                 alert("Shelter Updated!");
-                window.location.reload();
+                // window.location.reload();
+                getShelterInfo();
             }).catch(e => alert("Invalid current password!"));
         }
     }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps

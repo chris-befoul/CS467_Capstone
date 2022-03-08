@@ -174,10 +174,11 @@ const EditPetProfile = () => {
                 fileName: e.target.name,
                 petID: params.petID
                 }
-            }).then((res) => {
+            }).then(async (res) => {
                 if(res.status === 201) {
                     alert("Pet photo has been removed from profile");
-                    window.location.reload();
+                    // window.location.reload();
+                    await getPetData(params.petID);
                 }
                 else {
                     alert("Something went wrong with photo deletion please try again and it it persists contact admin.")

@@ -7,10 +7,9 @@ const cardHeight = 225;
 const BrowsePetCard = ({ pet }) => {
 
     // const photoURL = 'https://storage.googleapis.com/pet_profile_photos_cs467/';       // Vincent's cloud storage
-    const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
-    
-   //  const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
-    const petPhoto = photoURL + pet.photos[0].name;
+    // const photoURL = 'https://storage.googleapis.com/pet_profile_photo/';
+    const photoURL = 'https://storage.googleapis.com/pet_profile_photos/';
+    var petPhoto = (pet.photos.length > 0) ? photoURL + pet.photos[0].name : photoURL + 'no_image/No_Image_Available.jpg';
 
     const petURL = '/pets/viewProfile/' + pet.id;
 
@@ -30,7 +29,7 @@ const BrowsePetCard = ({ pet }) => {
                 />
                 <CardContent>
                     {(pet !== null)
-                        ? <Typography align="center" fontSize={15}>{pet.name}
+                        ? <Typography align="center" fontSize={15} fontWeight={'bold'}>{pet.name}
                         </Typography>
                         : <Typography></Typography>}
                     {(pet !== null)
@@ -41,7 +40,14 @@ const BrowsePetCard = ({ pet }) => {
                         ? <Typography align="center" fontSize={13}>{pet.breed}
                         </Typography>
                         : <Typography></Typography>}
-                    <Typography fontSize={13}>Distance</Typography>
+                    {(pet !== null)
+                        ? <Typography align="center" fontSize={13}>{pet.sex}
+                        </Typography>
+                        : <Typography></Typography>}
+                    {(pet !== null)
+                        ? <Typography align="center" fontSize={13}>{pet.weight} lbs
+                        </Typography>
+                        : <Typography></Typography>}
                 </CardContent>
             </CardActionArea>
         </Grid>

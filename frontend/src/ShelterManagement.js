@@ -46,7 +46,18 @@ const ShelterManagement = () => {
             setFilteredPets(filtered);
             setPageCount(Math.ceil(filtered.length / petPerPage));
         }
-    }, [searchPhrase, filterType, petsFromAPI]);
+    }, [searchPhrase, filterType]);
+
+    useEffect(() => {
+        if(petsFromAPI !== null){
+            const filtered = petsFromAPI.filter((pet) => (searchPhrase === '' || pet.name.toLowerCase().includes(searchPhrase.toLowerCase())) && (filterType === 'All' || pet.type === filterType));
+            setFilteredPets(filtered);
+            setPageCount(Math.ceil(filtered.length / petPerPage));
+            if (currPage > Math.ceil(filtered.length / petPerPage)){
+                setCurrPage(Math.ceil(filtered.length / petPerPage));
+            }
+        }
+    }, [petsFromAPI]);
 
     const delete_pet = (id) => {
         // console.log(id + ' Delete clicked!');
