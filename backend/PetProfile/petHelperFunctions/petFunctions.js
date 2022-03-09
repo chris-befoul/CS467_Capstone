@@ -71,46 +71,6 @@ async function get_all_pets_browse() {
     });
 }
 
-async function get_pets_filter(type, breed, availability, sex, age) {
-
-    let typeOperator = '=';
-    let breedOperator = '=';
-    let availabilityOperator = '=';
-    let sexOperator = '=';
-    let ageOperator = '=';
-
-    // if (type === ''){
-    //     typeOperator = '>=';
-    //     type = 'a';
-    // }
-
-    // if (breed === '') {
-    //     breedOperator = '>=';
-    //     breed = 'a';
-    //     console.log('no breed in query!');
-    // }
-
-    console.log(`typeOperator = ${typeOperator}`)
-    console.log(`type = ${type}`);
-    console.log(`breedOperator = ${breedOperator}`)
-    console.log(`breed = ${breed}`);
-
-    // const q = helper.datastore.createQuery(PET)
-    //     .filter('type', typeOperator, type)
-    //     .filter('breed', breedOperator, breed)
-    //     .filter('availability', availabilityOperator, availability)
-    //     .filter('sex', sexOperator, sex)
-    //     .filter('age', ageOperator, age);
-
-    const q = helper.datastore.createQuery(PET)
-        .filter('type', '>', '')
-        .filter('breed', '>', '');
-        // .filter('type', typeOperator, type);
-
-    return helper.datastore.runQuery(q).then((entities) => {
-        return entities[0].map(helper.fromDatastore);
-    });
-
 async function get_featured_pets() {
     const q = helper.datastore.createQuery(PET).filter('availability', '=', 'Available');
     return helper.datastore.runQuery(q).then((entities) => {
@@ -129,7 +89,6 @@ module.exports = {
     edit_pet,
     get_all_pets,
     get_all_pets_browse,
-    get_pets_filter,
     delete_pet,
     get_featured_pets
 

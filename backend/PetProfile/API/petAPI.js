@@ -33,26 +33,26 @@ router.get('/browse', function(req, res) {
     })
 })
 
-router.get('/browse/q?', function(req, res) {
-    const type = req.query.type;
-    const breed = req.query.breed;
-    const availability = req.query.availability;
-    const sex = req.query.sex;
-    const age = req.query.age;
+// router.get('/browse/q?', function(req, res) {
+//     const type = req.query.type;
+//     const breed = req.query.breed;
+//     const availability = req.query.availability;
+//     const sex = req.query.sex;
+//     const age = req.query.age;
 
-    JSON.stringify(type);
-    JSON.stringify(breed);
-    JSON.stringify(availability);
-    JSON.stringify(sex);
-    JSON.stringify(age);
+//     JSON.stringify(type);
+//     JSON.stringify(breed);
+//     JSON.stringify(availability);
+//     JSON.stringify(sex);
+//     JSON.stringify(age);
     
-    petFunctions.get_pets_filter(type, breed, availability, sex, age).then(async (pets) =>{
-       await Promise.all(pets.map(async (pet) => {
-            pet.photos = await petPhotoFunction.petsPhotos(pet.id);
-        }));
-        res.status(200).json(pets);
-    })
-})
+//     petFunctions.get_pets_filter(type, breed, availability, sex, age).then(async (pets) =>{
+//        await Promise.all(pets.map(async (pet) => {
+//             pet.photos = await petPhotoFunction.petsPhotos(pet.id);
+//         }));
+//         res.status(200).json(pets);
+//     })
+// })
 
 router.get('/featuredpets', function(req, res) {
     petFunctions.get_featured_pets().then(async (pets) => {
